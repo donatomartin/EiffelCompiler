@@ -1,0 +1,30 @@
+token literal names:
+null
+'class'
+';'
+null
+null
+null
+null
+null
+null
+null
+
+token symbolic names:
+null
+null
+null
+INT_LITERAL
+LINE_COMMENT
+REAL_CONSTANT
+MULTILINE_COMMENT
+WHITESPACE
+CHAR_CONSTANT
+IDENT
+
+rule names:
+program
+
+
+atn:
+[4, 1, 9, 8, 2, 0, 7, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 6, 0, 2, 1, 0, 0, 0, 2, 3, 5, 1, 0, 0, 3, 4, 5, 9, 0, 0, 4, 5, 5, 2, 0, 0, 5, 6, 5, 0, 0, 1, 6, 1, 1, 0, 0, 0, 0]
