@@ -37,7 +37,7 @@ featureCreations
   ;
 
 featureDefinition
-  : 'feature' IDENT 'is' localVarsSection? 'do' statement* 'end'
+  : 'feature' IDENT ('(' IDENT ':' type (',' IDENT ':' type)* ')')? (':' type)? 'is' localVarsSection? 'do' statement* 'end'
   ;
 
 localVarsSection
@@ -60,7 +60,7 @@ expression
 	| e=expression '.' IDENT
 	| left=expression '[' right=expression ']'
 	| '(' expression ')'
-	| '<' type '>' '(' expression ')'
+	| 'to' '<' type '>' '(' expression ')'
 	| left=expression operator=('*'|'/'|'%') right=expression
 	| left=expression operator=('+'|'-') right=expression
 	| left=expression operator=('<'|'>'|'<='|'>=') right=expression
@@ -76,7 +76,7 @@ statement
   : ('print' | 'println') expression ';'
 	| 'read' expression ';'
 	| e=expression ';'
-	| left=expression '=' right=expression ';'
+	| left=expression ':=' right=expression ';'
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 
 	| 'while' '(' e=expression ')' '{' loopStatements+=statement* '}'

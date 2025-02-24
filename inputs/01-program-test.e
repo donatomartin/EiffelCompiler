@@ -19,4 +19,3 @@ mitad (dd); /* No se recoge el valor de retorno
 end /* main
 end /* PRUEBA
 run main(2);
-
