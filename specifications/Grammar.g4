@@ -2,22 +2,99 @@ grammar Grammar;
 
 import Tokenizer;
 
+// PROGRAM
+
 program
-	: 'class' IDENT ';' global? create featureDefinition* run EOF
+	: 'class' IDENT ';' globalSection? createSection featureDefinition* 'end' run EOF
 	;
 
-global
-  : 'global' types vars
+// GLOBAL
+
+globalSection
+  : 'global' (globalTypesSection? globalVarsSection?)
   ;
 
-create
-  : 'create' 
+globalTypesSection
+  : 'types' typeDefinition*
+  ;
+
+typeDefinition
+  : 'deftuple' IDENT 'as' varDefinition* 'end'
+  ;
+
+globalVarsSection
+  : 'vars' varDefinition*
+  ;
+
+// CREATE
+
+createSection
+  : 'create' featureCreations
+  ;
+
+featureCreations
+  : (IDENT ';')*
   ;
 
 featureDefinition
-  : 
+  : 'feature' IDENT 'is' localVarsSection? 'do' statement* 'end'
   ;
 
-run
-  : 'run' IDENT '(' '')'
+localVarsSection
+  : 'local' varDefinition*
   ;
+
+// RUN
+
+run
+  : 'run' IDENT '(' (expression (',' expression)*)? ')' ';'
+  ;
+
+// Expression
+expression
+  : IDENT
+	| INT_LITERAL
+	| REAL_LITERAL
+	| CHAR_LITERAL
+	| IDENT '(' expression (',' expression)* ')'
+	| e=expression '.' IDENT
+	| left=expression '[' right=expression ']'
+	| '(' expression ')'
+	| '<' type '>' '(' expression ')'
+	| left=expression operator=('*'|'/'|'%') right=expression
+	| left=expression operator=('+'|'-') right=expression
+	| left=expression operator=('<'|'>'|'<='|'>=') right=expression
+	| left=expression operator=('!='|'==') right=expression
+	| left=expression '&&' right=expression
+	| left=expression '||' right=expression
+	| '!' e=expression
+	;
+
+// Statement
+
+statement
+  : ('print' | 'println') expression ';'
+	| 'read' expression ';'
+	| e=expression ';'
+	| left=expression '=' right=expression ';'
+	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'
+	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 
+	| 'while' '(' e=expression ')' '{' loopStatements+=statement* '}'
+	| 'return' e=expression ';'
+	| 'return' ';'
+	;
+
+// VarDefinition
+
+varDefinition
+  : IDENT (',' IDENT)* ':' type ';'
+  ;
+
+// Type
+type
+	: 'INTEGER'
+	| 'DOUBLE'
+	| 'CHARACTER'
+	| '[' INT_LITERAL ']' type
+	| IDENT
+	;

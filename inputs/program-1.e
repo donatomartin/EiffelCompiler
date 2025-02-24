@@ -22,8 +22,6 @@ feature main is
   do
     /* sentencias del método constructor inicioend
   end /*main
-
 end /*PRUEBA
 
 run main(); /* Arranque
-

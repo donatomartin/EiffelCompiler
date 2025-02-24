@@ -1,15 +1,8 @@
 lexer grammar Tokenizer;
 
-INT_LITERAL
-	: [0-9]+
-	;
 
 LINE_COMMENT
 	: '/*' .*? ('\n' | EOF) -> skip
-	;
-
-REAL_CONSTANT
-	:[0-9]+ '.' [0-9]+
 	;
 
 MULTILINE_COMMENT
@@ -19,8 +12,16 @@ MULTILINE_COMMENT
 WHITESPACE
 	: [ \t\r\n]+ -> skip
 	;
-	
-CHAR_CONSTANT
+
+INT_LITERAL
+	: [0-9]+
+	;
+
+REAL_LITERAL
+	:[0-9]+ '.' [0-9]+
+	;
+
+CHAR_LITERAL
 	:'\'' ~[\t\r\n] '\''
 	|'\'\\n\''
   ;
