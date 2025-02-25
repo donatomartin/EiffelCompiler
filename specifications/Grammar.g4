@@ -56,18 +56,19 @@ expression
 	| INT_LITERAL
 	| REAL_LITERAL
 	| CHAR_LITERAL
-	| IDENT '(' expression (',' expression)* ')'
-	| e=expression '.' IDENT
+	| IDENT '(' (expression (',' expression)*)? ')'
 	| left=expression '[' right=expression ']'
+	| e=expression '.' IDENT
+  | '-' expression
 	| '(' expression ')'
+	| '!' e=expression
 	| 'to' '<' type '>' '(' expression ')'
 	| left=expression operator=('*'|'/'|'%') right=expression
 	| left=expression operator=('+'|'-') right=expression
 	| left=expression operator=('<'|'>'|'<='|'>=') right=expression
 	| left=expression operator=('!='|'==') right=expression
-	| left=expression '&&' right=expression
-	| left=expression '||' right=expression
-	| '!' e=expression
+	| left=expression 'and' right=expression
+	| left=expression 'or' right=expression
 	;
 
 // Statement
