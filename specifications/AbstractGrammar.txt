@@ -1,5 +1,45 @@
 CATEGORIES
 
+expression;
+definition;
+statement;
+type;
+
 NODES
 
-program -> ;
+program -> definition*;
+
+varDefinition:definition -> string type;
+structDefinition:definition -> string varDefinition*;
+functionDefinition:definition -> string parameter* type? definition* statement*;
+
+parameter -> string type;
+
+print:statement -> expression;
+read:statement -> expression;
+call:statement -> expression;
+assignment:statement -> left:expression right:expression;
+conditional:statement -> expression ifStatements:statement* elseStatements:statement*;
+while:statement -> expression loopStatements:statement*;
+return:statement -> expression?;
+
+run -> string expression*;
+
+intType:type -> ;
+realType:type -> ;
+charType:type -> ;
+arrayType:type -> int type;
+structType:type -> string;
+
+variable:expression -> string;
+intLiteral:expression -> int;
+floatLiteral:expression -> float;
+charLiteral:expression -> char;
+functionCall:expression -> string expression*;
+structAccess:expression -> e:expression string;
+arrayAccess:expression -> left:expression right:expression;
+cast:expression -> type expression;
+arithmeticBinary:expression -> left:expression operator:string right:expression;
+arithmeticUnary:expression -> operator:string e:expression;
+logicBinary:expression -> left:expression operator:string right:expression;
+logicUnary:expression -> opeartor:string e:expression;

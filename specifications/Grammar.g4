@@ -4,98 +4,117 @@ import Tokenizer;
 
 // PROGRAM
 
-program
-	: 'class' IDENT ';' globalSection? createSection featureDefinition* 'end' run EOF
+program returns [Program ast]
+	: 'class' IDENT ';' globalSection? createSection featureDefinitions+=featureDefinition* 'end' run EOF
+  {$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $featureDefinitions, $run.ast); }
 	;
 
 // GLOBAL
 
-globalSection
-  : 'global' (globalTypesSection? globalVarsSection?)
+globalSection returns [GlobalSection ast]
+  : 'global' (globalTypesSection? globalVarsSection?) { $ast = new GlobalSection($globalTypesSection.list, $globalVarsSection.list); }
   ;
 
-globalTypesSection
-  : 'types' typeDefinition*
+globalTypesSection returns [List<StructDefinition> list = new ArrayList<StructDefinition>()]
+  : 'types' (typeDefinition { $list.add($typeDefinition.ast)}; )*
   ;
 
-typeDefinition
-  : 'deftuple' IDENT 'as' varDefinition* 'end'
+typeDefinition returns [StructDefinition ast]
+  : 'deftuple' IDENT 'as' varDefinitions 'end' { $ast = new StructDefinition($IDENT, $varDefinitions.list); }
   ;
 
-globalVarsSection
-  : 'vars' varDefinition*
+globalVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
+  : 'vars' varDefinitions { $list = $varDefinitions.list; }
   ;
 
 // CREATE
 
-createSection
-  : 'create' featureCreations
+createSection returns [List<FunctionDefinition> list = new ArrayList<FunctionCreation>()]
+  : 'create' featureCreations { $list = featureCreations.list; }
   ;
 
-featureCreations
-  : (IDENT ';')*
+featureCreations returns [List<FunctionDefinition> list = new ArrayList<FunctionCreation>()]
+  : (IDENT { $list.add(new FunctionCreation($IDENT)); } ';')*
   ;
 
-featureDefinition
-  : 'feature' IDENT ('(' IDENT ':' type (',' IDENT ':' type)* ')')? (':' type)? 'is' localVarsSection? 'do' statement* 'end'
+featureDefinition returns [FunctionDefinition ast]
+  : 'feature' IDENT  (':' type)? 'is' localVarsSection? 'do' statement* 'end'
+  { $ast = new FunctionDefinition($IDENT) }
   ;
 
-localVarsSection
-  : 'local' varDefinition*
+localVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefition>()]
+  : 'local' varDefinitions { $list = varDefinitions.list; }
   ;
 
-// RUN
-
-run
-  : 'run' IDENT '(' (expression (',' expression)*)? ')' ';'
+parameters returns [List<Parameter> list = new ArrayList<Parameter>()]
+  : ('(' i1=IDENT ':' t1=type { $list.add(new Parameter($i1.getText(), $t1.ast)); } (',' i2=IDENT ':' t2=type { $list.add(new Parameter($i2.getText(), $t2.ast)); } )* ')')?
   ;
-
-// Expression
-expression
-  : IDENT
-	| INT_LITERAL
-	| REAL_LITERAL
-	| CHAR_LITERAL
-	| IDENT '(' (expression (',' expression)*)? ')'
-	| left=expression '[' right=expression ']'
-	| e=expression '.' IDENT
-  | '-' expression
-	| '(' expression ')'
-	| '!' e=expression
-	| 'to' '<' type '>' '(' expression ')'
-	| left=expression operator=('*'|'/'|'%') right=expression
-	| left=expression operator=('+'|'-') right=expression
-	| left=expression operator=('<'|'>'|'<='|'>=') right=expression
-	| left=expression operator=('!='|'==') right=expression
-	| left=expression 'and' right=expression
-	| left=expression 'or' right=expression
-	;
-
-// Statement
-
-statement
-  : ('print' | 'println') expression ';'
-	| 'read' expression ';'
-	| e=expression ';'
-	| left=expression ':=' right=expression ';'
-	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'
-	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 
-	| 'while' '(' e=expression ')' '{' loopStatements+=statement* '}'
-	| 'return' e=expression ';'
-	| 'return' ';'
-	;
 
 // VarDefinition
 
-varDefinition
-  : IDENT (',' IDENT)* ':' type ';'
+varDefinitions returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
+    : (varDefinition ';' { $list.add($varDef.ast); })*
+    ;
+
+varDefinition returns [VarDefinition ast]
+    : ids+=IDENT (',' ids+=IDENT)* ':' type 
+      { 
+          List<String> variableNames = new ArrayList<>();
+          for (Token id : $ids) {
+              variableNames.add(id.getText());
+          }
+          $ast = new VarDefinition(variableNames, $type.ast); 
+      }
+    ;
+
+run returns [Run ast]
+  : 'run' IDENT '(' arguments ')' ';' { $ast = new Run($IDENT, arguments.list); }
   ;
 
+// Expression
+expression returns [Expression ast]
+  : IDENT { $ast = new Variable($IDENT); }
+	| INT_LITERAL { $ast = new IntLiteral($INT_LITERAL); }
+	| REAL_LITERAL { $ast = new RealLiteral($REAL_LITERAL); }
+	| CHAR_LITERAL { $ast = new CharLiteral($CHAR_LITERAL); }
+	| IDENT '(' arguments ')' { $ast = new FunctionCall($IDENT, $arguments.list); }
+	| left=expression '[' right=expression ']' { $ast = new ArrayAccess($left.ast, $right.ast); }
+	| e=expression '.' IDENT { $ast = new StructAccess($e.ast, $IDENT); }
+  | operator='-' e=expression { $ast = new ArithmeticUnary($operator, $e.ast); }
+	| '(' e=expression ')' { $ast = $e.ast; }
+	| opeartor='!' e=expression { $ast = new LogicUnary($operator, $e.ast); }
+	| 'to' '<' type '>' '(' expression ')' { $ast = new Cast($type.ast, $expression.ast); }
+	| left=expression operator=('*'|'/'|'%') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator=('+'|'-') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator=('<'|'>'|'<='|'>=') right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator=('!='|'==') right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression 'and' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression 'or' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	;
+
+arguments returns [List<Expression> list = new ArrayList<Expression>()]
+  : (e1=expression { $list.add($e1.ast); } (',' e2=expression { $list.add($e2.ast); } )*)?
+  ;
+
+// Statement
+
+statement returns [Statement ast]
+  : ('print' | 'println') expression ';' { $ast = new Print($expression.ast); }
+	| 'read' expression ';' { $ast = new Read($expression.ast); }
+	| e=expression ';' { $ast = new Call($e.ast); }
+	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
+	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($e.ast, $ifStatements, $elseStatements); }
+	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($e.ast, $ifStatements, null); }
+	| 'while' '(' e=expression ')' '{' loopStatements+=statement* '}' { $ast = new While($e.ast, $loopStatements); }
+	| 'return' e=expression ';' { $ast = new Return($e.ast); }
+	| 'return' ';' { $ast = new Return(null); }
+	;
+
 // Type
-type
-	: 'INTEGER'
-	| 'DOUBLE'
-	| 'CHARACTER'
-	| '[' INT_LITERAL ']' type
-	| IDENT
+type returns [Type ast]
+	: 'INTEGER' { $ast = new IntType(); }
+	| 'REAL' { $ast = new RealType(); }
+	| 'CHARACTER' { $ast = new CharType(); }
+	| '[' INT_LITERAL ']' type { $ast = new ArrayType($INT_LITERAL, $type.ast); }
+	| IDENT { $ast = new StructType($IDENT); }
 	;

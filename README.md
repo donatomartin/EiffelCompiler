@@ -4,6 +4,7 @@
 
 # Apuntes
 
+## Clase 4
 Siempre hacerse la pregunta en una lista:
     numero mínimo de elementos
     con o sin separadores
@@ -16,3 +17,7 @@ Para empezar la asociación por la derecha ponemos lo siguiente:
 expression : <assoc=right> left=expression '^' right=expression
 
 Crear el run f(...) como un nodo a parte
+
+## Clase 5
+
+

@@ -1,0 +1,205 @@
+' Generated with VGen 2.0.0
+
+@startuml
+
+class Position {
+    +int getLine()
+    +int getColumn()
+    +boolean lessThan(Position other)
+    +boolean greaterThan(Position other)
+}
+
+interface AST {
+    +updatePositions(Object... children)
+    +updatePositions(Position start, Position end)
+    +Object accept(Visitor visitor, Object param)
+}
+
+AST *-[#404040,thickness=1]- Position : start >
+AST *-[#404040,thickness=1]- Position : end >
+
+
+interface Expression {
+}
+AST <|-[#808080]- Expression
+
+interface Definition {
+}
+AST <|-[#808080]- Definition
+
+interface Statement {
+}
+AST <|-[#808080]- Statement
+
+interface Type {
+}
+AST <|-[#808080]- Type
+
+interface AST {
+}
+
+class Program {
+}
+AST <|-[#808080]- Program
+Program o-[#404040,thickness=2]- "✱" Definition : definitions >
+
+class VarDefinition {
+	+String name
+}
+Definition <|-[#808080]- VarDefinition
+VarDefinition o-[#404040,thickness=2]-  Type : type >
+
+class StructDefinition {
+	+String name
+}
+Definition <|-[#808080]- StructDefinition
+StructDefinition o-[#404040,thickness=2]- "✱" VarDefinition : varDefinitions >
+
+class FunctionDefinition {
+	+String name
+}
+Definition <|-[#808080]- FunctionDefinition
+FunctionDefinition o-[#404040,thickness=2]- "✱" Parameter : parameters >
+FunctionDefinition o-[#404040,thickness=2]- "0..1" Type : type >
+FunctionDefinition o-[#404040,thickness=2]- "✱" Definition : definitions >
+FunctionDefinition o-[#404040,thickness=2]- "✱" Statement : statements >
+
+class Parameter {
+	+String name
+}
+AST <|-[#808080]- Parameter
+Parameter o-[#404040,thickness=2]-  Type : type >
+
+class Print {
+}
+Statement <|-[#808080]- Print
+Print o-[#404040,thickness=2]-  Expression : expression >
+
+class Read {
+}
+Statement <|-[#808080]- Read
+Read o-[#404040,thickness=2]-  Expression : expression >
+
+class Call {
+}
+Statement <|-[#808080]- Call
+Call o-[#404040,thickness=2]-  Expression : expression >
+
+class Assignment {
+}
+Statement <|-[#808080]- Assignment
+Assignment o-[#404040,thickness=2]-  Expression : left >
+Assignment o-[#404040,thickness=2]-  Expression : right >
+
+class Conditional {
+}
+Statement <|-[#808080]- Conditional
+Conditional o-[#404040,thickness=2]-  Expression : expression >
+Conditional o-[#404040,thickness=2]- "✱" Statement : ifStatements >
+Conditional o-[#404040,thickness=2]- "✱" Statement : elseStatements >
+
+class While {
+}
+Statement <|-[#808080]- While
+While o-[#404040,thickness=2]-  Expression : expression >
+While o-[#404040,thickness=2]- "✱" Statement : loopStatements >
+
+class Return {
+}
+Statement <|-[#808080]- Return
+Return o-[#404040,thickness=2]- "0..1" Expression : expression >
+
+class IntType {
+}
+Type <|-[#808080]- IntType
+
+class RealType {
+}
+Type <|-[#808080]- RealType
+
+class CharType {
+}
+Type <|-[#808080]- CharType
+
+class ArrayType {
+	+int intValue
+}
+Type <|-[#808080]- ArrayType
+ArrayType o-[#404040,thickness=2]-  Type : type >
+
+class StructType {
+	+String name
+}
+Type <|-[#808080]- StructType
+
+class Variable {
+	+String name
+}
+Expression <|-[#808080]- Variable
+
+class IntLiteral {
+	+int intValue
+}
+Expression <|-[#808080]- IntLiteral
+
+class FloatLiteral {
+	+float floatValue
+}
+Expression <|-[#808080]- FloatLiteral
+
+class CharLiteral {
+	+char charValue
+}
+Expression <|-[#808080]- CharLiteral
+
+class FunctionCall {
+	+String name
+}
+Expression <|-[#808080]- FunctionCall
+FunctionCall o-[#404040,thickness=2]- "✱" Expression : expressions >
+
+class StructAccess {
+	+String name
+}
+Expression <|-[#808080]- StructAccess
+StructAccess o-[#404040,thickness=2]-  Expression : e >
+
+class ArrayAccess {
+}
+Expression <|-[#808080]- ArrayAccess
+ArrayAccess o-[#404040,thickness=2]-  Expression : left >
+ArrayAccess o-[#404040,thickness=2]-  Expression : right >
+
+class Cast {
+}
+Expression <|-[#808080]- Cast
+Cast o-[#404040,thickness=2]-  Type : type >
+Cast o-[#404040,thickness=2]-  Expression : expression >
+
+class ArithmeticBinary {
+	+String operator
+}
+Expression <|-[#808080]- ArithmeticBinary
+ArithmeticBinary o-[#404040,thickness=2]-  Expression : left >
+ArithmeticBinary o-[#404040,thickness=2]-  Expression : right >
+
+class ArithmeticUnary {
+	+String operator
+}
+Expression <|-[#808080]- ArithmeticUnary
+ArithmeticUnary o-[#404040,thickness=2]-  Expression : e >
+
+class LogicBinary {
+	+String operator
+}
+Expression <|-[#808080]- LogicBinary
+LogicBinary o-[#404040,thickness=2]-  Expression : left >
+LogicBinary o-[#404040,thickness=2]-  Expression : right >
+
+class LogicUnary {
+	+String opeartor
+}
+Expression <|-[#808080]- LogicUnary
+LogicUnary o-[#404040,thickness=2]-  Expression : e >
+
+@enduml
