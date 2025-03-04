@@ -110,13 +110,25 @@
 
 
         <tr>
-            <td><span class="symbol-name">program</span> &rarr; <span class="att-type">definition*</span></td>
+            <td><span class="symbol-name">program</span> &rarr; <span class="att-name">name</span>:<span class="att-type">string</span> <span class="att-type">globalSection</span> <span class="att-type">functionCreation*</span> <span class="att-type">functionDefinition*</span> <span class="att-type">run</span></td>
             <td></td>
             <td></td>
         </tr>
 
         <tr>
-            <td><span class="symbol-name">varDefinition</span><span class="parents">:definition</span> &rarr; <span class="att-name">name</span>:<span class="att-type">string</span> <span class="att-type">type</span></td>
+            <td><span class="symbol-name">globalSection</span> &rarr; <span class="att-type">structDefinition*</span> <span class="att-type">varDefinition*</span></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><span class="symbol-name">functionCreation</span> &rarr; <span class="att-name">name</span>:<span class="att-type">string</span></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td><span class="symbol-name">varDefinition</span><span class="parents">:definition</span> &rarr; <span class="att-type">string*</span> <span class="att-type">type</span></td>
             <td></td>
             <td></td>
         </tr>
@@ -182,6 +194,12 @@
         </tr>
 
         <tr>
+            <td><span class="symbol-name">run</span> &rarr; <span class="att-name">name</span>:<span class="att-type">string</span> <span class="att-type">expression*</span></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
             <td><span class="symbol-name">intType</span><span class="parents">:type</span> &rarr; &epsilon;</td>
             <td></td>
             <td></td>
@@ -224,7 +242,7 @@
         </tr>
 
         <tr>
-            <td><span class="symbol-name">floatLiteral</span><span class="parents">:expression</span> &rarr; <span class="att-name">floatValue</span>:<span class="att-type">float</span></td>
+            <td><span class="symbol-name">realLiteral</span><span class="parents">:expression</span> &rarr; <span class="att-name">floatValue</span>:<span class="att-type">float</span></td>
             <td></td>
             <td></td>
         </tr>

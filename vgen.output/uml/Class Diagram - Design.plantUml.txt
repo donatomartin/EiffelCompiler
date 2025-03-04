@@ -39,12 +39,27 @@ interface AST {
 }
 
 class Program {
+	+String name
 }
 AST <|-[#808080]- Program
-Program o-[#404040,thickness=2]- "✱" Definition : definitions >
+Program o-[#404040,thickness=2]-  GlobalSection : globalSection >
+Program o-[#404040,thickness=2]- "✱" FunctionCreation : functionCreations >
+Program o-[#404040,thickness=2]- "✱" FunctionDefinition : functionDefinitions >
+Program o-[#404040,thickness=2]-  Run : run >
+
+class GlobalSection {
+}
+AST <|-[#808080]- GlobalSection
+GlobalSection o-[#404040,thickness=2]- "✱" StructDefinition : structDefinitions >
+GlobalSection o-[#404040,thickness=2]- "✱" VarDefinition : varDefinitions >
+
+class FunctionCreation {
+	+String name
+}
+AST <|-[#808080]- FunctionCreation
 
 class VarDefinition {
-	+String name
+	+List<String> strings
 }
 Definition <|-[#808080]- VarDefinition
 VarDefinition o-[#404040,thickness=2]-  Type : type >
@@ -109,6 +124,12 @@ class Return {
 Statement <|-[#808080]- Return
 Return o-[#404040,thickness=2]- "0..1" Expression : expression >
 
+class Run {
+	+String name
+}
+AST <|-[#808080]- Run
+Run o-[#404040,thickness=2]- "✱" Expression : expressions >
+
 class IntType {
 }
 Type <|-[#808080]- IntType
@@ -142,10 +163,10 @@ class IntLiteral {
 }
 Expression <|-[#808080]- IntLiteral
 
-class FloatLiteral {
+class RealLiteral {
 	+float floatValue
 }
-Expression <|-[#808080]- FloatLiteral
+Expression <|-[#808080]- RealLiteral
 
 class CharLiteral {
 	+char charValue

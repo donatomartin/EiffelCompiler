@@ -18,6 +18,10 @@ import ast.expression.*;
 public interface Visitor {
 	public Object visit(Program program, Object param);
 
+	public Object visit(GlobalSection globalSection, Object param);
+
+	public Object visit(FunctionCreation functionCreation, Object param);
+
 	public Object visit(VarDefinition varDefinition, Object param);
 
 	public Object visit(StructDefinition structDefinition, Object param);
@@ -40,6 +44,8 @@ public interface Visitor {
 
 	public Object visit(Return returnValue, Object param);
 
+	public Object visit(Run run, Object param);
+
 	public Object visit(IntType intType, Object param);
 
 	public Object visit(RealType realType, Object param);
@@ -54,7 +60,7 @@ public interface Visitor {
 
 	public Object visit(IntLiteral intLiteral, Object param);
 
-	public Object visit(FloatLiteral floatLiteral, Object param);
+	public Object visit(RealLiteral realLiteral, Object param);
 
 	public Object visit(CharLiteral charLiteral, Object param);
 

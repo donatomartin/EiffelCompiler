@@ -112,10 +112,41 @@ public class AstPrinter implements Visitor {
 		int indent = ((Integer)param);
 
 		// Imprimir los hijos (y recorrer si son nodos del AST)
-        printListOfNodesChild(indent + 1, "definitions", "List<Definition>", program.getDefinitions());
+        printNonNodeChild(indent + 1, "name", "String", program.getName());
+        printNodeChild(indent + 1, "globalSection", "GlobalSection", program.getGlobalSection());
+        printListOfNodesChild(indent + 1, "functionCreations", "List<FunctionCreation>", program.getFunctionCreations());
+        printListOfNodesChild(indent + 1, "functionDefinitions", "List<FunctionDefinition>", program.getFunctionDefinitions());
+        printNodeChild(indent + 1, "run", "Run", program.getRun());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, program, "definitions");
+		printUnknownFields(indent + 1, program, "name", "globalSection", "functionCreations", "functionDefinitions", "run");
+		return null;
+	}
+
+	@Override
+	public Object visit(GlobalSection globalSection, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printListOfNodesChild(indent + 1, "structDefinitions", "List<StructDefinition>", globalSection.getStructDefinitions());
+        printListOfNodesChild(indent + 1, "varDefinitions", "List<VarDefinition>", globalSection.getVarDefinitions());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+		printUnknownFields(indent + 1, globalSection, "structDefinitions", "varDefinitions");
+		return null;
+	}
+
+	@Override
+	public Object visit(FunctionCreation functionCreation, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printNonNodeChild(indent + 1, "name", "String", functionCreation.getName());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+		printUnknownFields(indent + 1, functionCreation, "name");
 		return null;
 	}
 
@@ -125,11 +156,11 @@ public class AstPrinter implements Visitor {
 		int indent = ((Integer)param);
 
 		// Imprimir los hijos (y recorrer si son nodos del AST)
-        printNonNodeChild(indent + 1, "name", "String", varDefinition.getName());
+        printNonNodeChild(indent + 1, "strings", "List<String>", varDefinition.getStrings());
         printNodeChild(indent + 1, "type", "Type", varDefinition.getType());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, varDefinition, "name", "type");
+		printUnknownFields(indent + 1, varDefinition, "strings", "type");
 		return null;
 	}
 
@@ -274,6 +305,20 @@ public class AstPrinter implements Visitor {
 	}
 
 	@Override
+	public Object visit(Run run, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printNonNodeChild(indent + 1, "name", "String", run.getName());
+        printListOfNodesChild(indent + 1, "expressions", "List<Expression>", run.getExpressions());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+		printUnknownFields(indent + 1, run, "name", "expressions");
+		return null;
+	}
+
+	@Override
 	public Object visit(IntType intType, Object param) {
 
 		int indent = ((Integer)param);
@@ -363,15 +408,15 @@ public class AstPrinter implements Visitor {
 	}
 
 	@Override
-	public Object visit(FloatLiteral floatLiteral, Object param) {
+	public Object visit(RealLiteral realLiteral, Object param) {
 
 		int indent = ((Integer)param);
 
 		// Imprimir los hijos (y recorrer si son nodos del AST)
-        printNonNodeChild(indent + 1, "floatValue", "float", floatLiteral.getFloatValue());
+        printNonNodeChild(indent + 1, "floatValue", "float", realLiteral.getFloatValue());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, floatLiteral, "floatValue");
+		printUnknownFields(indent + 1, realLiteral, "floatValue");
 		return null;
 	}
 

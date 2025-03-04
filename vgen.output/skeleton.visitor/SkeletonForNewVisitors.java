@@ -69,17 +69,38 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 
     // Visit Methods --------------------------------------------------------------
 
-	// class Program(List<Definition> definitions)
+	// class Program(String name, GlobalSection globalSection, List<FunctionCreation> functionCreations, List<FunctionDefinition> functionDefinitions, Run run)
 	@Override
 	public Object visit(Program program, Object param) {
 
-		// program.getDefinitions().forEach(definition -> definition.accept(this, param));
+		// program.getGlobalSection().accept(this, param);
+		// program.getFunctionCreations().forEach(functionCreation -> functionCreation.accept(this, param));
+		// program.getFunctionDefinitions().forEach(functionDefinition -> functionDefinition.accept(this, param));
+		// program.getRun().accept(this, param);
 		super.visit(program, param);
 
 		return null;
 	}
 
-	// class VarDefinition(String name, Type type)
+	// class GlobalSection(List<StructDefinition> structDefinitions, List<VarDefinition> varDefinitions)
+	@Override
+	public Object visit(GlobalSection globalSection, Object param) {
+
+		// globalSection.getStructDefinitions().forEach(structDefinition -> structDefinition.accept(this, param));
+		// globalSection.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this, param));
+		super.visit(globalSection, param);
+
+		return null;
+	}
+
+	// class FunctionCreation(String name)
+	@Override
+	public Object visit(FunctionCreation functionCreation, Object param) {
+
+		return null;
+	}
+
+	// class VarDefinition(List<String> strings, Type type)
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
 
@@ -196,6 +217,16 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
+	// class Run(String name, List<Expression> expressions)
+	@Override
+	public Object visit(Run run, Object param) {
+
+		// run.getExpressions().forEach(expression -> expression.accept(this, param));
+		super.visit(run, param);
+
+		return null;
+	}
+
 	// class IntType()
 	@Override
 	public Object visit(IntType intType, Object param) {
@@ -248,9 +279,9 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
-	// class FloatLiteral(float floatValue)
+	// class RealLiteral(float floatValue)
 	@Override
-	public Object visit(FloatLiteral floatLiteral, Object param) {
+	public Object visit(RealLiteral realLiteral, Object param) {
 
 		return null;
 	}

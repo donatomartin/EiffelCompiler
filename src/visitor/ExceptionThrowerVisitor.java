@@ -29,6 +29,18 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(GlobalSection globalSection, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(GlobalSection)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
+	public Object visit(FunctionCreation functionCreation, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionCreation)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(VarDefinition)' has been invoked but it has not been implemented.");
@@ -95,6 +107,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Run run, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Run)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(IntType intType, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(IntType)' has been invoked but it has not been implemented.");
@@ -137,9 +155,9 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(FloatLiteral floatLiteral, Object param) {
+	public Object visit(RealLiteral realLiteral, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FloatLiteral)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(RealLiteral)' has been invoked but it has not been implemented.");
 	}
 
 	@Override

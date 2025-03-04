@@ -28,7 +28,24 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(Program program, Object param) {
 
-		program.getDefinitions().forEach(definition -> definition.accept(this, param));
+		program.getGlobalSection().accept(this, param);
+		program.getFunctionCreations().forEach(functionCreation -> functionCreation.accept(this, param));
+		program.getFunctionDefinitions().forEach(functionDefinition -> functionDefinition.accept(this, param));
+		program.getRun().accept(this, param);
+		return null;
+	}
+
+	@Override
+	public Object visit(GlobalSection globalSection, Object param) {
+
+		globalSection.getStructDefinitions().forEach(structDefinition -> structDefinition.accept(this, param));
+		globalSection.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this, param));
+		return null;
+	}
+
+	@Override
+	public Object visit(FunctionCreation functionCreation, Object param) {
+
 		return null;
 	}
 
@@ -117,6 +134,13 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Run run, Object param) {
+
+		run.getExpressions().forEach(expression -> expression.accept(this, param));
+		return null;
+	}
+
+	@Override
 	public Object visit(IntType intType, Object param) {
 
 		return null;
@@ -160,7 +184,7 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(FloatLiteral floatLiteral, Object param) {
+	public Object visit(RealLiteral realLiteral, Object param) {
 
 		return null;
 	}

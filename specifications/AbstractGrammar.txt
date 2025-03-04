@@ -7,9 +7,12 @@ type;
 
 NODES
 
-program -> definition*;
+program -> string globalSection functionCreation* functionDefinition* run; 
 
-varDefinition:definition -> string type;
+globalSection -> structDefinition* varDefinition*;
+functionCreation -> string;
+
+varDefinition:definition -> string* type;
 structDefinition:definition -> string varDefinition*;
 functionDefinition:definition -> string parameter* type? definition* statement*;
 
@@ -33,7 +36,7 @@ structType:type -> string;
 
 variable:expression -> string;
 intLiteral:expression -> int;
-floatLiteral:expression -> float;
+realLiteral:expression -> float;
 charLiteral:expression -> char;
 functionCall:expression -> string expression*;
 structAccess:expression -> e:expression string;

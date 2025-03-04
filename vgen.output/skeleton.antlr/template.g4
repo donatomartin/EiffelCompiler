@@ -11,13 +11,19 @@ grammar Grammar;
 }
 
 program returns[Program ast]
-    : definitions+=definition*            { $ast = new Program($definitions); }                  
+    : name=IDENT globalSection functionCreations+=functionCreation* functionDefinitions+=functionDefinition* run { $ast = new Program($name, $globalSection.ast, $functionCreations, $functionDefinitions, $run.ast); }
 	;
 
-definition returns[Definition ast]
-    : name=IDENT type                     { $ast = new VarDefinition($name, $type.ast); }        
-    | name=IDENT varDefinitions+=varDefinition* { $ast = new StructDefinition($name, $varDefinitions); }
-    | name=IDENT parameters+=parameter* type? definitions+=definition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $definitions, $statements); }
+globalSection returns[GlobalSection ast]
+    : structDefinitions+=structDefinition* varDefinitions+=varDefinition* { $ast = new GlobalSection($structDefinitions, $varDefinitions); }
+	;
+
+structDefinition returns[StructDefinition ast]
+    : name=IDENT varDefinitions+=varDefinition* { $ast = new StructDefinition($name, $varDefinitions); }
+	;
+
+varDefinition returns[VarDefinition ast]
+    : strings+=IDENT* type                { $ast = new VarDefinition($strings, $type.ast); }     
 	;
 
 type returns[Type ast]
@@ -28,12 +34,22 @@ type returns[Type ast]
     | name=IDENT                          { $ast = new StructType($name); }                      
 	;
 
-varDefinition returns[VarDefinition ast]
-    : name=IDENT type                     { $ast = new VarDefinition($name, $type.ast); }        
+functionCreation returns[FunctionCreation ast]
+    : name=IDENT                          { $ast = new FunctionCreation($name); }                
+	;
+
+functionDefinition returns[FunctionDefinition ast]
+    : name=IDENT parameters+=parameter* type? definitions+=definition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $definitions, $statements); }
 	;
 
 parameter returns[Parameter ast]
     : name=IDENT type                     { $ast = new Parameter($name, $type.ast); }            
+	;
+
+definition returns[Definition ast]
+    : strings+=IDENT* type                { $ast = new VarDefinition($strings, $type.ast); }     
+    | name=IDENT varDefinitions+=varDefinition* { $ast = new StructDefinition($name, $varDefinitions); }
+    | name=IDENT parameters+=parameter* type? definitions+=definition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $definitions, $statements); }
 	;
 
 statement returns[Statement ast]
@@ -49,7 +65,7 @@ statement returns[Statement ast]
 expression returns[Expression ast]
     : name=IDENT                          { $ast = new Variable($name); }                        
     | INT_LITERAL                         { $ast = new IntLiteral($INT_LITERAL); }               
-    | FLOAT_LITERAL                       { $ast = new FloatLiteral($FLOAT_LITERAL); }           
+    | FLOAT_LITERAL                       { $ast = new RealLiteral($FLOAT_LITERAL); }            
     | CHAR_LITERAL                        { $ast = new CharLiteral($CHAR_LITERAL); }             
     | name=IDENT expressions+=expression* { $ast = new FunctionCall($name, $expressions); }      
     | expression name=IDENT               { $ast = new StructAccess($expression.ast, $name); }   
@@ -59,6 +75,10 @@ expression returns[Expression ast]
     | operator=IDENT expression           { $ast = new ArithmeticUnary($operator, $expression.ast); }
     | left=expression operator=IDENT right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
     | opeartor=IDENT expression           { $ast = new LogicUnary($opeartor, $expression.ast); } 
+	;
+
+run returns[Run ast]
+    : name=IDENT expressions+=expression* { $ast = new Run($name, $expressions); }               
 	;
 
 

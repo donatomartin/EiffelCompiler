@@ -2,6 +2,13 @@ grammar Grammar;
 
 import Tokenizer;
 
+@header {
+	import ast.*;
+	import ast.type.*;
+	import ast.statement.*;
+	import ast.expression.*;
+	import ast.definition.*;
+}
 // PROGRAM
 
 program returns [Program ast]
@@ -16,7 +23,7 @@ globalSection returns [GlobalSection ast]
   ;
 
 globalTypesSection returns [List<StructDefinition> list = new ArrayList<StructDefinition>()]
-  : 'types' (typeDefinition { $list.add($typeDefinition.ast)}; )*
+  : 'types' (typeDefinition { $list.add($typeDefinition.ast); } )*
   ;
 
 typeDefinition returns [StructDefinition ast]
@@ -29,21 +36,23 @@ globalVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinitio
 
 // CREATE
 
-createSection returns [List<FunctionDefinition> list = new ArrayList<FunctionCreation>()]
-  : 'create' featureCreations { $list = featureCreations.list; }
+createSection returns [List<FunctionCreation> list = new ArrayList<FunctionCreation>()]
+  : 'create' featureCreations { $list = $featureCreations.list; }
   ;
 
-featureCreations returns [List<FunctionDefinition> list = new ArrayList<FunctionCreation>()]
+featureCreations returns [List<FunctionCreation> list = new ArrayList<FunctionCreation>()]
   : (IDENT { $list.add(new FunctionCreation($IDENT)); } ';')*
   ;
 
 featureDefinition returns [FunctionDefinition ast]
-  : 'feature' IDENT  (':' type)? 'is' localVarsSection? 'do' statement* 'end'
-  { $ast = new FunctionDefinition($IDENT) }
+  : 'feature' IDENT parameters ':' type 'is' localVarsSection? 'do' statements+=statement* 'end'
+  { $ast = new FunctionDefinition($IDENT, $parameters.list, $type.ast, $localVarsSection.list, $statements); }
+  | 'feature' IDENT parameters 'is' localVarsSection? 'do' statements+=statement* 'end'
+  { $ast = new FunctionDefinition($IDENT, $parameters.list, null, $localVarsSection.list, $statements); }
   ;
 
-localVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefition>()]
-  : 'local' varDefinitions { $list = varDefinitions.list; }
+localVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
+  : 'local' varDefinitions { $list = $varDefinitions.list; }
   ;
 
 parameters returns [List<Parameter> list = new ArrayList<Parameter>()]
@@ -53,7 +62,7 @@ parameters returns [List<Parameter> list = new ArrayList<Parameter>()]
 // VarDefinition
 
 varDefinitions returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
-    : (varDefinition ';' { $list.add($varDef.ast); })*
+    : (varDefinition ';' { $list.add($varDefinition.ast); })*
     ;
 
 varDefinition returns [VarDefinition ast]
@@ -68,7 +77,7 @@ varDefinition returns [VarDefinition ast]
     ;
 
 run returns [Run ast]
-  : 'run' IDENT '(' arguments ')' ';' { $ast = new Run($IDENT, arguments.list); }
+  : 'run' IDENT '(' arguments ')' ';' { $ast = new Run($IDENT, $arguments.list); }
   ;
 
 // Expression

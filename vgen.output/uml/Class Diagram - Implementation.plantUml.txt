@@ -53,12 +53,27 @@ abstract AbstractAST
 AST <|-[#808080]- AbstractAST
 
 class Program {
+	+String name
 }
 AbstractAST <|-[#808080]- Program
-Program o-[#404040,thickness=2]- "✱" Definition : definitions >
+Program o-[#404040,thickness=2]-  GlobalSection : globalSection >
+Program o-[#404040,thickness=2]- "✱" FunctionCreation : functionCreations >
+Program o-[#404040,thickness=2]- "✱" FunctionDefinition : functionDefinitions >
+Program o-[#404040,thickness=2]-  Run : run >
+
+class GlobalSection {
+}
+AbstractAST <|-[#808080]- GlobalSection
+GlobalSection o-[#404040,thickness=2]- "✱" StructDefinition : structDefinitions >
+GlobalSection o-[#404040,thickness=2]- "✱" VarDefinition : varDefinitions >
+
+class FunctionCreation {
+	+String name
+}
+AbstractAST <|-[#808080]- FunctionCreation
 
 class VarDefinition {
-	+String name
+	+List<String> strings
 }
 AbstractDefinition <|-[#808080]- VarDefinition
 VarDefinition o-[#404040,thickness=2]-  Type : type >
@@ -123,6 +138,12 @@ class Return {
 AbstractStatement <|-[#808080]- Return
 Return o-[#404040,thickness=2]- "0..1" Expression : expression >
 
+class Run {
+	+String name
+}
+AbstractAST <|-[#808080]- Run
+Run o-[#404040,thickness=2]- "✱" Expression : expressions >
+
 class IntType {
 }
 AbstractType <|-[#808080]- IntType
@@ -156,10 +177,10 @@ class IntLiteral {
 }
 AbstractExpression <|-[#808080]- IntLiteral
 
-class FloatLiteral {
+class RealLiteral {
 	+float floatValue
 }
-AbstractExpression <|-[#808080]- FloatLiteral
+AbstractExpression <|-[#808080]- RealLiteral
 
 class CharLiteral {
 	+char charValue
