@@ -56,10 +56,8 @@ public class Main {
 
         AST ast = null;
         // IMPORTANT: When the AST has been generated, swap the following two lines of code.
-        parser.program();
-        // Si salen errores bajo esta linea es probable que haya problemas con la gramatica
-        // Por ejemplo los imports en los headers
-        // ast = parser.program().ast;
+        // parser.program();
+        ast = parser.program().ast;
 
         if (parser.getNumberOfSyntaxErrors() > 0) { // Syntax error detected (ANTLR omits lexical errors)
             errorManager.notify("Compilaton finished due to syntax errors.");
