@@ -14,7 +14,7 @@ global
 create
   main;
 
-feature main is
+feature main INTEGER is
   local
     ai : [2] INTEGER; /*array de una dimensión
     bi : [2][2] INTEGER; /*array de dos dimensiones

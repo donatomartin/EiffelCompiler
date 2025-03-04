@@ -28,13 +28,14 @@ import codegeneration.*;
  */
 
 public class Main {
+
     public static final String TEST_FILE = "input.e"; // Used only in development
     public static final String OUTPUT_FILE = "output.txt";
 
     public static void main(String[] args) throws Exception {
         ErrorManager errorManager = new ErrorManager();
 
-        var inputFile = TEST_FILE;
+        var inputFile = args[0];
 
         System.out.println("\nCompiler started.\n");
 
