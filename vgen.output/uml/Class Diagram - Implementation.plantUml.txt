@@ -102,7 +102,7 @@ Parameter o-[#404040,thickness=2]-  Type : type >
 class Print {
 }
 AbstractStatement <|-[#808080]- Print
-Print o-[#404040,thickness=2]-  Expression : expression >
+Print o-[#404040,thickness=2]- "✱" Expression : expressions >
 
 class Read {
 }
@@ -127,11 +127,12 @@ Conditional o-[#404040,thickness=2]-  Expression : expression >
 Conditional o-[#404040,thickness=2]- "✱" Statement : ifStatements >
 Conditional o-[#404040,thickness=2]- "✱" Statement : elseStatements >
 
-class While {
+class Loop {
 }
-AbstractStatement <|-[#808080]- While
-While o-[#404040,thickness=2]-  Expression : expression >
-While o-[#404040,thickness=2]- "✱" Statement : loopStatements >
+AbstractStatement <|-[#808080]- Loop
+Loop o-[#404040,thickness=2]- "✱" Statement : fromStatements >
+Loop o-[#404040,thickness=2]-  Expression : expression >
+Loop o-[#404040,thickness=2]- "✱" Statement : loopStatements >
 
 class Return {
 }

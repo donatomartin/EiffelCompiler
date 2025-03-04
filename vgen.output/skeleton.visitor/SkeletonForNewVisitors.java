@@ -143,11 +143,11 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
-	// class Print(Expression expression)
+	// class Print(List<Expression> expressions)
 	@Override
 	public Object visit(Print print, Object param) {
 
-		// print.getExpression().accept(this, param);
+		// print.getExpressions().forEach(expression -> expression.accept(this, param));
 		super.visit(print, param);
 
 		return null;
@@ -196,13 +196,14 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
-	// class While(Expression expression, List<Statement> loopStatements)
+	// class Loop(List<Statement> fromStatements, Expression expression, List<Statement> loopStatements)
 	@Override
-	public Object visit(While whileValue, Object param) {
+	public Object visit(Loop loop, Object param) {
 
-		// whileValue.getExpression().accept(this, param);
-		// whileValue.getLoopStatements().forEach(statement -> statement.accept(this, param));
-		super.visit(whileValue, param);
+		// loop.getFromStatements().forEach(statement -> statement.accept(this, param));
+		// loop.getExpression().accept(this, param);
+		// loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(loop, param);
 
 		return null;
 	}

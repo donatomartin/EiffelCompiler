@@ -15,23 +15,28 @@ import visitor.Visitor;
 // %% -------------------------------
 
 /*
-	while: statement -> expression:expression loopStatements:statement*
+	loop: statement -> fromStatements:statement* expression:expression loopStatements:statement*
 	statement -> 
 */
-public class While extends AbstractStatement  {
+public class Loop extends AbstractStatement  {
 
     // ----------------------------------
     // Instance Variables
 
-	// while: statement -> expression loopStatements:statement*
+	// loop: statement -> fromStatements:statement* expression loopStatements:statement*
+	private List<Statement> fromStatements;
 	private Expression expression;
 	private List<Statement> loopStatements;
 
     // ----------------------------------
     // Constructors
 
-	public While(Expression expression, List<Statement> loopStatements) {
+	public Loop(List<Statement> fromStatements, Expression expression, List<Statement> loopStatements) {
 		super();
+
+		if (fromStatements == null)
+			fromStatements = new ArrayList<>();
+		this.fromStatements = fromStatements;
 
 		if (expression == null)
 			throw new IllegalArgumentException("Parameter 'expression' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
@@ -41,23 +46,42 @@ public class While extends AbstractStatement  {
 			loopStatements = new ArrayList<>();
 		this.loopStatements = loopStatements;
 
-		updatePositions(expression, loopStatements);
+		updatePositions(fromStatements, expression, loopStatements);
 	}
 
-	public While(Object expression, Object loopStatements) {
+	public Loop(Object fromStatements, Object expression, Object loopStatements) {
 		super();
 
+        this.fromStatements = castList(fromStatements, unwrapIfContext.andThen(Statement.class::cast));
         if (expression == null)
             throw new IllegalArgumentException("Parameter 'expression' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
 		this.expression = (Expression) expression;
 
         this.loopStatements = castList(loopStatements, unwrapIfContext.andThen(Statement.class::cast));
-		updatePositions(expression, loopStatements);
+		updatePositions(fromStatements, expression, loopStatements);
 	}
 
 
     // ----------------------------------
-    // while: statement -> expression loopStatements:statement*
+    // loop: statement -> fromStatements:statement* expression loopStatements:statement*
+
+	// Child 'fromStatements:statement*' 
+
+	public void setFromStatements(List<Statement> fromStatements) {
+		if (fromStatements == null)
+			fromStatements = new ArrayList<>();
+		this.fromStatements = fromStatements;
+
+	}
+
+    public List<Statement> getFromStatements() {
+        return fromStatements;
+    }
+
+    public Stream<Statement> fromStatements() {
+        return fromStatements.stream();
+    }
+
 
 	// Child 'expression' 
 
@@ -101,7 +125,7 @@ public class While extends AbstractStatement  {
 
     @Override
     public String toString() {
-        return "While{" + " expression=" + this.getExpression() + " loopStatements=" + this.getLoopStatements() + "}";
+        return "Loop{" + " fromStatements=" + this.getFromStatements() + " expression=" + this.getExpression() + " loopStatements=" + this.getLoopStatements() + "}";
     }
 
 

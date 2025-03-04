@@ -1,27 +1,95 @@
-class PRUEBA;
+class T002_TABMUL; /* Calcula la tabla de multiplicar del 1 al 12 para el número indicado
 
-global
-  types
-    deftuple tuple1 as /*estructura
-      a: INTEGER;
-      c: CHARACTER;
-      d: DOUBLE;
-    end
-  vars
-    t : tuple1; /*estructura
-    dd : DOUBLE; /*valor real
+	global
+		types
+			deftuple tabla as
+				num : [12] INTEGER;
+				sol : [12] INTEGER;
+			end
+		vars
+			tablaMul : tabla;
 
-create
-  main;
+	create
+		inicio;
 
-feature main INTEGER is
-  local
-    ai : [2] INTEGER; /*array de una dimensión
-    bi : [2][2] INTEGER; /*array de dos dimensiones
-    g, h : INTEGER; /* Son posible declaraciones múltiples de variables
-  do
-    /* sentencias del método constructor inicioend
-  end /*main
-end /*PRUEBA
+	/* Funciones auxiliares para imprimir
+	feature presentacion is
+		do
+			print 'T','A','B','L','A',' ','D','E',' ','M','U','L','T','I','P','L','I','C','A','R',' ','V','.','1','.','1';
+	end
 
-run main(); /* Arranque
+	feature leerNum is
+		do
+			print 'N','ú','m','e','r','o',':',' ';
+	end
+
+	feature otraVez is
+		do
+			print '¿','O','t','r','a',' ','v','e','z','?',' ','(','S','/','N',')',':',' ';
+	end
+
+	feature despedida is
+		do
+			print '¡','A','d','i','ó','s','!';
+	end
+
+	/* Features principales
+
+	/* Rellenar la tabla
+	feature crearTabla (numero : INTEGER) is
+		local
+			i : INTEGER;
+		do
+			from
+				i := 1;
+			until i > 13 loop
+				tablaMul.num[i-1] := i;
+				tablaMul.sol[i-1] := i * numero;
+				i := i + 1;
+			end
+	end
+
+	/* Imprimir la tabla
+	feature imprimirTabla (numero : INTEGER) is
+		local
+			i : INTEGER;
+		do
+			println 'T','a','b','l','a',' ','d','e','l',' ',numero;
+			from
+				i := 0;
+			until i = 12 loop
+				print tablaMul.num[i];
+				print ' ','x',' ';
+				print numero;
+				print ' ','=',' ';
+				println tablaMul.sol[i] ;
+				i := i + 1;
+			end
+	end
+
+	/* Constructor
+	feature inicio is
+		local
+			a : CHARACTER;
+			ai, numero : INTEGER;
+		do
+			presentacion();
+			from
+			a := 'S';
+			ai := to<INTEGER>(a);
+			until ((ai = 78) or (ai = 110)) loop
+				leerNum();
+				read numero;
+				crearTabla(numero);
+				imprimirTabla(numero);
+				println;
+				otraVez();
+				read a;
+				ai := to<INTEGER>(a);
+			end
+			despedida();
+	end
+
+end /* T002_TABMUL
+
+run inicio();

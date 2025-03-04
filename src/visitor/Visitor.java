@@ -40,7 +40,7 @@ public interface Visitor {
 
 	public Object visit(Conditional conditional, Object param);
 
-	public Object visit(While whileValue, Object param);
+	public Object visit(Loop loop, Object param);
 
 	public Object visit(Return returnValue, Object param);
 

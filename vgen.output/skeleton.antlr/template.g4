@@ -53,12 +53,12 @@ definition returns[Definition ast]
 	;
 
 statement returns[Statement ast]
-    : expression                          { $ast = new Print($expression.ast); }                 
+    : expressions+=expression*            { $ast = new Print($expressions); }                    
     | expression                          { $ast = new Read($expression.ast); }                  
     | expression                          { $ast = new Call($expression.ast); }                  
     | left=expression right=expression    { $ast = new Assignment($left.ast, $right.ast); }      
     | expression ifStatements+=statement* elseStatements+=statement* { $ast = new Conditional($expression.ast, $ifStatements, $elseStatements); }
-    | expression loopStatements+=statement* { $ast = new While($expression.ast, $loopStatements); }
+    | fromStatements+=statement* expression loopStatements+=statement* { $ast = new Loop($fromStatements, $expression.ast, $loopStatements); }
     | expression?                         { $ast = new Return(($expression.ctx == null) ? null : $expression.ast); }
 	;
 

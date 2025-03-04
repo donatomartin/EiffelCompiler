@@ -215,10 +215,10 @@ public class AstPrinter implements Visitor {
 		int indent = ((Integer)param);
 
 		// Imprimir los hijos (y recorrer si son nodos del AST)
-        printNodeChild(indent + 1, "expression", "Expression", print.getExpression());
+        printListOfNodesChild(indent + 1, "expressions", "List<Expression>", print.getExpressions());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, print, "expression");
+		printUnknownFields(indent + 1, print, "expressions");
 		return null;
 	}
 
@@ -278,16 +278,17 @@ public class AstPrinter implements Visitor {
 	}
 
 	@Override
-	public Object visit(While whileValue, Object param) {
+	public Object visit(Loop loop, Object param) {
 
 		int indent = ((Integer)param);
 
 		// Imprimir los hijos (y recorrer si son nodos del AST)
-        printNodeChild(indent + 1, "expression", "Expression", whileValue.getExpression());
-        printListOfNodesChild(indent + 1, "loopStatements", "List<Statement>", whileValue.getLoopStatements());
+        printListOfNodesChild(indent + 1, "fromStatements", "List<Statement>", loop.getFromStatements());
+        printNodeChild(indent + 1, "expression", "Expression", loop.getExpression());
+        printListOfNodesChild(indent + 1, "loopStatements", "List<Statement>", loop.getLoopStatements());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, whileValue, "expression", "loopStatements");
+		printUnknownFields(indent + 1, loop, "fromStatements", "expression", "loopStatements");
 		return null;
 	}
 

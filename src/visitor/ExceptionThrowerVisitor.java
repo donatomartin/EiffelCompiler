@@ -95,9 +95,9 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(While whileValue, Object param) {
+	public Object visit(Loop loop, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(While)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Loop)' has been invoked but it has not been implemented.");
 	}
 
 	@Override

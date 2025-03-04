@@ -45,14 +45,14 @@ featureCreations returns [List<FunctionCreation> list = new ArrayList<FunctionCr
   ;
 
 featureDefinition returns [FunctionDefinition ast]
-  : 'feature' IDENT parameters ':' type 'is' localVarsSection? 'do' statements+=statement* 'end'
+  : 'feature' IDENT parameters ':' type 'is' localVarsSection 'do' statements+=statement* 'end'
   { $ast = new FunctionDefinition($IDENT, $parameters.list, $type.ast, $localVarsSection.list, $statements); }
-  | 'feature' IDENT parameters 'is' localVarsSection? 'do' statements+=statement* 'end'
+  | 'feature' IDENT parameters 'is' localVarsSection 'do' statements+=statement* 'end'
   { $ast = new FunctionDefinition($IDENT, $parameters.list, null, $localVarsSection.list, $statements); }
   ;
 
 localVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
-  : 'local' varDefinitions { $list = $varDefinitions.list; }
+  : ('local' varDefinitions { $list = $varDefinitions.list; } )?
   ;
 
 parameters returns [List<Parameter> list = new ArrayList<Parameter>()]
@@ -96,9 +96,9 @@ expression returns [Expression ast]
 	| left=expression operator=('*'|'/'|'%') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('+'|'-') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('<'|'>'|'<='|'>=') right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
-	| left=expression operator=('!='|'==') right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
-	| left=expression 'and' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
-	| left=expression 'or' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator=('<>'|'=') right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator='and' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator='or' right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
 	;
 
 arguments returns [List<Expression> list = new ArrayList<Expression>()]
@@ -108,21 +108,25 @@ arguments returns [List<Expression> list = new ArrayList<Expression>()]
 // Statement
 
 statement returns [Statement ast]
-  : ('print' | 'println') expression ';' { $ast = new Print($expression.ast); }
+  : ('print' | 'println') expressions ';' { $ast = new Print($expressions.list); }
 	| 'read' expression ';' { $ast = new Read($expression.ast); }
 	| e=expression ';' { $ast = new Call($e.ast); }
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($e.ast, $ifStatements, $elseStatements); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($e.ast, $ifStatements, null); }
-	| 'while' '(' e=expression ')' '{' loopStatements+=statement* '}' { $ast = new While($e.ast, $loopStatements); }
+	| 'from' fromStatements+=statement* 'until' e=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromStatements, $e.ast, $loopStatements); }
 	| 'return' e=expression ';' { $ast = new Return($e.ast); }
 	| 'return' ';' { $ast = new Return(null); }
 	;
 
+expressions returns [List<Expression> list = new ArrayList<Expression>()]
+  : (e1=expression { $list.add($e1.ast); } (',' e2=expression { $list.add($e2.ast); })*)?
+  ;
+
 // Type
 type returns [Type ast]
 	: 'INTEGER' { $ast = new IntType(); }
-	| 'REAL' { $ast = new RealType(); }
+	| 'DOUBLE' { $ast = new RealType(); }
 	| 'CHARACTER' { $ast = new CharType(); }
 	| '[' INT_LITERAL ']' type { $ast = new ArrayType($INT_LITERAL, $type.ast); }
 	| IDENT { $ast = new StructType($IDENT); }

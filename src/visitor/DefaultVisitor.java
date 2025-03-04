@@ -83,7 +83,7 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(Print print, Object param) {
 
-		print.getExpression().accept(this, param);
+		print.getExpressions().forEach(expression -> expression.accept(this, param));
 		return null;
 	}
 
@@ -119,10 +119,11 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(While whileValue, Object param) {
+	public Object visit(Loop loop, Object param) {
 
-		whileValue.getExpression().accept(this, param);
-		whileValue.getLoopStatements().forEach(statement -> statement.accept(this, param));
+		loop.getFromStatements().forEach(statement -> statement.accept(this, param));
+		loop.getExpression().accept(this, param);
+		loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
 		return null;
 	}
 

@@ -18,12 +18,12 @@ functionDefinition:definition -> string parameter* type? definition* statement*;
 
 parameter -> string type;
 
-print:statement -> expression;
+print:statement -> expression*;
 read:statement -> expression;
 call:statement -> expression;
 assignment:statement -> left:expression right:expression;
 conditional:statement -> expression ifStatements:statement* elseStatements:statement*;
-while:statement -> expression loopStatements:statement*;
+loop:statement -> fromStatements:statement* expression loopStatements:statement*;
 return:statement -> expression?;
 
 run -> string expression*;
