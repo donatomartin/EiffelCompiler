@@ -33,6 +33,7 @@ realType:type -> ;
 charType:type -> ;
 arrayType:type -> int type;
 structType:type -> string;
+voidType:type -> ;
 
 variable:expression -> string;
 intLiteral:expression -> int;

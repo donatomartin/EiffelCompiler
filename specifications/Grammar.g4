@@ -81,6 +81,7 @@ run returns [Run ast]
   ;
 
 // Expression
+
 expression returns [Expression ast]
   : IDENT { $ast = new Variable($IDENT); }
 	| INT_LITERAL { $ast = new IntLiteral($INT_LITERAL); }
@@ -91,7 +92,7 @@ expression returns [Expression ast]
 	| e=expression '.' IDENT { $ast = new StructAccess($e.ast, $IDENT); }
   | operator='-' e=expression { $ast = new ArithmeticUnary($operator, $e.ast); }
 	| '(' e=expression ')' { $ast = $e.ast; }
-	| opeartor='!' e=expression { $ast = new LogicUnary($operator, $e.ast); }
+	| operator='not' e=expression { $ast = new LogicUnary($operator, $e.ast); }
 	| 'to' '<' type '>' '(' expression ')' { $ast = new Cast($type.ast, $expression.ast); }
 	| left=expression operator=('*'|'/'|'%') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('+'|'-') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
@@ -105,6 +106,10 @@ arguments returns [List<Expression> list = new ArrayList<Expression>()]
   : (e1=expression { $list.add($e1.ast); } (',' e2=expression { $list.add($e2.ast); } )*)?
   ;
 
+expressions returns [List<Expression> list = new ArrayList<Expression>()]
+  : (e1=expression { $list.add($e1.ast); } (',' e2=expression { $list.add($e2.ast); })*)?
+  ;
+
 // Statement
 
 statement returns [Statement ast]
@@ -114,16 +119,16 @@ statement returns [Statement ast]
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($e.ast, $ifStatements, $elseStatements); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($e.ast, $ifStatements, null); }
-	| 'from' fromStatements+=statement* 'until' e=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromStatements, $e.ast, $loopStatements); }
+	| fromClause? 'until' expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $e.ast, $loopStatements); }
 	| 'return' e=expression ';' { $ast = new Return($e.ast); }
 	| 'return' ';' { $ast = new Return(null); }
 	;
 
-expressions returns [List<Expression> list = new ArrayList<Expression>()]
-  : (e1=expression { $list.add($e1.ast); } (',' e2=expression { $list.add($e2.ast); })*)?
-  ;
+fromClause returns [List<Statement> list = new ArrayList<Sentence>()]
+  : 'from'  (e1=expression ':=' e2=expression ';' { $list.add(new Assignment($e1.ast, $e2.ast)); }) 
 
 // Type
+
 type returns [Type ast]
 	: 'INTEGER' { $ast = new IntType(); }
 	| 'DOUBLE' { $ast = new RealType(); }
