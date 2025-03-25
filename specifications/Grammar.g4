@@ -3,11 +3,11 @@ grammar Grammar;
 import Tokenizer;
 
 @header {
-	import ast.*;
-	import ast.type.*;
-	import ast.statement.*;
-	import ast.expression.*;
-	import ast.definition.*;
+	import compiler.ast.*;
+	import compiler.ast.type.*;
+	import compiler.ast.statement.*;
+	import compiler.ast.expression.*;
+	import compiler.ast.definition.*;
 }
 // PROGRAM
 
@@ -119,13 +119,13 @@ statement returns [Statement ast]
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($e.ast, $ifStatements, $elseStatements); }
 	| 'if' '(' e=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($e.ast, $ifStatements, null); }
-	| fromClause? 'until' expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $e.ast, $loopStatements); }
+	| fromClause? 'until' e=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $e.ast, $loopStatements); }
 	| 'return' e=expression ';' { $ast = new Return($e.ast); }
 	| 'return' ';' { $ast = new Return(null); }
 	;
 
-fromClause returns [List<Statement> list = new ArrayList<Sentence>()]
-  : 'from'  (e1=expression ':=' e2=expression ';' { $list.add(new Assignment($e1.ast, $e2.ast)); }) 
+fromClause returns [List<Statement> list = new ArrayList<Statement>()]
+  : 'from'  (e1=expression ':=' e2=expression ';' { $list.add(new Assignment($e1.ast, $e2.ast)); });
 
 // Type
 

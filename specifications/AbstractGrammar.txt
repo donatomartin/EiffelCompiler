@@ -47,3 +47,10 @@ arithmeticBinary:expression -> left:expression operator:string right:expression;
 arithmeticUnary:expression -> operator:string e:expression;
 logicBinary:expression -> left:expression operator:string right:expression;
 logicUnary:expression -> opeartor:string e:expression;
+
+ATTRIBUTE GRAMMAR Identification
+
+variable -> varDefinition;
+functionCall -> functionDefinition;
+structType -> structDefinition;
+

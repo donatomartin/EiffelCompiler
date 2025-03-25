@@ -153,11 +153,17 @@ class StructType {
 	+String name
 }
 Type <|-[#808080]- StructType
+StructType -[#ff6600,thickness=3]-  StructDefinition #text:ff6600 : structDefinition >
+
+class VoidType {
+}
+Type <|-[#808080]- VoidType
 
 class Variable {
 	+String name
 }
 Expression <|-[#808080]- Variable
+Variable -[#ff6600,thickness=3]-  VarDefinition #text:ff6600 : varDefinition >
 
 class IntLiteral {
 	+int intValue
@@ -179,6 +185,7 @@ class FunctionCall {
 }
 Expression <|-[#808080]- FunctionCall
 FunctionCall o-[#404040,thickness=2]- "✱" Expression : expressions >
+FunctionCall -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
 
 class StructAccess {
 	+String name

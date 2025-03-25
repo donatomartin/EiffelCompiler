@@ -32,3 +32,23 @@ AbstractGrammar
     - Más que nada porque global, local y param podrían chocar entre sí.
 - Crear elemento común definición, mirar transparencias de la TG
 
+## Clase 6
+
+rules
+| Node | Predicates | Column3 |
+| --------------- | --------------- | --------------- |
+| program -> varDefinition | Item2.1 | Item3.1 |
+| varDefinition -> type | Item2.2 | Item3.2 |
+| intType:type -> € | Item2.3 | Item3.3 |
+| floatType:type -> € | Item2.3 | Item3.3 |
+
+
+| Column1 | Column2 | Column3 |
+| --------------- | --------------- | --------------- |
+| variable:expression -> intValue:int | variables[name] != null // la variable se ha definido previamente | Item3.1 |
+| Item1.2 | Item2.2 | Item3.2 |
+| Item1.3 | Item2.3 | Item3.3 |
+
+## Clase 7
+
+Expression type type 

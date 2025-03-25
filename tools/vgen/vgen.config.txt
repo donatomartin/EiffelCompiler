@@ -1,6 +1,6 @@
 
 # Generate classes in the project sources folder
---src-dir "src"
+--src-dir "src/main/java"
 # Default value: --src-dir "vgen.output/src"
 
 
@@ -18,9 +18,9 @@
 # --------------------------------
 # Packages for generated Java classes
 
---ast-package "ast"
+--ast-package "compiler.ast"
 
---visitor-package "visitor"
+--visitor-package "compiler.visitor"
 
 
 # --------------------------------

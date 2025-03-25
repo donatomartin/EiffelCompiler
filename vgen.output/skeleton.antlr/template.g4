@@ -3,11 +3,11 @@
 grammar Grammar;
 
 @header {
-	    import ast.expression.*;
-	    import ast.definition.*;
-	    import ast.statement.*;
-	    import ast.type.*;
-	    import ast.*;
+	    import compiler.ast.expression.*;
+	    import compiler.ast.definition.*;
+	    import compiler.ast.statement.*;
+	    import compiler.ast.type.*;
+	    import compiler.ast.*;
 }
 
 program returns[Program ast]
@@ -32,6 +32,7 @@ type returns[Type ast]
     |                                     { $ast = new CharType(); }                             
     | INT_LITERAL type                    { $ast = new ArrayType($INT_LITERAL, $type.ast); }     
     | name=IDENT                          { $ast = new StructType($name); }                      
+    |                                     { $ast = new VoidType(); }                             
 	;
 
 functionCreation returns[FunctionCreation ast]

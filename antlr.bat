@@ -4,8 +4,8 @@ rem So if 'specifications\Grammar.g4' is written, code will be generated in 'src
 
 cd specifications
 
-java -jar "..\tools\antlr\antlr-4.11.1-complete.jar" -no-listener -package parser -o ..\src\parser Grammar.g4
+java -jar "..\tools\antlr\antlr-4.11.1-complete.jar" -no-listener -package parser -o ..\src\main\java\parser Grammar.g4
 
 cd ..
-del src\parser\*.tokens
-del src\parser\*.interp
+del src\main\java\parser\*.tokens
+del src\main\java\parser\*.interp

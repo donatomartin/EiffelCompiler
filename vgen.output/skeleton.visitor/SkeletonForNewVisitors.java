@@ -53,12 +53,12 @@ Por tanto, hay tres opciones a la hora de implementar cada visit:
 // TODO: write package name
 // package ...;
 
-import visitor.DefaultVisitor;
-import ast.*;
-import ast.definition.*;
-import ast.statement.*;
-import ast.type.*;
-import ast.expression.*;
+import compiler.visitor.DefaultVisitor;
+import compiler.ast.*;
+import compiler.ast.definition.*;
+import compiler.ast.statement.*;
+import compiler.ast.type.*;
+import compiler.ast.expression.*;
 
 
 public class SkeletonForNewVisitors extends DefaultVisitor {
@@ -260,13 +260,22 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 	}
 
 	// class StructType(String name)
+	// phase Identification { StructDefinition structDefinition }
 	@Override
 	public Object visit(StructType structType, Object param) {
 
 		return null;
 	}
 
+	// class VoidType()
+	@Override
+	public Object visit(VoidType voidType, Object param) {
+
+		return null;
+	}
+
 	// class Variable(String name)
+	// phase Identification { VarDefinition varDefinition }
 	@Override
 	public Object visit(Variable variable, Object param) {
 
@@ -295,6 +304,7 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 	}
 
 	// class FunctionCall(String name, List<Expression> expressions)
+	// phase Identification { FunctionDefinition functionDefinition }
 	@Override
 	public Object visit(FunctionCall functionCall, Object param) {
 
