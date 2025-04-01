@@ -3,9 +3,10 @@ compiler/ast/expression/FunctionCall.class
 compiler/Main.class
 compiler/semantic/TypeChecking.class
 compiler/ast/expression/RealLiteral.class
+compiler/parser/GrammarParser$FieldDefinitionsContext.class
 compiler/visitor/AstPrinter.class
+compiler/ast/expression/RelationalBinary.class
 compiler/parser/GrammarParser$ParametersContext.class
-compiler/ast/Parameter.class
 compiler/semantic/SemanticAnalisys.class
 compiler/ast/Run.class
 compiler/ast/expression/LogicBinary.class
@@ -32,6 +33,7 @@ compiler/ast/AST.class
 compiler/ast/definition/AbstractDefinition.class
 compiler/ast/expression/IntLiteral.class
 compiler/ast/definition/Definition.class
+compiler/ast/definition/FieldDefinition.class
 compiler/ast/type/VoidType.class
 compiler/ast/expression/AbstractExpression.class
 compiler/codegeneration/mapl/MaplCodeSpecification.class
@@ -46,6 +48,7 @@ compiler/ast/type/CharType.class
 compiler/parser/GrammarParser$VarDefinitionsContext.class
 compiler/parser/GrammarParser$GlobalSectionContext.class
 compiler/ast/type/AbstractType.class
+compiler/parser/GrammarParser$MultipleFieldDefinitionContext.class
 compiler/ast/statement/Read.class
 compiler/ast/expression/ArithmeticUnary.class
 compiler/parser/GrammarParser$ArgumentsContext.class
@@ -60,7 +63,9 @@ compiler/ast/GlobalSection.class
 compiler/ast/statement/Statement.class
 compiler/codegeneration/MemoryAllocation.class
 compiler/parser/GrammarParser$GlobalVarsSectionContext.class
+compiler/parser/GrammarParser$SingleFieldDefinitionContext.class
 compiler/ast/expression/ArithmeticBinary.class
+compiler/parser/GrammarParser$SingleVarDefinitionContext.class
 compiler/ast/statement/Conditional.class
 compiler/ast/type/StructType.class
 compiler/parser/GrammarParser$CreateSectionContext.class
@@ -71,7 +76,8 @@ compiler/ast/statement/AbstractStatement.class
 compiler/ast/expression/StructAccess.class
 compiler/ast/statement/Call.class
 compiler/parser/GrammarParser$TypeContext.class
+compiler/parser/GrammarParser$MultiVarDefinitionContext.class
 compiler/ast/statement/Return.class
 compiler/ast/definition/VarDefinition.class
-compiler/parser/GrammarParser$VarDefinitionContext.class
+compiler/semantic/ContextMap.class
 compiler/parser/GrammarParser.class

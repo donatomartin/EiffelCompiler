@@ -7,46 +7,27 @@ import compiler.ast.expression.*;
 import compiler.ast.statement.*;
 import compiler.ast.type.*;
 import compiler.visitor.DefaultVisitor;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Identification extends DefaultVisitor {
 
-  public Identification(ErrorManager errorManager) {}
+  private ErrorManager errorManager;
+
+  private ContextMap<VarDefinition> varDefinitions = new ContextMap<>();
+  private Map<String, FieldDefinition> fieldDefinitions = new HashMap<>();
+  private Map<String, FunctionDefinition> functionDefinitions = new HashMap<>();
+  private Map<String, StructDefinition> structDefinitions = new HashMap<>();
+
+  public Identification(ErrorManager errorManager) {
+    this.errorManager = errorManager;
+  }
 
   public void process(AST ast) {
     ast.accept(this, null);
   }
 
   // Visit Methods --------------------------------------------------------------
-
-  // class Program(String name, GlobalSection globalSection, List<FunctionCreation>
-  // functionCreations, List<FunctionDefinition> functionDefinitions, Run run)
-  @Override
-  public Object visit(Program program, Object param) {
-
-    // program.getGlobalSection().accept(this, param);
-    // program.getFunctionCreations().forEach(functionCreation -> functionCreation.accept(this,
-    // param));
-    // program.getFunctionDefinitions().forEach(functionDefinition ->
-    // functionDefinition.accept(this, param));
-    // program.getRun().accept(this, param);
-    super.visit(program, param);
-
-    return null;
-  }
-
-  // class GlobalSection(List<StructDefinition> structDefinitions, List<VarDefinition>
-  // varDefinitions)
-  @Override
-  public Object visit(GlobalSection globalSection, Object param) {
-
-    // globalSection.getStructDefinitions().forEach(structDefinition ->
-    // structDefinition.accept(this, param));
-    // globalSection.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this,
-    // param));
-    super.visit(globalSection, param);
-
-    return null;
-  }
 
   // class FunctionCreation(String name)
   @Override
@@ -55,7 +36,7 @@ public class Identification extends DefaultVisitor {
     return null;
   }
 
-  // class VarDefinition(List<String> strings, Type type)
+  // class VarDefinition(String name, Type type)
   @Override
   public Object visit(VarDefinition varDefinition, Object param) {
 
@@ -65,57 +46,38 @@ public class Identification extends DefaultVisitor {
     return null;
   }
 
-  // class StructDefinition(String name, List<VarDefinition> varDefinitions)
+  // class StructDefinition(String name, List<FieldDefinition> fieldDefinitions)
   @Override
   public Object visit(StructDefinition structDefinition, Object param) {
 
-    // structDefinition.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this,
-    // param));
+    // structDefinition.getFieldDefinitions().forEach(fieldDefinition ->
+    // fieldDefinition.accept(this, param));
     super.visit(structDefinition, param);
 
     return null;
   }
 
-  // class FunctionDefinition(String name, List<Parameter> parameters, Optional<Type> type,
-  // List<Definition> definitions, List<Statement> statements)
+  // class FieldDefinition(String name, Type type)
+  @Override
+  public Object visit(FieldDefinition fieldDefinition, Object param) {
+
+    // fieldDefinition.getType().accept(this, param);
+    super.visit(fieldDefinition, param);
+
+    return null;
+  }
+
+  // class FunctionDefinition(String name, List<VarDefinition> parameters, Optional<Type> type,
+  // List<VarDefinition> locals, List<Statement> statements)
   @Override
   public Object visit(FunctionDefinition functionDefinition, Object param) {
 
-    // functionDefinition.getParameters().forEach(parameter -> parameter.accept(this, param));
+    // functionDefinition.getParameters().forEach(varDefinition -> varDefinition.accept(this,
+    // param));
     // functionDefinition.getType().ifPresent(type -> type.accept(this, param));
-    // functionDefinition.getDefinitions().forEach(definition -> definition.accept(this, param));
+    // functionDefinition.getLocals().forEach(varDefinition -> varDefinition.accept(this, param));
     // functionDefinition.getStatements().forEach(statement -> statement.accept(this, param));
     super.visit(functionDefinition, param);
-
-    return null;
-  }
-
-  // class Parameter(String name, Type type)
-  @Override
-  public Object visit(Parameter parameter, Object param) {
-
-    // parameter.getType().accept(this, param);
-    super.visit(parameter, param);
-
-    return null;
-  }
-
-  // class Print(List<Expression> expressions)
-  @Override
-  public Object visit(Print print, Object param) {
-
-    // print.getExpressions().forEach(expression -> expression.accept(this, param));
-    super.visit(print, param);
-
-    return null;
-  }
-
-  // class Read(Expression expression)
-  @Override
-  public Object visit(Read read, Object param) {
-
-    // read.getExpression().accept(this, param);
-    super.visit(read, param);
 
     return null;
   }
@@ -279,11 +241,11 @@ public class Identification extends DefaultVisitor {
     return null;
   }
 
-  // class StructAccess(Expression e, String name)
+  // class StructAccess(Expression expr, String name)
   @Override
   public Object visit(StructAccess structAccess, Object param) {
 
-    // structAccess.getE().accept(this, param);
+    // structAccess.getExpr().accept(this, param);
     super.visit(structAccess, param);
 
     return null;
@@ -322,11 +284,11 @@ public class Identification extends DefaultVisitor {
     return null;
   }
 
-  // class ArithmeticUnary(String operator, Expression e)
+  // class ArithmeticUnary(String operator, Expression expr)
   @Override
   public Object visit(ArithmeticUnary arithmeticUnary, Object param) {
 
-    // arithmeticUnary.getE().accept(this, param);
+    // arithmeticUnary.getExpr().accept(this, param);
     super.visit(arithmeticUnary, param);
 
     return null;
@@ -343,12 +305,23 @@ public class Identification extends DefaultVisitor {
     return null;
   }
 
-  // class LogicUnary(String opeartor, Expression e)
+  // class LogicUnary(String operator, Expression expr)
   @Override
   public Object visit(LogicUnary logicUnary, Object param) {
 
-    // logicUnary.getE().accept(this, param);
+    // logicUnary.getExpr().accept(this, param);
     super.visit(logicUnary, param);
+
+    return null;
+  }
+
+  // class RelationalBinary(Expression left, String operator, Expression right)
+  @Override
+  public Object visit(RelationalBinary relationalBinary, Object param) {
+
+    // relationalBinary.getLeft().accept(this, param);
+    // relationalBinary.getRight().accept(this, param);
+    super.visit(relationalBinary, param);
 
     return null;
   }

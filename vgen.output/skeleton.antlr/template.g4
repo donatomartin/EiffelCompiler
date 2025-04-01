@@ -19,11 +19,11 @@ globalSection returns[GlobalSection ast]
 	;
 
 structDefinition returns[StructDefinition ast]
-    : name=IDENT varDefinitions+=varDefinition* { $ast = new StructDefinition($name, $varDefinitions); }
+    : name=IDENT fieldDefinitions+=fieldDefinition* { $ast = new StructDefinition($name, $fieldDefinitions); }
 	;
 
-varDefinition returns[VarDefinition ast]
-    : strings+=IDENT* type                { $ast = new VarDefinition($strings, $type.ast); }     
+fieldDefinition returns[FieldDefinition ast]
+    : name=IDENT type                     { $ast = new FieldDefinition($name, $type.ast); }      
 	;
 
 type returns[Type ast]
@@ -35,22 +35,16 @@ type returns[Type ast]
     |                                     { $ast = new VoidType(); }                             
 	;
 
+varDefinition returns[VarDefinition ast]
+    : name=IDENT type                     { $ast = new VarDefinition($name, $type.ast); }        
+	;
+
 functionCreation returns[FunctionCreation ast]
     : name=IDENT                          { $ast = new FunctionCreation($name); }                
 	;
 
 functionDefinition returns[FunctionDefinition ast]
-    : name=IDENT parameters+=parameter* type? definitions+=definition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $definitions, $statements); }
-	;
-
-parameter returns[Parameter ast]
-    : name=IDENT type                     { $ast = new Parameter($name, $type.ast); }            
-	;
-
-definition returns[Definition ast]
-    : strings+=IDENT* type                { $ast = new VarDefinition($strings, $type.ast); }     
-    | name=IDENT varDefinitions+=varDefinition* { $ast = new StructDefinition($name, $varDefinitions); }
-    | name=IDENT parameters+=parameter* type? definitions+=definition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $definitions, $statements); }
+    : name=IDENT parameters+=varDefinition* type? locals+=varDefinition* statements+=statement* { $ast = new FunctionDefinition($name, $parameters, ($type.ctx == null) ? null : $type.ast, $locals, $statements); }
 	;
 
 statement returns[Statement ast]
@@ -75,7 +69,8 @@ expression returns[Expression ast]
     | left=expression operator=IDENT right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
     | operator=IDENT expression           { $ast = new ArithmeticUnary($operator, $expression.ast); }
     | left=expression operator=IDENT right=expression { $ast = new LogicBinary($left.ast, $operator, $right.ast); }
-    | opeartor=IDENT expression           { $ast = new LogicUnary($opeartor, $expression.ast); } 
+    | operator=IDENT expression           { $ast = new LogicUnary($operator, $expression.ast); } 
+    | left=expression operator=IDENT right=expression { $ast = new RelationalBinary($left.ast, $operator, $right.ast); }
 	;
 
 run returns[Run ast]

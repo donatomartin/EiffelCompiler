@@ -73,7 +73,7 @@ class FunctionCreation {
 AbstractAST <|-[#808080]- FunctionCreation
 
 class VarDefinition {
-	+List<String> strings
+	+String name
 }
 AbstractDefinition <|-[#808080]- VarDefinition
 VarDefinition o-[#404040,thickness=2]-  Type : type >
@@ -82,22 +82,22 @@ class StructDefinition {
 	+String name
 }
 AbstractDefinition <|-[#808080]- StructDefinition
-StructDefinition o-[#404040,thickness=2]- "✱" VarDefinition : varDefinitions >
+StructDefinition o-[#404040,thickness=2]- "✱" FieldDefinition : fieldDefinitions >
+
+class FieldDefinition {
+	+String name
+}
+AbstractDefinition <|-[#808080]- FieldDefinition
+FieldDefinition o-[#404040,thickness=2]-  Type : type >
 
 class FunctionDefinition {
 	+String name
 }
 AbstractDefinition <|-[#808080]- FunctionDefinition
-FunctionDefinition o-[#404040,thickness=2]- "✱" Parameter : parameters >
+FunctionDefinition o-[#404040,thickness=2]- "✱" VarDefinition : parameters >
 FunctionDefinition o-[#404040,thickness=2]- "0..1" Type : type >
-FunctionDefinition o-[#404040,thickness=2]- "✱" Definition : definitions >
+FunctionDefinition o-[#404040,thickness=2]- "✱" VarDefinition : locals >
 FunctionDefinition o-[#404040,thickness=2]- "✱" Statement : statements >
-
-class Parameter {
-	+String name
-}
-AbstractAST <|-[#808080]- Parameter
-Parameter o-[#404040,thickness=2]-  Type : type >
 
 class Print {
 }
@@ -205,7 +205,7 @@ class StructAccess {
 	+String name
 }
 AbstractExpression <|-[#808080]- StructAccess
-StructAccess o-[#404040,thickness=2]-  Expression : e >
+StructAccess o-[#404040,thickness=2]-  Expression : expr >
 
 class ArrayAccess {
 }
@@ -230,7 +230,7 @@ class ArithmeticUnary {
 	+String operator
 }
 AbstractExpression <|-[#808080]- ArithmeticUnary
-ArithmeticUnary o-[#404040,thickness=2]-  Expression : e >
+ArithmeticUnary o-[#404040,thickness=2]-  Expression : expr >
 
 class LogicBinary {
 	+String operator
@@ -240,9 +240,16 @@ LogicBinary o-[#404040,thickness=2]-  Expression : left >
 LogicBinary o-[#404040,thickness=2]-  Expression : right >
 
 class LogicUnary {
-	+String opeartor
+	+String operator
 }
 AbstractExpression <|-[#808080]- LogicUnary
-LogicUnary o-[#404040,thickness=2]-  Expression : e >
+LogicUnary o-[#404040,thickness=2]-  Expression : expr >
+
+class RelationalBinary {
+	+String operator
+}
+AbstractExpression <|-[#808080]- RelationalBinary
+RelationalBinary o-[#404040,thickness=2]-  Expression : left >
+RelationalBinary o-[#404040,thickness=2]-  Expression : right >
 
 @enduml

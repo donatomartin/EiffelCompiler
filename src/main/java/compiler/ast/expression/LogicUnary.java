@@ -12,7 +12,7 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	logicUnary: expression -> opeartor:string e:expression
+	logicUnary: expression -> operator:string expr:expression
 	expression -> 
 */
 public class LogicUnary extends AbstractExpression  {
@@ -20,70 +20,70 @@ public class LogicUnary extends AbstractExpression  {
     // ----------------------------------
     // Instance Variables
 
-	// logicUnary: expression -> opeartor:string e:expression
-	private String opeartor;
-	private Expression e;
+	// logicUnary: expression -> operator:string expr:expression
+	private String operator;
+	private Expression expr;
 
     // ----------------------------------
     // Constructors
 
-	public LogicUnary(String opeartor, Expression e) {
+	public LogicUnary(String operator, Expression expr) {
 		super();
 
-		if (opeartor == null)
-			throw new IllegalArgumentException("Parameter 'opeartor' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
-		this.opeartor = opeartor;
+		if (operator == null)
+			throw new IllegalArgumentException("Parameter 'operator' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.operator = operator;
 
-		if (e == null)
-			throw new IllegalArgumentException("Parameter 'e' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.e = e;
+		if (expr == null)
+			throw new IllegalArgumentException("Parameter 'expr' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
+		this.expr = expr;
 
-		updatePositions(opeartor, e);
+		updatePositions(operator, expr);
 	}
 
-	public LogicUnary(Object opeartor, Object e) {
+	public LogicUnary(Object operator, Object expr) {
 		super();
 
-        if (opeartor == null)
-            throw new IllegalArgumentException("Parameter 'opeartor' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
-		this.opeartor = (opeartor instanceof Token) ? ((Token) opeartor).getText() : (String) opeartor;
+        if (operator == null)
+            throw new IllegalArgumentException("Parameter 'operator' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.operator = (operator instanceof Token) ? ((Token) operator).getText() : (String) operator;
 
-        if (e == null)
-            throw new IllegalArgumentException("Parameter 'e' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.e = (Expression) e;
+        if (expr == null)
+            throw new IllegalArgumentException("Parameter 'expr' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
+		this.expr = (Expression) expr;
 
-		updatePositions(opeartor, e);
+		updatePositions(operator, expr);
 	}
 
 
     // ----------------------------------
-    // logicUnary: expression -> opeartor:string e:expression
+    // logicUnary: expression -> operator:string expr:expression
 
-	// Child 'opeartor:string' 
+	// Child 'operator:string' 
 
-	public void setOpeartor(String opeartor) {
-		if (opeartor == null)
-			throw new IllegalArgumentException("Parameter 'opeartor' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
-		this.opeartor = opeartor;
+	public void setOperator(String operator) {
+		if (operator == null)
+			throw new IllegalArgumentException("Parameter 'operator' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.operator = operator;
 
 	}
 
-    public String getOpeartor() {
-        return opeartor;
+    public String getOperator() {
+        return operator;
     }
 
 
-	// Child 'e:expression' 
+	// Child 'expr:expression' 
 
-	public void setE(Expression e) {
-		if (e == null)
-			throw new IllegalArgumentException("Parameter 'e' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.e = e;
+	public void setExpr(Expression expr) {
+		if (expr == null)
+			throw new IllegalArgumentException("Parameter 'expr' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
+		this.expr = expr;
 
 	}
 
-    public Expression getE() {
-        return e;
+    public Expression getExpr() {
+        return expr;
     }
 
 
@@ -97,7 +97,7 @@ public class LogicUnary extends AbstractExpression  {
 
     @Override
     public String toString() {
-        return "LogicUnary{" + " opeartor=" + this.getOpeartor() + " e=" + this.getE() + "}";
+        return "LogicUnary{" + " operator=" + this.getOperator() + " expr=" + this.getExpr() + "}";
     }
 
 

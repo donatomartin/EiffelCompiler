@@ -12,11 +12,10 @@ program -> string globalSection functionCreation* functionDefinition* run;
 globalSection -> structDefinition* varDefinition*;
 functionCreation -> string;
 
-varDefinition:definition -> string* type;
-structDefinition:definition -> string varDefinition*;
-functionDefinition:definition -> string parameter* type? definition* statement*;
-
-parameter -> string type;
+varDefinition:definition -> string type;
+structDefinition:definition -> string fieldDefinition*;
+fieldDefinition:definition -> string type;
+functionDefinition:definition -> string parameters:varDefinition* type? locals:varDefinition* statement*;
 
 print:statement -> expression*;
 read:statement -> expression;
@@ -40,13 +39,17 @@ intLiteral:expression -> int;
 realLiteral:expression -> float;
 charLiteral:expression -> char;
 functionCall:expression -> string expression*;
-structAccess:expression -> e:expression string;
+structAccess:expression -> expr:expression string;
 arrayAccess:expression -> left:expression right:expression;
 cast:expression -> type expression;
+
 arithmeticBinary:expression -> left:expression operator:string right:expression;
-arithmeticUnary:expression -> operator:string e:expression;
+arithmeticUnary:expression -> operator:string expr:expression;
+
 logicBinary:expression -> left:expression operator:string right:expression;
-logicUnary:expression -> opeartor:string e:expression;
+logicUnary:expression -> operator:string expr:expression;
+
+relationalBinary:expression -> left:expression operator:string right:expression; 
 
 ATTRIBUTE GRAMMAR Identification
 

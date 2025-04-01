@@ -21,6 +21,7 @@ class T002_TABMUL; /* Calcula la tabla de multiplicar del 1 al 12 para el númer
 	feature leerNum is
 		do
 			print 'N','ú','m','e','r','o',':',' ';
+      presentacion();
 	end
 
 	feature otraVez is

@@ -59,24 +59,24 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(StructDefinition structDefinition, Object param) {
 
-		structDefinition.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this, param));
+		structDefinition.getFieldDefinitions().forEach(fieldDefinition -> fieldDefinition.accept(this, param));
+		return null;
+	}
+
+	@Override
+	public Object visit(FieldDefinition fieldDefinition, Object param) {
+
+		fieldDefinition.getType().accept(this, param);
 		return null;
 	}
 
 	@Override
 	public Object visit(FunctionDefinition functionDefinition, Object param) {
 
-		functionDefinition.getParameters().forEach(parameter -> parameter.accept(this, param));
+		functionDefinition.getParameters().forEach(varDefinition -> varDefinition.accept(this, param));
 		functionDefinition.getType().ifPresent(type -> type.accept(this, param));
-		functionDefinition.getDefinitions().forEach(definition -> definition.accept(this, param));
+		functionDefinition.getLocals().forEach(varDefinition -> varDefinition.accept(this, param));
 		functionDefinition.getStatements().forEach(statement -> statement.accept(this, param));
-		return null;
-	}
-
-	@Override
-	public Object visit(Parameter parameter, Object param) {
-
-		parameter.getType().accept(this, param);
 		return null;
 	}
 
@@ -212,7 +212,7 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(StructAccess structAccess, Object param) {
 
-		structAccess.getE().accept(this, param);
+		structAccess.getExpr().accept(this, param);
 		return null;
 	}
 
@@ -243,7 +243,7 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(ArithmeticUnary arithmeticUnary, Object param) {
 
-		arithmeticUnary.getE().accept(this, param);
+		arithmeticUnary.getExpr().accept(this, param);
 		return null;
 	}
 
@@ -258,7 +258,15 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(LogicUnary logicUnary, Object param) {
 
-		logicUnary.getE().accept(this, param);
+		logicUnary.getExpr().accept(this, param);
+		return null;
+	}
+
+	@Override
+	public Object visit(RelationalBinary relationalBinary, Object param) {
+
+		relationalBinary.getLeft().accept(this, param);
+		relationalBinary.getRight().accept(this, param);
 		return null;
 	}
 

@@ -15,7 +15,7 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	structDefinition: definition -> name:string varDefinitions:varDefinition*
+	structDefinition: definition -> name:string fieldDefinitions:fieldDefinition*
 	definition -> 
 */
 public class StructDefinition extends AbstractDefinition  {
@@ -23,41 +23,41 @@ public class StructDefinition extends AbstractDefinition  {
     // ----------------------------------
     // Instance Variables
 
-	// structDefinition: definition -> string varDefinition*
+	// structDefinition: definition -> string fieldDefinition*
 	private String name;
-	private List<VarDefinition> varDefinitions;
+	private List<FieldDefinition> fieldDefinitions;
 
     // ----------------------------------
     // Constructors
 
-	public StructDefinition(String name, List<VarDefinition> varDefinitions) {
+	public StructDefinition(String name, List<FieldDefinition> fieldDefinitions) {
 		super();
 
 		if (name == null)
 			throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
 		this.name = name;
 
-		if (varDefinitions == null)
-			varDefinitions = new ArrayList<>();
-		this.varDefinitions = varDefinitions;
+		if (fieldDefinitions == null)
+			fieldDefinitions = new ArrayList<>();
+		this.fieldDefinitions = fieldDefinitions;
 
-		updatePositions(name, varDefinitions);
+		updatePositions(name, fieldDefinitions);
 	}
 
-	public StructDefinition(Object name, Object varDefinitions) {
+	public StructDefinition(Object name, Object fieldDefinitions) {
 		super();
 
         if (name == null)
             throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 
-        this.varDefinitions = castList(varDefinitions, unwrapIfContext.andThen(VarDefinition.class::cast));
-		updatePositions(name, varDefinitions);
+        this.fieldDefinitions = castList(fieldDefinitions, unwrapIfContext.andThen(FieldDefinition.class::cast));
+		updatePositions(name, fieldDefinitions);
 	}
 
 
     // ----------------------------------
-    // structDefinition: definition -> string varDefinition*
+    // structDefinition: definition -> string fieldDefinition*
 
 	// Child 'string' 
 
@@ -73,21 +73,21 @@ public class StructDefinition extends AbstractDefinition  {
     }
 
 
-	// Child 'varDefinition*' 
+	// Child 'fieldDefinition*' 
 
-	public void setVarDefinitions(List<VarDefinition> varDefinitions) {
-		if (varDefinitions == null)
-			varDefinitions = new ArrayList<>();
-		this.varDefinitions = varDefinitions;
+	public void setFieldDefinitions(List<FieldDefinition> fieldDefinitions) {
+		if (fieldDefinitions == null)
+			fieldDefinitions = new ArrayList<>();
+		this.fieldDefinitions = fieldDefinitions;
 
 	}
 
-    public List<VarDefinition> getVarDefinitions() {
-        return varDefinitions;
+    public List<FieldDefinition> getFieldDefinitions() {
+        return fieldDefinitions;
     }
 
-    public Stream<VarDefinition> varDefinitions() {
-        return varDefinitions.stream();
+    public Stream<FieldDefinition> fieldDefinitions() {
+        return fieldDefinitions.stream();
     }
 
 
@@ -101,7 +101,7 @@ public class StructDefinition extends AbstractDefinition  {
 
     @Override
     public String toString() {
-        return "StructDefinition{" + " name=" + this.getName() + " varDefinitions=" + this.getVarDefinitions() + "}";
+        return "StructDefinition{" + " name=" + this.getName() + " fieldDefinitions=" + this.getFieldDefinitions() + "}";
     }
 
 

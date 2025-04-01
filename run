@@ -1,0 +1,3 @@
+#!/bin/bash
+INPUT_FILE=${1:-input.e}
+java -cp "target/classes:tools/antlr/antlr-4.11.1-complete.jar" compiler.Main "$INPUT_FILE"

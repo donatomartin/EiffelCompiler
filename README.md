@@ -1,7 +1,5 @@
 # Compilador 
 
-
-
 # Apuntes
 
 ## Clase 4
@@ -49,6 +47,17 @@ rules
 | Item1.2 | Item2.2 | Item3.2 |
 | Item1.3 | Item2.3 | Item3.3 |
 
-## Clase 7
 
-Expression type type 
+# Más Apuntes
+- terminar typechecking para la clase siguiente
+
+## Para TypeChecking
+- el orden más común 
+        1. Los atributos heredados
+        2. Los hijos
+        3. Las operaciones sintetizadas
+        4. (Opt) se podrían repetir 2 y/o 3 indefinidamente de nuevo
+
+## Ejercicio de examen
+- Comprobar que por todos los caminos posibles hay un return
+- Comprobar código muerto

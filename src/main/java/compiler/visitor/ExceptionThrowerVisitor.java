@@ -53,15 +53,15 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(FunctionDefinition functionDefinition, Object param) {
+	public Object visit(FieldDefinition fieldDefinition, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionDefinition)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FieldDefinition)' has been invoked but it has not been implemented.");
 	}
 
 	@Override
-	public Object visit(Parameter parameter, Object param) {
+	public Object visit(FunctionDefinition functionDefinition, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Parameter)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionDefinition)' has been invoked but it has not been implemented.");
 	}
 
 	@Override
@@ -218,6 +218,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	public Object visit(LogicUnary logicUnary, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(LogicUnary)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
+	public Object visit(RelationalBinary relationalBinary, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(RelationalBinary)' has been invoked but it has not been implemented.");
 	}
 
     // %% User Members -------------------------

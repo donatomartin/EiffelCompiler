@@ -1,6 +1,6 @@
 // Generated with VGen 2.0.0
 
-package compiler.ast;
+package compiler.ast.definition;
 
 import compiler.ast.type.*;
 import org.antlr.v4.runtime.Token;
@@ -13,21 +13,22 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	parameter -> name:string type:type
+	fieldDefinition: definition -> name:string type:type
+	definition -> 
 */
-public class Parameter extends AbstractAST  {
+public class FieldDefinition extends AbstractDefinition  {
 
     // ----------------------------------
     // Instance Variables
 
-	// parameter -> string type
+	// fieldDefinition: definition -> string type
 	private String name;
 	private Type type;
 
     // ----------------------------------
     // Constructors
 
-	public Parameter(String name, Type type) {
+	public FieldDefinition(String name, Type type) {
 		super();
 
 		if (name == null)
@@ -41,7 +42,7 @@ public class Parameter extends AbstractAST  {
 		updatePositions(name, type);
 	}
 
-	public Parameter(Object name, Object type) {
+	public FieldDefinition(Object name, Object type) {
 		super();
 
         if (name == null)
@@ -57,7 +58,7 @@ public class Parameter extends AbstractAST  {
 
 
     // ----------------------------------
-    // parameter -> string type
+    // fieldDefinition: definition -> string type
 
 	// Child 'string' 
 
@@ -97,7 +98,7 @@ public class Parameter extends AbstractAST  {
 
     @Override
     public String toString() {
-        return "Parameter{" + " name=" + this.getName() + " type=" + this.getType() + "}";
+        return "FieldDefinition{" + " name=" + this.getName() + " type=" + this.getType() + "}";
     }
 
 
