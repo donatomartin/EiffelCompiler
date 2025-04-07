@@ -1,5 +1,8 @@
 bin/*
 .vscode
 
+# vgen
+vgen.output
+
 # temp files
 *#
