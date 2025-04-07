@@ -10,13 +10,11 @@
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/statement/Conditional.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/statement/Loop.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/definition/StructDefinition.java
-/home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/FunctionCall.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/parser/GrammarLexer.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/RelationalBinary.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/LogicUnary.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/semantic/TypeChecking.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/FunctionCreation.java
-/home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/statement/Call.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/type/VoidType.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/type/AbstractType.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/Variable.java
@@ -24,6 +22,8 @@
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/type/Type.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/definition/Definition.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/IntLiteral.java
+/home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/FunctionCallExpression.java
+/home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/statement/FunctionCallStatement.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/Program.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/RealLiteral.java
 /home/donato/Documents/Universidad/DLP/Compiler/src/main/java/compiler/ast/expression/AbstractExpression.java

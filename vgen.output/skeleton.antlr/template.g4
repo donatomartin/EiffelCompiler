@@ -49,8 +49,8 @@ functionDefinition returns[FunctionDefinition ast]
 
 statement returns[Statement ast]
     : expressions+=expression*            { $ast = new Print($expressions); }                    
-    | expression                          { $ast = new Read($expression.ast); }                  
-    | expression                          { $ast = new Call($expression.ast); }                  
+    | expressions+=expression*            { $ast = new Read($expressions); }                     
+    | name=IDENT expressions+=expression* { $ast = new FunctionCallStatement($name, $expressions); }
     | left=expression right=expression    { $ast = new Assignment($left.ast, $right.ast); }      
     | expression ifStatements+=statement* elseStatements+=statement* { $ast = new Conditional($expression.ast, $ifStatements, $elseStatements); }
     | fromStatements+=statement* expression loopStatements+=statement* { $ast = new Loop($fromStatements, $expression.ast, $loopStatements); }
@@ -62,7 +62,7 @@ expression returns[Expression ast]
     | INT_LITERAL                         { $ast = new IntLiteral($INT_LITERAL); }               
     | FLOAT_LITERAL                       { $ast = new RealLiteral($FLOAT_LITERAL); }            
     | CHAR_LITERAL                        { $ast = new CharLiteral($CHAR_LITERAL); }             
-    | name=IDENT expressions+=expression* { $ast = new FunctionCall($name, $expressions); }      
+    | name=IDENT expressions+=expression* { $ast = new FunctionCallExpression($name, $expressions); }
     | expression name=IDENT               { $ast = new StructAccess($expression.ast, $name); }   
     | left=expression right=expression    { $ast = new ArrayAccess($left.ast, $right.ast); }     
     | type expression                     { $ast = new Cast($type.ast, $expression.ast); }       

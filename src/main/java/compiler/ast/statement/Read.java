@@ -3,6 +3,9 @@
 package compiler.ast.statement;
 
 import compiler.ast.expression.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
@@ -12,7 +15,7 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	read: statement -> expression:expression
+	read: statement -> expressions:expression*
 	statement -> 
 */
 public class Read extends AbstractStatement  {
@@ -20,47 +23,48 @@ public class Read extends AbstractStatement  {
     // ----------------------------------
     // Instance Variables
 
-	// read: statement -> expression
-	private Expression expression;
+	// read: statement -> expression*
+	private List<Expression> expressions;
 
     // ----------------------------------
     // Constructors
 
-	public Read(Expression expression) {
+	public Read(List<Expression> expressions) {
 		super();
 
-		if (expression == null)
-			throw new IllegalArgumentException("Parameter 'expression' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.expression = expression;
+		if (expressions == null)
+			expressions = new ArrayList<>();
+		this.expressions = expressions;
 
-		updatePositions(expression);
+		updatePositions(expressions);
 	}
 
-	public Read(Object expression) {
+	public Read(Object expressions) {
 		super();
 
-        if (expression == null)
-            throw new IllegalArgumentException("Parameter 'expression' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.expression = (Expression) expression;
-
-		updatePositions(expression);
+        this.expressions = castList(expressions, unwrapIfContext.andThen(Expression.class::cast));
+		updatePositions(expressions);
 	}
 
 
     // ----------------------------------
-    // read: statement -> expression
+    // read: statement -> expression*
 
-	// Child 'expression' 
+	// Child 'expression*' 
 
-	public void setExpression(Expression expression) {
-		if (expression == null)
-			throw new IllegalArgumentException("Parameter 'expression' can't be null. Pass a non-null value or use 'expression?' in the abstract grammar");
-		this.expression = expression;
+	public void setExpressions(List<Expression> expressions) {
+		if (expressions == null)
+			expressions = new ArrayList<>();
+		this.expressions = expressions;
 
 	}
 
-    public Expression getExpression() {
-        return expression;
+    public List<Expression> getExpressions() {
+        return expressions;
+    }
+
+    public Stream<Expression> expressions() {
+        return expressions.stream();
     }
 
 
@@ -74,7 +78,7 @@ public class Read extends AbstractStatement  {
 
     @Override
     public String toString() {
-        return "Read{" + " expression=" + this.getExpression() + "}";
+        return "Read{" + " expressions=" + this.getExpressions() + "}";
     }
 
 

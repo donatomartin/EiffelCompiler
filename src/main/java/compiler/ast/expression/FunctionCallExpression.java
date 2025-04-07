@@ -16,18 +16,18 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	functionCall: expression -> name:string expressions:expression*
+	functionCallExpression: expression -> name:string expressions:expression*
 	expression -> 
 	
 	PHASE Identification
-	functionCall -> functionDefinition:functionDefinition
+	functionCallExpression -> functionDefinition:functionDefinition
 */
-public class FunctionCall extends AbstractExpression  {
+public class FunctionCallExpression extends AbstractExpression  {
 
     // ----------------------------------
     // Instance Variables
 
-	// functionCall: expression -> string expression*
+	// functionCallExpression: expression -> string expression*
 	private String name;
 	private List<Expression> expressions;
 
@@ -37,7 +37,7 @@ public class FunctionCall extends AbstractExpression  {
     // ----------------------------------
     // Constructors
 
-	public FunctionCall(String name, List<Expression> expressions) {
+	public FunctionCallExpression(String name, List<Expression> expressions) {
 		super();
 
 		if (name == null)
@@ -51,7 +51,7 @@ public class FunctionCall extends AbstractExpression  {
 		updatePositions(name, expressions);
 	}
 
-	public FunctionCall(Object name, Object expressions) {
+	public FunctionCallExpression(Object name, Object expressions) {
 		super();
 
         if (name == null)
@@ -64,7 +64,7 @@ public class FunctionCall extends AbstractExpression  {
 
 
     // ----------------------------------
-    // functionCall: expression -> string expression*
+    // functionCallExpression: expression -> string expression*
 
 	// Child 'string' 
 
@@ -126,7 +126,7 @@ public class FunctionCall extends AbstractExpression  {
 
     @Override
     public String toString() {
-        return "FunctionCall{" + " name=" + this.getName() + " expressions=" + this.getExpressions() + "}";
+        return "FunctionCallExpression{" + " name=" + this.getName() + " expressions=" + this.getExpressions() + "}";
     }
 
 

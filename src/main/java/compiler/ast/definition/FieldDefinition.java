@@ -15,6 +15,9 @@ import compiler.visitor.Visitor;
 /*
 	fieldDefinition: definition -> name:string type:type
 	definition -> 
+	
+	PHASE Identification
+	fieldDefinition -> structDefinition:structDefinition
 */
 public class FieldDefinition extends AbstractDefinition  {
 
@@ -24,6 +27,9 @@ public class FieldDefinition extends AbstractDefinition  {
 	// fieldDefinition: definition -> string type
 	private String name;
 	private Type type;
+
+    // PHASE Identification
+	private StructDefinition structDefinition;
 
     // ----------------------------------
     // Constructors
@@ -85,6 +91,24 @@ public class FieldDefinition extends AbstractDefinition  {
 
     public Type getType() {
         return type;
+    }
+
+
+
+    // --------------------------------
+    // PHASE Identification
+
+	// Attribute 'structDefinition' 
+
+	public void setStructDefinition(StructDefinition structDefinition) {
+		if (structDefinition == null)
+			throw new IllegalArgumentException("Parameter 'structDefinition' can't be null. Pass a non-null value or use 'structDefinition?' in the abstract grammar");
+		this.structDefinition = structDefinition;
+
+	}
+
+    public StructDefinition getStructDefinition() {
+        return structDefinition;
     }
 
 

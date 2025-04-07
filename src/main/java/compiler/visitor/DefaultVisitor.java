@@ -90,14 +90,14 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(Read read, Object param) {
 
-		read.getExpression().accept(this, param);
+		read.getExpressions().forEach(expression -> expression.accept(this, param));
 		return null;
 	}
 
 	@Override
-	public Object visit(Call call, Object param) {
+	public Object visit(FunctionCallStatement functionCallStatement, Object param) {
 
-		call.getExpression().accept(this, param);
+		functionCallStatement.getExpressions().forEach(expression -> expression.accept(this, param));
 		return null;
 	}
 
@@ -203,9 +203,9 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(FunctionCall functionCall, Object param) {
+	public Object visit(FunctionCallExpression functionCallExpression, Object param) {
 
-		functionCall.getExpressions().forEach(expression -> expression.accept(this, param));
+		functionCallExpression.getExpressions().forEach(expression -> expression.accept(this, param));
 		return null;
 	}
 

@@ -77,9 +77,9 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(Call call, Object param) {
+	public Object visit(FunctionCallStatement functionCallStatement, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Call)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionCallStatement)' has been invoked but it has not been implemented.");
 	}
 
 	@Override
@@ -173,9 +173,9 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(FunctionCall functionCall, Object param) {
+	public Object visit(FunctionCallExpression functionCallExpression, Object param) {
 
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionCall)' has been invoked but it has not been implemented.");
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionCallExpression)' has been invoked but it has not been implemented.");
 	}
 
 	@Override

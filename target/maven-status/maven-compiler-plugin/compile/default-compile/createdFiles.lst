@@ -1,6 +1,6 @@
 compiler/parser/GrammarParser$RunContext.class
-compiler/ast/expression/FunctionCall.class
 compiler/Main.class
+compiler/ast/statement/FunctionCallStatement.class
 compiler/semantic/TypeChecking.class
 compiler/ast/expression/RealLiteral.class
 compiler/parser/GrammarParser$FieldDefinitionsContext.class
@@ -21,14 +21,13 @@ compiler/ast/type/RealType.class
 compiler/ast/type/ArrayType.class
 compiler/visitor/ExceptionThrowerVisitor.class
 compiler/ast/expression/Cast.class
-compiler/parser/GrammarParser$FeatureCreationsContext.class
 compiler/parser/GrammarParser$LocalVarsSectionContext.class
 compiler/parser/GrammarParser$ExpressionContext.class
 compiler/ast/expression/ArrayAccess.class
-compiler/parser/GrammarParser$FeatureDefinitionContext.class
 compiler/ast/expression/CharLiteral.class
 compiler/ast/Position.class
 compiler/parser/GrammarLexer.class
+compiler/ast/expression/FunctionCallExpression.class
 compiler/ast/AST.class
 compiler/ast/definition/AbstractDefinition.class
 compiler/ast/expression/IntLiteral.class
@@ -52,6 +51,7 @@ compiler/parser/GrammarParser$MultipleFieldDefinitionContext.class
 compiler/ast/statement/Read.class
 compiler/ast/expression/ArithmeticUnary.class
 compiler/parser/GrammarParser$ArgumentsContext.class
+compiler/parser/GrammarParser$FunctionDefinitionContext.class
 compiler/ast/statement/Loop.class
 compiler/ast/expression/Expression.class
 compiler/ast/Program.class
@@ -71,10 +71,10 @@ compiler/ast/type/StructType.class
 compiler/parser/GrammarParser$CreateSectionContext.class
 compiler/ast/type/Type.class
 compiler/parser/GrammarParser$FromClauseContext.class
+compiler/parser/GrammarParser$FunctionCreationsContext.class
 compiler/ast/AbstractAST.class
 compiler/ast/statement/AbstractStatement.class
 compiler/ast/expression/StructAccess.class
-compiler/ast/statement/Call.class
 compiler/parser/GrammarParser$TypeContext.class
 compiler/parser/GrammarParser$MultiVarDefinitionContext.class
 compiler/ast/statement/Return.class

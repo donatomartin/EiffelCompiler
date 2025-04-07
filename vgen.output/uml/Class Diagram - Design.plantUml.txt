@@ -75,6 +75,7 @@ class FieldDefinition {
 }
 Definition <|-[#808080]- FieldDefinition
 FieldDefinition o-[#404040,thickness=2]-  Type : type >
+FieldDefinition -[#ff6600,thickness=3]-  StructDefinition #text:ff6600 : structDefinition >
 
 class FunctionDefinition {
 	+String name
@@ -93,12 +94,14 @@ Print o-[#404040,thickness=2]- "✱" Expression : expressions >
 class Read {
 }
 Statement <|-[#808080]- Read
-Read o-[#404040,thickness=2]-  Expression : expression >
+Read o-[#404040,thickness=2]- "✱" Expression : expressions >
 
-class Call {
+class FunctionCallStatement {
+	+String name
 }
-Statement <|-[#808080]- Call
-Call o-[#404040,thickness=2]-  Expression : expression >
+Statement <|-[#808080]- FunctionCallStatement
+FunctionCallStatement o-[#404040,thickness=2]- "✱" Expression : expressions >
+FunctionCallStatement -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
 
 class Assignment {
 }
@@ -180,12 +183,12 @@ class CharLiteral {
 }
 Expression <|-[#808080]- CharLiteral
 
-class FunctionCall {
+class FunctionCallExpression {
 	+String name
 }
-Expression <|-[#808080]- FunctionCall
-FunctionCall o-[#404040,thickness=2]- "✱" Expression : expressions >
-FunctionCall -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
+Expression <|-[#808080]- FunctionCallExpression
+FunctionCallExpression o-[#404040,thickness=2]- "✱" Expression : expressions >
+FunctionCallExpression -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
 
 class StructAccess {
 	+String name

@@ -12,8 +12,8 @@ import Tokenizer;
 // PROGRAM
 
 program returns [Program ast]
-	: 'class' IDENT ';' globalSection? createSection featureDefinitions+=featureDefinition* 'end' run EOF
-  {$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $featureDefinitions, $run.ast); }
+	: 'class' IDENT ';' globalSection? createSection functionDefinitions+=functionDefinition* 'end' run EOF
+  {$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $functionDefinitions, $run.ast); }
 	;
 
 // GLOBAL
@@ -56,14 +56,14 @@ globalVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinitio
 // CREATE
 
 createSection returns [List<FunctionCreation> list = new ArrayList<FunctionCreation>()]
-  : 'create' featureCreations { $list = $featureCreations.list; }
+  : 'create' functionCreations { $list = $functionCreations.list; }
   ;
 
-featureCreations returns [List<FunctionCreation> list = new ArrayList<FunctionCreation>()]
+functionCreations returns [List<FunctionCreation> list = new ArrayList<FunctionCreation>()]
   : (IDENT { $list.add(new FunctionCreation($IDENT)); } ';')*
   ;
 
-featureDefinition returns [FunctionDefinition ast]
+functionDefinition returns [FunctionDefinition ast]
   : 'feature' IDENT parameters ':' type 'is' localVarsSection 'do' statements+=statement* 'end'
   { $ast = new FunctionDefinition($IDENT, $parameters.list, $type.ast, $localVarsSection.list, $statements); }
   | 'feature' IDENT parameters 'is' localVarsSection 'do' statements+=statement* 'end'
@@ -112,7 +112,7 @@ expression returns [Expression ast]
 	| INT_LITERAL { $ast = new IntLiteral($INT_LITERAL); }
 	| REAL_LITERAL { $ast = new RealLiteral($REAL_LITERAL); }
 	| CHAR_LITERAL { $ast = new CharLiteral($CHAR_LITERAL); }
-	| IDENT '(' arguments ')' { $ast = new FunctionCall($IDENT, $arguments.list); }
+	| IDENT '(' arguments ')' { $ast = new FunctionCallExpression($IDENT, $arguments.list); }
 	| left=expression '[' right=expression ']' { $ast = new ArrayAccess($left.ast, $right.ast); }
 	| expr=expression '.' IDENT { $ast = new StructAccess($expr.ast, $IDENT); }
   | operator='-' expr=expression { $ast = new ArithmeticUnary($operator, $expr.ast); }
@@ -139,8 +139,8 @@ expressions returns [List<Expression> list = new ArrayList<Expression>()]
 
 statement returns [Statement ast]
   : ('print' | 'println') expressions ';' { $ast = new Print($expressions.list); }
-	| 'read' expr=expression ';' { $ast = new Read($expr.ast); }
-	| expr=expression ';' { $ast = new Call($expr.ast); }
+	| 'read' expressions ';' { $ast = new Read($expressions.list); }
+	| IDENT '(' arguments ')' ';' { $ast = new FunctionCallStatement($IDENT, $arguments.list); }
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
 	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($expr.ast, $ifStatements, $elseStatements); }
 	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($expr.ast, $ifStatements, null); }

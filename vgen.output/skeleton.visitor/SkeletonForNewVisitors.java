@@ -121,6 +121,7 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 	}
 
 	// class FieldDefinition(String name, Type type)
+	// phase Identification { StructDefinition structDefinition }
 	@Override
 	public Object visit(FieldDefinition fieldDefinition, Object param) {
 
@@ -153,22 +154,23 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
-	// class Read(Expression expression)
+	// class Read(List<Expression> expressions)
 	@Override
 	public Object visit(Read read, Object param) {
 
-		// read.getExpression().accept(this, param);
+		// read.getExpressions().forEach(expression -> expression.accept(this, param));
 		super.visit(read, param);
 
 		return null;
 	}
 
-	// class Call(Expression expression)
+	// class FunctionCallStatement(String name, List<Expression> expressions)
+	// phase Identification { FunctionDefinition functionDefinition }
 	@Override
-	public Object visit(Call call, Object param) {
+	public Object visit(FunctionCallStatement functionCallStatement, Object param) {
 
-		// call.getExpression().accept(this, param);
-		super.visit(call, param);
+		// functionCallStatement.getExpressions().forEach(expression -> expression.accept(this, param));
+		super.visit(functionCallStatement, param);
 
 		return null;
 	}
@@ -303,13 +305,13 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
-	// class FunctionCall(String name, List<Expression> expressions)
+	// class FunctionCallExpression(String name, List<Expression> expressions)
 	// phase Identification { FunctionDefinition functionDefinition }
 	@Override
-	public Object visit(FunctionCall functionCall, Object param) {
+	public Object visit(FunctionCallExpression functionCallExpression, Object param) {
 
-		// functionCall.getExpressions().forEach(expression -> expression.accept(this, param));
-		super.visit(functionCall, param);
+		// functionCallExpression.getExpressions().forEach(expression -> expression.accept(this, param));
+		super.visit(functionCallExpression, param);
 
 		return null;
 	}
