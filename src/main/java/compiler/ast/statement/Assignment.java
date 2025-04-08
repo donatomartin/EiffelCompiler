@@ -3,6 +3,7 @@
 package compiler.ast.statement;
 
 import compiler.ast.expression.*;
+import compiler.ast.definition.*;
 import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
@@ -14,6 +15,9 @@ import compiler.visitor.Visitor;
 /*
 	assignment: statement -> left:expression right:expression
 	statement -> 
+	
+	PHASE TypeChecking
+	statement -> function:functionDefinition
 */
 public class Assignment extends AbstractStatement  {
 

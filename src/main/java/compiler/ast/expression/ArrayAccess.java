@@ -2,6 +2,8 @@
 
 package compiler.ast.expression;
 
+import compiler.ast.type.*;
+import org.antlr.v4.runtime.Token;
 import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
@@ -13,6 +15,10 @@ import compiler.visitor.Visitor;
 /*
 	arrayAccess: expression -> left:expression right:expression
 	expression -> 
+	
+	PHASE TypeChecking
+	expression -> lvalue:boolean
+	expression -> type:type
 */
 public class ArrayAccess extends AbstractExpression  {
 

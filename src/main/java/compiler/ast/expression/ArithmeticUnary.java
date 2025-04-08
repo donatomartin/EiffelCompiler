@@ -2,6 +2,7 @@
 
 package compiler.ast.expression;
 
+import compiler.ast.type.*;
 import org.antlr.v4.runtime.Token;
 import compiler.visitor.Visitor;
 
@@ -14,6 +15,10 @@ import compiler.visitor.Visitor;
 /*
 	arithmeticUnary: expression -> operator:string expr:expression
 	expression -> 
+	
+	PHASE TypeChecking
+	expression -> lvalue:boolean
+	expression -> type:type
 */
 public class ArithmeticUnary extends AbstractExpression  {
 

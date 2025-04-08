@@ -2,6 +2,7 @@
 
 package compiler.ast.expression;
 
+import compiler.ast.type.*;
 import compiler.ast.definition.*;
 import org.antlr.v4.runtime.Token;
 import compiler.visitor.Visitor;
@@ -18,6 +19,10 @@ import compiler.visitor.Visitor;
 	
 	PHASE Identification
 	variable -> varDefinition:varDefinition
+	
+	PHASE TypeChecking
+	expression -> lvalue:boolean
+	expression -> type:type
 */
 public class Variable extends AbstractExpression  {
 

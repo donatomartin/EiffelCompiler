@@ -41,7 +41,7 @@ charLiteral:expression -> char;
 functionCallExpression:expression -> string expression*;
 structAccess:expression -> expr:expression string;
 arrayAccess:expression -> left:expression right:expression;
-cast:expression -> type expression;
+cast:expression -> castType:type expression;
 
 arithmeticBinary:expression -> left:expression operator:string right:expression;
 arithmeticUnary:expression -> operator:string expr:expression;
@@ -58,4 +58,10 @@ functionCallStatement -> functionDefinition;
 functionCallExpression -> functionDefinition;
 structType -> structDefinition;
 fieldDefinition -> structDefinition;
+
+ATTRIBUTE GRAMMAR TypeChecking
+
+expression -> lvalue:boolean;
+expression -> type;
+statement -> function:functionDefinition;
 

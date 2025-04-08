@@ -3,6 +3,7 @@
 package compiler.ast.statement;
 
 import compiler.ast.expression.*;
+import compiler.ast.definition.*;
 import java.util.Optional;
 import compiler.visitor.Visitor;
 
@@ -15,6 +16,9 @@ import compiler.visitor.Visitor;
 /*
 	return: statement -> expression:expression?
 	statement -> 
+	
+	PHASE TypeChecking
+	statement -> function:functionDefinition
 */
 public class Return extends AbstractStatement  {
 

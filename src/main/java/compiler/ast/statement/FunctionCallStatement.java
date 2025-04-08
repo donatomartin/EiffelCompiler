@@ -22,6 +22,9 @@ import compiler.visitor.Visitor;
 	
 	PHASE Identification
 	functionCallStatement -> functionDefinition:functionDefinition
+	
+	PHASE TypeChecking
+	statement -> function:functionDefinition
 */
 public class FunctionCallStatement extends AbstractStatement  {
 

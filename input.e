@@ -2,26 +2,36 @@ class T002_TABMUL; /* Calcula la tabla de multiplicar del 1 al 12 para el númer
 
 	global
 		types
+      deftuple extratuple as
+        a : [1] INTEGER;
+        b : [3][3] INTEGER;
+      end
 			deftuple tabla as
 				num : [12] INTEGER;
 				sol : [12] INTEGER;
+        xd : extratuple;
 			end
 		vars
 			tablaMul : tabla;
+      i : INTEGER;
 
 	create
 		inicio;
 
+  feature sum (num : INTEGER, num2: INTEGER) : INTEGER is 
+  do
+    return num + num2;
+  end
+
 	/* Funciones auxiliares para imprimir
 	feature presentacion is
+    local
+      b : INTEGER;
 		do
-			print 'T','A','B','L','A',' ','D','E',' ','M','U','L','T','I','P','L','I','C','A','R',' ','V','.','1','.','1';
-	end
 
-	feature leerNum is
-		do
-			print 'N','ú','m','e','r','o',':',' ';
-      presentacion();
+      b := tablaMul.xd.b[0][0];
+			print 'T','A','B','L','A',' ','D','E',' ','M','U','L','T','I','P','L','I','C','A','R',' ','V','.','1','.','1';
+      i := 1;
 	end
 
 	feature leerNum is
@@ -82,7 +92,7 @@ class T002_TABMUL; /* Calcula la tabla de multiplicar del 1 al 12 para el númer
 		do
 			presentacion();
 			from
-			a := 'S';
+			a := 'a';
 			ai := to<INTEGER>(a);
 			until ((ai = 78) or (ai = 110)) loop
 				leerNum();

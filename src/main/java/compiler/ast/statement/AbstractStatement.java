@@ -3,6 +3,7 @@
 package compiler.ast.statement;
 
 import compiler.ast.*;
+import compiler.ast.definition.*;
 
 // %% User Declarations -------------
 
@@ -12,9 +13,36 @@ import compiler.ast.*;
 
 /*
 	statement -> 
+	
+	PHASE TypeChecking
+	statement -> function:functionDefinition
 */
 public abstract class AbstractStatement extends AbstractAST implements Statement {
 
+    // ----------------------------------
+    // Instance Variables
+
+
+    // PHASE TypeChecking
+	private FunctionDefinition function;
+
+
+
+    // --------------------------------
+    // PHASE TypeChecking
+
+	// Attribute 'function:functionDefinition' 
+
+	public void setFunction(FunctionDefinition function) {
+		if (function == null)
+			throw new IllegalArgumentException("Parameter 'function' can't be null. Pass a non-null value or use 'functionDefinition?' in the abstract grammar");
+		this.function = function;
+
+	}
+
+    public FunctionDefinition getFunction() {
+        return function;
+    }
 
 
 

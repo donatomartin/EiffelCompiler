@@ -3,6 +3,7 @@
 package compiler.ast.statement;
 
 import compiler.ast.expression.*;
+import compiler.ast.definition.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -17,6 +18,9 @@ import compiler.visitor.Visitor;
 /*
 	read: statement -> expressions:expression*
 	statement -> 
+	
+	PHASE TypeChecking
+	statement -> function:functionDefinition
 */
 public class Read extends AbstractStatement  {
 
