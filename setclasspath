@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Absolute or relative paths to your build and tool directories
 ANTLR_JAR=tools/antlr/antlr-4.11.1-complete.jar
@@ -8,4 +8,3 @@ BIN_DIR=bin
 export CLASSPATH="$BIN_DIR:$ANTLR_JAR"
 
 echo "Classpath set to: $CLASSPATH"
-
