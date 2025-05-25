@@ -15,6 +15,9 @@ import compiler.visitor.Visitor;
 /*
 	varDefinition: definition -> name:string type:type
 	definition -> 
+	
+	PHASE MemoryAllocation
+	varDefinition -> address:int
 */
 public class VarDefinition extends AbstractDefinition  {
 
@@ -24,6 +27,9 @@ public class VarDefinition extends AbstractDefinition  {
 	// varDefinition: definition -> string type
 	private String name;
 	private Type type;
+
+    // PHASE MemoryAllocation
+	private int address;
 
     // ----------------------------------
     // Constructors
@@ -85,6 +91,22 @@ public class VarDefinition extends AbstractDefinition  {
 
     public Type getType() {
         return type;
+    }
+
+
+
+    // --------------------------------
+    // PHASE MemoryAllocation
+
+	// Attribute 'address:int' 
+
+	public void setAddress(int address) {
+		this.address = address;
+
+	}
+
+    public int getAddress() {
+        return address;
     }
 
 

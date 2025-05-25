@@ -65,3 +65,10 @@ expression -> lvalue:boolean;
 expression -> type;
 statement -> function:functionDefinition;
 
+ATTRIBUTE GRAMMAR MemoryAllocation
+
+varDefinition -> [inh] address:int;
+structDefinition -> [inh] address:int;
+fieldDefinition -> [inh] address:int;
+functionDefinition -> [inh] address:int;
+

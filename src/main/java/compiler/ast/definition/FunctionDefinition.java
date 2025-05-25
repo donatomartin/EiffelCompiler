@@ -20,6 +20,9 @@ import compiler.visitor.Visitor;
 /*
 	functionDefinition: definition -> name:string parameters:varDefinition* type:type? locals:varDefinition* statements:statement*
 	definition -> 
+	
+	PHASE MemoryAllocation
+	functionDefinition -> address:int
 */
 public class FunctionDefinition extends AbstractDefinition  {
 
@@ -32,6 +35,9 @@ public class FunctionDefinition extends AbstractDefinition  {
 	private Optional<Type> type;
 	private List<VarDefinition> locals;
 	private List<Statement> statements;
+
+    // PHASE MemoryAllocation
+	private int address;
 
     // ----------------------------------
     // Constructors
@@ -159,6 +165,22 @@ public class FunctionDefinition extends AbstractDefinition  {
 
     public Stream<Statement> statements() {
         return statements.stream();
+    }
+
+
+
+    // --------------------------------
+    // PHASE MemoryAllocation
+
+	// Attribute 'address:int' 
+
+	public void setAddress(int address) {
+		this.address = address;
+
+	}
+
+    public int getAddress() {
+        return address;
     }
 
 

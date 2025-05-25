@@ -6,35 +6,36 @@ import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
 
-    // Declarations (e.g. imports) in this section will be preserved. Delete if not needed
+// Declarations (e.g. imports) in this section will be preserved. Delete if not needed
 
 // %% -------------------------------
 
 /*
-	charType: type -> 
-	type -> 
+	charType: type ->
+	type ->
 */
-public class CharType extends AbstractType  {
+public class CharType extends AbstractType {
 
+  // ----------------------------------
+  // Helper methods
 
+  @Override
+  public Object accept(Visitor v, Object param) {
+    return v.visit(this, param);
+  }
 
-    // ----------------------------------
-    // Helper methods
+  @Override
+  public String toString() {
+    return "CharType{" + "}";
+  }
 
-    @Override
-    public Object accept(Visitor v, Object param) {
-        return v.visit(this, param);
-    }
+  // %% User Members -------------------------
 
-    @Override
-    public String toString() {
-        return "CharType{" + "}";
-    }
+  // Methods/attributes in this section will be preserved. Delete if not needed
 
+  public int getSize() {
+    return 1;
+  }
 
-    // %% User Members -------------------------
-
-        // Methods/attributes in this section will be preserved. Delete if not needed
-
-    // %% --------------------------------------
+  // %% --------------------------------------
 }

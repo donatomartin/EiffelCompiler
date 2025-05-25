@@ -6,35 +6,35 @@ import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
 
-    // Declarations (e.g. imports) in this section will be preserved. Delete if not needed
+// Declarations (e.g. imports) in this section will be preserved. Delete if not needed
 
 // %% -------------------------------
 
 /*
-	realType: type -> 
-	type -> 
+	realType: type ->
+	type ->
 */
-public class RealType extends AbstractType  {
+public class RealType extends AbstractType {
 
+  // ----------------------------------
+  // Helper methods
 
+  @Override
+  public Object accept(Visitor v, Object param) {
+    return v.visit(this, param);
+  }
 
-    // ----------------------------------
-    // Helper methods
+  @Override
+  public String toString() {
+    return "RealType{" + "}";
+  }
 
-    @Override
-    public Object accept(Visitor v, Object param) {
-        return v.visit(this, param);
-    }
+  // %% User Members -------------------------
 
-    @Override
-    public String toString() {
-        return "RealType{" + "}";
-    }
+  // Methods/attributes in this section will be preserved. Delete if not needed
+  public int getSize() {
+    return 4;
+  }
 
-
-    // %% User Members -------------------------
-
-        // Methods/attributes in this section will be preserved. Delete if not needed
-
-    // %% --------------------------------------
+  // %% --------------------------------------
 }

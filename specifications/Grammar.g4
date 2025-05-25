@@ -9,11 +9,12 @@ import Tokenizer;
 	import compiler.ast.expression.*;
 	import compiler.ast.definition.*;
 }
-// PROGRAM
+
+ // PROGRAM
 
 program returns [Program ast]
 	: 'class' IDENT ';' globalSection? createSection functionDefinitions+=functionDefinition* 'end' run EOF
-  {$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $functionDefinitions, $run.ast); }
+  	{$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $functionDefinitions, $run.ast); }
 	;
 
 // GLOBAL
@@ -75,7 +76,8 @@ localVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinition
   ;
 
 parameters returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
-  : ('(' ident1=IDENT ':' type1=type { $list.add(new VarDefinition($ident1.getText(), $type1.ast)); } (',' ident2=IDENT ':' type2=type { $list.add(new VarDefinition($ident2.getText(), $type2.ast)); } )* ')')?
+  : ('(' ident1=IDENT ':' type1=type { $list.add(new VarDefinition($ident1.getText(), $type1.ast)); }
+    (',' ident2=IDENT ':' type2=type { $list.add(new VarDefinition($ident2.getText(), $type2.ast)); } )* ')')?
   ;
 
 // VarDefinition

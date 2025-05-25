@@ -11,7 +11,6 @@ import org.antlr.v4.runtime.*;
 
 import compiler.ast.*;
 import compiler.visitor.*;
-
 import compiler.parser.*;
 import compiler.semantic.*;
 import compiler.codegeneration.*;
@@ -26,7 +25,6 @@ import compiler.codegeneration.*;
  * - For Semantic Analysis, change 'Identification.java' and 'TypeChecking.java'.
  * - For Code Generation, change 'MemoryAllocation.java' and 'MaplCodeSpecification.java'.
  */
-
 public class Main {
 
     public static final String TEST_FILE = "input.e"; // Used only in development

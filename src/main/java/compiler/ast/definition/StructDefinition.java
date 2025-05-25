@@ -17,6 +17,9 @@ import compiler.visitor.Visitor;
 /*
 	structDefinition: definition -> name:string fieldDefinitions:fieldDefinition*
 	definition -> 
+	
+	PHASE MemoryAllocation
+	structDefinition -> address:int
 */
 public class StructDefinition extends AbstractDefinition  {
 
@@ -26,6 +29,9 @@ public class StructDefinition extends AbstractDefinition  {
 	// structDefinition: definition -> string fieldDefinition*
 	private String name;
 	private List<FieldDefinition> fieldDefinitions;
+
+    // PHASE MemoryAllocation
+	private int address;
 
     // ----------------------------------
     // Constructors
@@ -88,6 +94,22 @@ public class StructDefinition extends AbstractDefinition  {
 
     public Stream<FieldDefinition> fieldDefinitions() {
         return fieldDefinitions.stream();
+    }
+
+
+
+    // --------------------------------
+    // PHASE MemoryAllocation
+
+	// Attribute 'address:int' 
+
+	public void setAddress(int address) {
+		this.address = address;
+
+	}
+
+    public int getAddress() {
+        return address;
     }
 
 

@@ -160,7 +160,8 @@ public class AstPrinter implements Visitor {
         printNodeChild(indent + 1, "type", "Type", varDefinition.getType());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, varDefinition, "name", "type");
+        printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", varDefinition.getAddress());
+		printUnknownFields(indent + 1, varDefinition, "name", "type", "address");
 		return null;
 	}
 
@@ -174,7 +175,8 @@ public class AstPrinter implements Visitor {
         printListOfNodesChild(indent + 1, "fieldDefinitions", "List<FieldDefinition>", structDefinition.getFieldDefinitions());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, structDefinition, "name", "fieldDefinitions");
+        printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", structDefinition.getAddress());
+		printUnknownFields(indent + 1, structDefinition, "name", "fieldDefinitions", "address");
 		return null;
 	}
 
@@ -189,7 +191,8 @@ public class AstPrinter implements Visitor {
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
         printToString(indent + 1, "vgen-attribute-phase-0", "structDefinition", "StructDefinition", fieldDefinition.getStructDefinition());
-		printUnknownFields(indent + 1, fieldDefinition, "name", "type", "structDefinition");
+        printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", fieldDefinition.getAddress());
+		printUnknownFields(indent + 1, fieldDefinition, "name", "type", "structDefinition", "address");
 		return null;
 	}
 
@@ -206,7 +209,8 @@ public class AstPrinter implements Visitor {
         printListOfNodesChild(indent + 1, "statements", "List<Statement>", functionDefinition.getStatements());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
-		printUnknownFields(indent + 1, functionDefinition, "name", "parameters", "type", "locals", "statements");
+        printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", functionDefinition.getAddress());
+		printUnknownFields(indent + 1, functionDefinition, "name", "parameters", "type", "locals", "statements", "address");
 		return null;
 	}
 

@@ -5,8 +5,6 @@
  */
 package compiler.semantic;
 
-import java.util.List;
-
 import compiler.ErrorManager;
 import compiler.ast.*;
 import compiler.ast.definition.*;
@@ -14,6 +12,7 @@ import compiler.ast.expression.*;
 import compiler.ast.statement.*;
 import compiler.ast.type.*;
 import compiler.visitor.DefaultVisitor;
+import java.util.List;
 
 public class TypeChecking extends DefaultVisitor {
 
@@ -29,7 +28,8 @@ public class TypeChecking extends DefaultVisitor {
 
   // Visit Methods --------------------------------------------------------------
 
-  // class FunctionDefinition(String name, List<VarDefinition> parameters, Optional<Type> type,
+  // class FunctionDefinition(String name, List<VarDefinition> parameters,
+  // Optional<Type> type,
   // List<VarDefinition> locals, List<Statement> statements)
   @Override
   public Object visit(FunctionDefinition functionDefinition, Object param) {
@@ -99,7 +99,8 @@ public class TypeChecking extends DefaultVisitor {
     return null;
   }
 
-  // class Conditional(Expression expression, List<Statement> ifStatements, List<Statement>
+  // class Conditional(Expression expression, List<Statement> ifStatements,
+  // List<Statement>
   // elseStatements)
   @Override
   public Object visit(Conditional conditional, Object param) {
@@ -122,7 +123,8 @@ public class TypeChecking extends DefaultVisitor {
     return null;
   }
 
-  // class Loop(List<Statement> fromStatements, Expression expression, List<Statement>
+  // class Loop(List<Statement> fromStatements, Expression expression,
+  // List<Statement>
   // loopStatements)
   @Override
   public Object visit(Loop loop, Object param) {
@@ -227,13 +229,15 @@ public class TypeChecking extends DefaultVisitor {
       functionCallExpression.setType(
           functionCallExpression.getFunctionDefinition().getType().get());
     }
-    
 
-    List<VarDefinition> parameters = functionCallExpression.getFunctionDefinition().getParameters();   
+    List<VarDefinition> parameters = functionCallExpression.getFunctionDefinition().getParameters();
     List<Expression> arguments = functionCallExpression.getExpressions();
 
     for (int i = 0; i < parameters.size(); i++) {
-      predicate(sameType(parameters.get(i).getType(), arguments.get(i).getType()), "Argument must match parameter type", arguments.get(i));
+      predicate(
+          sameType(parameters.get(i).getType(), arguments.get(i).getType()),
+          "Argument must match parameter type",
+          arguments.get(i));
     }
 
     return null;
@@ -245,16 +249,17 @@ public class TypeChecking extends DefaultVisitor {
 
     super.visit(functionCallStatement, param);
 
-    List<VarDefinition> parameters = functionCallStatement.getFunctionDefinition().getParameters();   
+    List<VarDefinition> parameters = functionCallStatement.getFunctionDefinition().getParameters();
     List<Expression> arguments = functionCallStatement.getExpressions();
 
     for (int i = 0; i < parameters.size(); i++) {
-      predicate(sameType(parameters.get(i).getType(), arguments.get(i).getType()), "Argument must match parameter type", arguments.get(i));
+      predicate(
+          sameType(parameters.get(i).getType(), arguments.get(i).getType()),
+          "Argument must match parameter type",
+          arguments.get(i));
     }
 
-
     return null;
-
   }
 
   // class StructAccess(Expression expr, String name)

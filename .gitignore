@@ -1,5 +1,6 @@
 bin/*
 target/*
+specifications/.antlr
 .vscode
 
 # vgen

@@ -6,21 +6,20 @@ import compiler.ast.*;
 
 // %% User Declarations -------------
 
-    // Declarations (e.g. imports) in this section will be preserved. Delete if not needed
+// Declarations (e.g. imports) in this section will be preserved. Delete if not needed
 
 // %% -------------------------------
 
 /*
-	type -> 
+	type ->
 */
 public interface Type extends AST {
 
+  // %% User Members -------------------------
 
+  // Methods/attributes in this section will be preserved. Delete if not needed
 
+  public int getSize();
 
-    // %% User Members -------------------------
-
-        // Methods/attributes in this section will be preserved. Delete if not needed
-
-    // %% --------------------------------------
+  // %% --------------------------------------
 }
