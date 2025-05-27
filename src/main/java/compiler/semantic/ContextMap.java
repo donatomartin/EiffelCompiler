@@ -37,6 +37,10 @@ public class ContextMap<T> {
     }
     return null;
   }
+  
+  public int getCurrentScope() {
+    return contextos.size();
+  }
 
   public void set() {
     contextos.push(new HashMap<>());

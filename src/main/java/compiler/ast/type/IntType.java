@@ -11,23 +11,26 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	intType: type ->
-	type ->
+	intType: type -> 
+	type -> 
 */
-public class IntType extends AbstractType {
+public class IntType extends AbstractType  {
 
-  // ----------------------------------
-  // Helper methods
 
-  @Override
-  public Object accept(Visitor v, Object param) {
-    return v.visit(this, param);
-  }
 
-  @Override
-  public String toString() {
-    return "IntType{" + "}";
-  }
+    // ----------------------------------
+    // Helper methods
+
+    @Override
+    public Object accept(Visitor v, Object param) {
+        return v.visit(this, param);
+    }
+
+    @Override
+    public String toString() {
+        return "IntType{" + "}";
+    }
+
 
   // %% User Members -------------------------
 

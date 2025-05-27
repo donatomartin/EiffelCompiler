@@ -50,12 +50,12 @@ public class Identification extends DefaultVisitor {
     }
 
     varDefinitions.put(varDefinition.getName(), varDefinition);
+    varDefinition.setScope(varDefinitions.getCurrentScope());
 
     return null;
   }
 
   // class Variable(String name)
-  // phase Identification { VarDefinition varDefinition }
   @Override
   public Object visit(Variable variable, Object param) {
 
@@ -91,7 +91,6 @@ public class Identification extends DefaultVisitor {
   }
 
   // class StructType(String name)
-  // phase Identification { StructDefinition structDefinition }
   @Override
   public Object visit(StructType structType, Object param) {
 
@@ -160,7 +159,6 @@ public class Identification extends DefaultVisitor {
   }
 
   // class FunctionCallStatement(String name, List<Expression> expressions)
-  // phase Identification { FunctionDefinition functionDefinition }
   @Override
   public Object visit(FunctionCallStatement functionCallStatement, Object param) {
 

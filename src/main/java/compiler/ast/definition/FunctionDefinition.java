@@ -21,6 +21,9 @@ import compiler.visitor.Visitor;
 	functionDefinition: definition -> name:string parameters:varDefinition* type:type? locals:varDefinition* statements:statement*
 	definition -> 
 	
+	PHASE TypeChecking
+	functionDefinition -> hasReturn:boolean
+	
 	PHASE MemoryAllocation
 	functionDefinition -> address:int
 */
@@ -35,6 +38,9 @@ public class FunctionDefinition extends AbstractDefinition  {
 	private Optional<Type> type;
 	private List<VarDefinition> locals;
 	private List<Statement> statements;
+
+    // PHASE TypeChecking
+	private boolean hasReturn;
 
     // PHASE MemoryAllocation
 	private int address;
@@ -165,6 +171,22 @@ public class FunctionDefinition extends AbstractDefinition  {
 
     public Stream<Statement> statements() {
         return statements.stream();
+    }
+
+
+
+    // --------------------------------
+    // PHASE TypeChecking
+
+	// Attribute 'hasReturn:boolean' 
+
+	public void setHasReturn(boolean hasReturn) {
+		this.hasReturn = hasReturn;
+
+	}
+
+    public boolean isHasReturn() {
+        return hasReturn;
     }
 
 

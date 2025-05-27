@@ -9,6 +9,10 @@ import compiler.visitor.DefaultVisitor;
 // This class will be implemented in memory allocation phase
 
 public class MemoryAllocation extends DefaultVisitor {
+  
+  public void process(AST ast) {
+    ast.accept(this, null);
+  };
 
   @Override
   public Object visit(GlobalSection globalSection, Object param) {

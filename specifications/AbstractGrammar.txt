@@ -18,6 +18,7 @@ fieldDefinition:definition -> string type;
 functionDefinition:definition -> string parameters:varDefinition* type? locals:varDefinition* statement*;
 
 print:statement -> expression*;
+println:statement -> expression*;
 read:statement -> expression*;
 functionCallStatement:statement -> string expression*;
 assignment:statement -> left:expression right:expression;
@@ -54,6 +55,7 @@ relationalBinary:expression -> left:expression operator:string right:expression;
 ATTRIBUTE GRAMMAR Identification
 
 variable -> varDefinition;
+varDefinition -> scope:int;
 functionCallStatement -> functionDefinition;
 functionCallExpression -> functionDefinition;
 structType -> structDefinition;
@@ -64,6 +66,7 @@ ATTRIBUTE GRAMMAR TypeChecking
 expression -> lvalue:boolean;
 expression -> type;
 statement -> function:functionDefinition;
+functionDefinition -> hasReturn:boolean;
 
 ATTRIBUTE GRAMMAR MemoryAllocation
 
@@ -72,3 +75,13 @@ structDefinition -> [inh] address:int;
 fieldDefinition -> [inh] address:int;
 functionDefinition -> [inh] address:int;
 
+CODE SPECIFICATION Mapl
+
+run[program]
+execute[statement]
+execute[run]
+value[expression]
+address[expression]
+
+metadata[program]
+metadata[varDefinition]

@@ -58,6 +58,13 @@ public class TypeChecking extends DefaultVisitor {
 
     super.visit(functionDefinition, param);
 
+    if (functionDefinition.getType().orElse(null) != null) {
+      predicate(
+          functionDefinition.isHasReturn(),
+          "Function with return type must have a return statement",
+          functionDefinition);
+    }
+
     return null;
   }
 
@@ -65,8 +72,33 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(Print print, Object param) {
 
-    // print.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(print, param);
+
+    print.getExpressions().forEach(expression -> {
+      predicate(
+          isPrimitive(expression.getType()),
+          "Expression must be of primitive type",
+          expression);
+      expression.setLvalue(false);
+    });
+
+    return null;
+  }
+
+  // class Println(List<Expression> expressions)
+  @Override
+  public Object visit(Println println, Object param) {
+
+    // println.getExpressions().forEach(expression -> expression.accept(this, param));
+    super.visit(println, param);
+
+    println.getExpressions().forEach(expression -> {
+      predicate(
+          isPrimitive(expression.getType()),
+          "Expression must be of primitive type",
+          expression);
+      expression.setLvalue(false);
+    });
 
     return null;
   }
@@ -77,6 +109,14 @@ public class TypeChecking extends DefaultVisitor {
 
     // read.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(read, param);
+
+    read.getExpressions().forEach(expression -> {
+      predicate(
+          isPrimitive(expression.getType()),
+          "Expression must be of primitive type",
+          expression);
+      expression.setLvalue(false);
+    });
 
     return null;
   }
@@ -123,25 +163,13 @@ public class TypeChecking extends DefaultVisitor {
     return null;
   }
 
-  // class Loop(List<Statement> fromStatements, Expression expression,
-  // List<Statement>
-  // loopStatements)
-  @Override
-  public Object visit(Loop loop, Object param) {
-
-    // loop.getFromStatements().forEach(statement -> statement.accept(this, param));
-    // loop.getExpression().accept(this, param);
-    // loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
-    super.visit(loop, param);
-
-    return null;
-  }
-
   // class Return(Optional<Expression> expression)
   @Override
   public Object visit(Return returnValue, Object param) {
 
     super.visit(returnValue, param);
+
+    returnValue.getFunction().setHasReturn(true);
 
     if (returnValue.getExpression().isEmpty()) {
       predicate(
@@ -151,7 +179,7 @@ public class TypeChecking extends DefaultVisitor {
     } else {
       Expression expression = returnValue.getExpression().get();
       predicate(
-          sameType(returnValue.getFunction().getType().get(), expression.getType()),
+          sameType(returnValue.getFunction().getType().orElse(null), expression.getType()),
           "Return type does not match function return type",
           returnValue);
     }
@@ -165,13 +193,6 @@ public class TypeChecking extends DefaultVisitor {
 
     // run.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(run, param);
-
-    return null;
-  }
-
-  // class VoidType()
-  @Override
-  public Object visit(VoidType voidType, Object param) {
 
     return null;
   }
@@ -227,7 +248,7 @@ public class TypeChecking extends DefaultVisitor {
 
     if (functionCallExpression.getFunctionDefinition().getType().isPresent()) {
       functionCallExpression.setType(
-          functionCallExpression.getFunctionDefinition().getType().get());
+          functionCallExpression.getFunctionDefinition().getType().orElse(new VoidType()));
     }
 
     List<VarDefinition> parameters = functionCallExpression.getFunctionDefinition().getParameters();
@@ -274,15 +295,22 @@ public class TypeChecking extends DefaultVisitor {
         "Expression must be of struct type",
         structAccess);
 
+    boolean found = false;
     if (structAccess.getExpr().getType() instanceof StructType) {
       StructType structType = (StructType) structAccess.getExpr().getType();
       for (FieldDefinition fieldDefinition :
           structType.getStructDefinition().getFieldDefinitions()) {
         if (fieldDefinition.getName().equals(structAccess.getName())) {
           structAccess.setType(fieldDefinition.getType());
+          found = true;
         }
       }
     }
+
+    predicate(
+        found,
+        "Field '" + structAccess.getName() + "' not found in struct",
+        structAccess);
 
     structAccess.setLvalue(true);
 

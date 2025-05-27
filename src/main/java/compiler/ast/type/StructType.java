@@ -3,8 +3,8 @@
 package compiler.ast.type;
 
 import compiler.ast.definition.*;
-import compiler.visitor.Visitor;
 import org.antlr.v4.runtime.Token;
+import compiler.visitor.Visitor;
 
 // %% User Declarations -------------
 
@@ -14,95 +14,94 @@ import org.antlr.v4.runtime.Token;
 
 /*
 	structType: type -> name:string
-	type ->
-
+	type -> 
+	
 	PHASE Identification
 	structType -> structDefinition:structDefinition
 */
-public class StructType extends AbstractType {
+public class StructType extends AbstractType  {
 
-  // ----------------------------------
-  // Instance Variables
+    // ----------------------------------
+    // Instance Variables
 
-  // structType: type -> string
-  private String name;
+	// structType: type -> string
+	private String name;
 
-  // PHASE Identification
-  private StructDefinition structDefinition;
+    // PHASE Identification
+	private StructDefinition structDefinition;
 
-  // ----------------------------------
-  // Constructors
+    // ----------------------------------
+    // Constructors
 
-  public StructType(String name) {
-    super();
+	public StructType(String name) {
+		super();
 
-    if (name == null)
-      throw new IllegalArgumentException(
-          "Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract"
-              + " grammar");
-    this.name = name;
+		if (name == null)
+			throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.name = name;
 
-    updatePositions(name);
-  }
+		updatePositions(name);
+	}
 
-  public StructType(Object name) {
-    super();
+	public StructType(Object name) {
+		super();
 
-    if (name == null)
-      throw new IllegalArgumentException(
-          "Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract"
-              + " grammar");
-    this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
+        if (name == null)
+            throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 
-    updatePositions(name);
-  }
+		updatePositions(name);
+	}
 
-  // ----------------------------------
-  // structType: type -> string
 
-  // Child 'string'
+    // ----------------------------------
+    // structType: type -> string
 
-  public void setName(String name) {
-    if (name == null)
-      throw new IllegalArgumentException(
-          "Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract"
-              + " grammar");
-    this.name = name;
-  }
+	// Child 'string' 
 
-  public String getName() {
-    return name;
-  }
+	public void setName(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
+		this.name = name;
 
-  // --------------------------------
-  // PHASE Identification
+	}
 
-  // Attribute 'structDefinition'
+    public String getName() {
+        return name;
+    }
 
-  public void setStructDefinition(StructDefinition structDefinition) {
-    if (structDefinition == null)
-      throw new IllegalArgumentException(
-          "Parameter 'structDefinition' can't be null. Pass a non-null value or use"
-              + " 'structDefinition?' in the abstract grammar");
-    this.structDefinition = structDefinition;
-  }
 
-  public StructDefinition getStructDefinition() {
-    return structDefinition;
-  }
 
-  // ----------------------------------
-  // Helper methods
+    // --------------------------------
+    // PHASE Identification
 
-  @Override
-  public Object accept(Visitor v, Object param) {
-    return v.visit(this, param);
-  }
+	// Attribute 'structDefinition' 
 
-  @Override
-  public String toString() {
-    return "StructType{" + " name=" + this.getName() + "}";
-  }
+	public void setStructDefinition(StructDefinition structDefinition) {
+		if (structDefinition == null)
+			throw new IllegalArgumentException("Parameter 'structDefinition' can't be null. Pass a non-null value or use 'structDefinition?' in the abstract grammar");
+		this.structDefinition = structDefinition;
+
+	}
+
+    public StructDefinition getStructDefinition() {
+        return structDefinition;
+    }
+
+
+    // ----------------------------------
+    // Helper methods
+
+    @Override
+    public Object accept(Visitor v, Object param) {
+        return v.visit(this, param);
+    }
+
+    @Override
+    public String toString() {
+        return "StructType{" + " name=" + this.getName() + "}";
+    }
+
 
   // %% User Members -------------------------
 

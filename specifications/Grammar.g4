@@ -20,11 +20,11 @@ program returns [Program ast]
 // GLOBAL
 
 globalSection returns [GlobalSection ast]
-  : 'global' (globalTypesSection? globalVarsSection?) { $ast = new GlobalSection($globalTypesSection.list, $globalVarsSection.list); }
+  : 'global' (globalTypesSection globalVarsSection) { $ast = new GlobalSection($globalTypesSection.list, $globalVarsSection.list); }
   ;
 
 globalTypesSection returns [List<StructDefinition> list = new ArrayList<StructDefinition>()]
-  : 'types' (typeDefinition { $list.add($typeDefinition.ast); } )*
+  : ('types' (typeDefinition { $list.add($typeDefinition.ast); } )*)?
   ;
 
 typeDefinition returns [StructDefinition ast]
@@ -51,7 +51,7 @@ multipleFieldDefinition returns [List<FieldDefinition> list = new ArrayList<Fiel
   ;
 
 globalVarsSection returns [List<VarDefinition> list = new ArrayList<VarDefinition>()]
-  : 'vars' varDefinitions { $list = $varDefinitions.list; }
+  : ('vars' varDefinitions { $list = $varDefinitions.list; })?
   ;
 
 // CREATE
@@ -140,7 +140,8 @@ expressions returns [List<Expression> list = new ArrayList<Expression>()]
 // Statement
 
 statement returns [Statement ast]
-  : ('print' | 'println') expressions ';' { $ast = new Print($expressions.list); }
+  : 'print' expressions ';' { $ast = new Print($expressions.list); }
+  | 'println' expressions ';' { $ast = new Println($expressions.list); }
 	| 'read' expressions ';' { $ast = new Read($expressions.list); }
 	| IDENT '(' arguments ')' ';' { $ast = new FunctionCallStatement($IDENT, $arguments.list); }
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }

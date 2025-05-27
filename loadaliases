@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+alias a="./antlr"           # antlr
+alias v="./vgen"            # vgen
+alias c="./compile"         # compile
+alias r="./run"             # run
+alias o="cat output.txt"    # open output
+alias b="a && v && c && r"  # build
+alias cr="c && r"           # compile and run
+alias cro="c && r && o"     # compile, run and open
+alias ro="r >/dev/null && o"           # run and open

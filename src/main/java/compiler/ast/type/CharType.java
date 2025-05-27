@@ -11,23 +11,26 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	charType: type ->
-	type ->
+	charType: type -> 
+	type -> 
 */
-public class CharType extends AbstractType {
+public class CharType extends AbstractType  {
 
-  // ----------------------------------
-  // Helper methods
 
-  @Override
-  public Object accept(Visitor v, Object param) {
-    return v.visit(this, param);
-  }
 
-  @Override
-  public String toString() {
-    return "CharType{" + "}";
-  }
+    // ----------------------------------
+    // Helper methods
+
+    @Override
+    public Object accept(Visitor v, Object param) {
+        return v.visit(this, param);
+    }
+
+    @Override
+    public String toString() {
+        return "CharType{" + "}";
+    }
+
 
   // %% User Members -------------------------
 

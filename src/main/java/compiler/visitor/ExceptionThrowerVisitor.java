@@ -71,6 +71,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Println println, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Println)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(Read read, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Read)' has been invoked but it has not been implemented.");

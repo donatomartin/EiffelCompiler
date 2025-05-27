@@ -11,9 +11,12 @@ import compiler.ast.*;
 // %% -------------------------------
 
 /*
-	type ->
+	type -> 
 */
 public interface Type extends AST {
+
+
+
 
   // %% User Members -------------------------
 

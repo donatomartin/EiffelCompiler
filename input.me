@@ -1,0 +1,42 @@
+class prog3;
+
+	global
+		types
+
+			deftuple Nombre as
+				letras : [10] CHARACTER;
+			end
+
+			deftuple Persona as
+				nombre : Nombre;
+				edad : INTEGER;
+			end
+
+	create
+		main;
+		
+	feature main is
+		local
+			a : INTEGER;
+			f : DOUBLE;
+			c : CHARACTER;
+			v : [10] INTEGER;
+			v1 : [10][10] INTEGER;
+
+			raul : Persona;
+		do
+			a := 1;
+			f := 1.0;
+			c := 'a';
+			
+			raul.edad := 1;
+			raul.nombre.letras[1] := 'a';
+			
+			a := raul.edad;
+			c := raul.nombre.letras[1];
+			
+	end
+
+end
+
+run main();

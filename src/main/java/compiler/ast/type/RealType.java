@@ -11,23 +11,26 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	realType: type ->
-	type ->
+	realType: type -> 
+	type -> 
 */
-public class RealType extends AbstractType {
+public class RealType extends AbstractType  {
 
-  // ----------------------------------
-  // Helper methods
 
-  @Override
-  public Object accept(Visitor v, Object param) {
-    return v.visit(this, param);
-  }
 
-  @Override
-  public String toString() {
-    return "RealType{" + "}";
-  }
+    // ----------------------------------
+    // Helper methods
+
+    @Override
+    public Object accept(Visitor v, Object param) {
+        return v.visit(this, param);
+    }
+
+    @Override
+    public String toString() {
+        return "RealType{" + "}";
+    }
+
 
   // %% User Members -------------------------
 

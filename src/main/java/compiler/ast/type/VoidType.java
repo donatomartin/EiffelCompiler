@@ -35,6 +35,9 @@ public class VoidType extends AbstractType  {
     // %% User Members -------------------------
 
         // Methods/attributes in this section will be preserved. Delete if not needed
+        public int getSize() {
+            return 0; // Void type has no size
+        }
 
     // %% --------------------------------------
 }

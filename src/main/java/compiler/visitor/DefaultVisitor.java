@@ -88,6 +88,13 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Println println, Object param) {
+
+		println.getExpressions().forEach(expression -> expression.accept(this, param));
+		return null;
+	}
+
+	@Override
 	public Object visit(Read read, Object param) {
 
 		read.getExpressions().forEach(expression -> expression.accept(this, param));

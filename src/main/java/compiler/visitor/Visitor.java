@@ -32,6 +32,8 @@ public interface Visitor {
 
 	public Object visit(Print print, Object param);
 
+	public Object visit(Println println, Object param);
+
 	public Object visit(Read read, Object param);
 
 	public Object visit(FunctionCallStatement functionCallStatement, Object param);

@@ -1,0 +1,93 @@
+#source "input.me"
+#type Nombre: {
+	letras:10 * char
+}
+#type Persona: {
+	nombre:Nombre
+	edad:int
+}
+#func main
+#local a:int
+#local f:float
+#local c:char
+#local v:10 * int
+#local v1:10 * 10 * int
+#local raul:Persona
+#ret void
+call main
+halt
+main:
+enter 239
+
+#line 28
+push bp
+push 0
+addi
+pushi 1
+storei
+
+#line 29
+push bp
+push -2
+addi
+pushf 1.0
+storef
+
+#line 30
+push bp
+push -6
+addi
+pushb 39
+storeb
+
+#line 32
+push bp
+push -227
+addi
+pushi 0
+addi
+pushi 1
+storei
+
+#line 33
+push bp
+push -227
+addi
+pushi 0
+addi
+pushi 0
+addi
+pushi 1
+pushi 1
+muli
+addi
+pushb 39
+storeb
+
+#line 35
+push bp
+push 0
+addi
+loadi
+storei
+
+#line 36
+push bp
+push -6
+addi
+push bp
+push -227
+addi
+pushi 0
+addi
+pushi 0
+addi
+pushi 1
+pushi 1
+muli
+addi
+loadb
+storeb
+ret 0,239,0
+main:
+call main

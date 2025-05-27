@@ -160,8 +160,9 @@ public class AstPrinter implements Visitor {
         printNodeChild(indent + 1, "type", "Type", varDefinition.getType());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-0", "scope", "int", varDefinition.getScope());
         printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", varDefinition.getAddress());
-		printUnknownFields(indent + 1, varDefinition, "name", "type", "address");
+		printUnknownFields(indent + 1, varDefinition, "name", "type", "scope", "address");
 		return null;
 	}
 
@@ -209,8 +210,9 @@ public class AstPrinter implements Visitor {
         printListOfNodesChild(indent + 1, "statements", "List<Statement>", functionDefinition.getStatements());
 
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-1", "hasReturn", "boolean", functionDefinition.isHasReturn());
         printToString(indent + 1, "vgen-attribute-phase-2", "address", "int", functionDefinition.getAddress());
-		printUnknownFields(indent + 1, functionDefinition, "name", "parameters", "type", "locals", "statements", "address");
+		printUnknownFields(indent + 1, functionDefinition, "name", "parameters", "type", "locals", "statements", "hasReturn", "address");
 		return null;
 	}
 
@@ -225,6 +227,20 @@ public class AstPrinter implements Visitor {
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
         printToString(indent + 1, "vgen-attribute-phase-1", "function", "FunctionDefinition", print.getFunction());
 		printUnknownFields(indent + 1, print, "expressions", "function");
+		return null;
+	}
+
+	@Override
+	public Object visit(Println println, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printListOfNodesChild(indent + 1, "expressions", "List<Expression>", println.getExpressions());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-1", "function", "FunctionDefinition", println.getFunction());
+		printUnknownFields(indent + 1, println, "expressions", "function");
 		return null;
 	}
 
