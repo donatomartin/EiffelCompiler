@@ -13,14 +13,14 @@ import Tokenizer;
  // PROGRAM
 
 program returns [Program ast]
-	: 'class' IDENT ';' globalSection? createSection functionDefinitions+=functionDefinition* 'end' run EOF
-  	{$ast = new Program($IDENT, $globalSection.ast, $createSection.list, $functionDefinitions, $run.ast); }
+	: 'class' IDENT ';' globalSection createSection functionDefinitions+=functionDefinition* 'end' run EOF
+  	{$ast = new Program($IDENT, $globalSection.list, $createSection.list, $functionDefinitions, $run.ast); }
 	;
 
 // GLOBAL
 
-globalSection returns [GlobalSection ast]
-  : 'global' (globalTypesSection globalVarsSection) { $ast = new GlobalSection($globalTypesSection.list, $globalVarsSection.list); }
+globalSection returns [List<Definition> list = new ArrayList<Definition>()]
+  : ('global' (globalTypesSection { $list.addAll($globalTypesSection.list); } globalVarsSection { $list.addAll($globalVarsSection.list); })) ?
   ;
 
 globalTypesSection returns [List<StructDefinition> list = new ArrayList<StructDefinition>()]
@@ -147,21 +147,21 @@ statement returns [Statement ast]
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
 	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($expr.ast, $ifStatements, $elseStatements); }
 	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($expr.ast, $ifStatements, null); }
-	| fromClause? 'until' expr=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $expr.ast, $loopStatements); }
+	| fromClause 'until' expr=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $expr.ast, $loopStatements); }
 	| 'return' expr=expression ';' { $ast = new Return($expr.ast); }
 	| 'return' ';' { $ast = new Return(null); }
 	;
 
 fromClause returns [List<Statement> list = new ArrayList<Statement>()]
-  : 'from'  (expr1=expression ':=' expr2=expression ';' { $list.add(new Assignment($expr1.ast, $expr2.ast)); } )*
+  : ('from'  (expr1=expression ':=' expr2=expression ';' { $list.add(new Assignment($expr1.ast, $expr2.ast)); } )*)?
   ;
 
 // Type
 
 type returns [Type ast]
-	: 'INTEGER' { $ast = new IntType(); }
-	| 'DOUBLE' { $ast = new RealType(); }
-	| 'CHARACTER' { $ast = new CharType(); }
-	| '[' INT_LITERAL ']' type { $ast = new ArrayType($INT_LITERAL, $type.ast); }
-	| IDENT { $ast = new StructType($IDENT); }
+	: 'INTEGER' { $ast = new IntType(); $ast.updatePositions($ctx.start); }
+	| 'DOUBLE' { $ast = new RealType(); $ast.updatePositions($ctx.start); }
+	| 'CHARACTER' { $ast = new CharType(); $ast.updatePositions($ctx.start); }
+	| '[' INT_LITERAL ']' type { $ast = new ArrayType($INT_LITERAL, $type.ast); $ast.updatePositions($ctx.start); }
+	| IDENT { $ast = new StructType($IDENT); $ast.updatePositions($ctx.start); }
 	;

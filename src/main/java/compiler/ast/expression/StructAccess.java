@@ -3,6 +3,7 @@
 package compiler.ast.expression;
 
 import compiler.ast.type.*;
+import compiler.ast.definition.*;
 import org.antlr.v4.runtime.Token;
 import compiler.visitor.Visitor;
 
@@ -18,7 +19,8 @@ import compiler.visitor.Visitor;
 	
 	PHASE TypeChecking
 	expression -> lvalue:boolean
-	expression -> type:type
+	expression -> expressionType:type
+	structAccess -> fieldDefinition:fieldDefinition
 */
 public class StructAccess extends AbstractExpression  {
 
@@ -28,6 +30,9 @@ public class StructAccess extends AbstractExpression  {
 	// structAccess: expression -> expr:expression string
 	private Expression expr;
 	private String name;
+
+    // PHASE TypeChecking
+	private FieldDefinition fieldDefinition;
 
     // ----------------------------------
     // Constructors
@@ -89,6 +94,24 @@ public class StructAccess extends AbstractExpression  {
 
     public String getName() {
         return name;
+    }
+
+
+
+    // --------------------------------
+    // PHASE TypeChecking
+
+	// Attribute 'fieldDefinition' 
+
+	public void setFieldDefinition(FieldDefinition fieldDefinition) {
+		if (fieldDefinition == null)
+			throw new IllegalArgumentException("Parameter 'fieldDefinition' can't be null. Pass a non-null value or use 'fieldDefinition?' in the abstract grammar");
+		this.fieldDefinition = fieldDefinition;
+
+	}
+
+    public FieldDefinition getFieldDefinition() {
+        return fieldDefinition;
     }
 
 

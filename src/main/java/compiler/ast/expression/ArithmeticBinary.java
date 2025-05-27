@@ -18,7 +18,7 @@ import compiler.visitor.Visitor;
 	
 	PHASE TypeChecking
 	expression -> lvalue:boolean
-	expression -> type:type
+	expression -> expressionType:type
 */
 public class ArithmeticBinary extends AbstractExpression  {
 

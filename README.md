@@ -1,5 +1,11 @@
 # Compilador
 
+Donato A. Martín
+
+# Bugs:
+
+Si hay dos variables nombradas v y v1, v1 resuelve a v? Mirar luego
+
 # Apuntes
 
 ## Clase 4

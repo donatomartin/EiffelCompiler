@@ -18,8 +18,6 @@ import compiler.ast.expression.*;
 public interface Visitor {
 	public Object visit(Program program, Object param);
 
-	public Object visit(GlobalSection globalSection, Object param);
-
 	public Object visit(FunctionCreation functionCreation, Object param);
 
 	public Object visit(VarDefinition varDefinition, Object param);

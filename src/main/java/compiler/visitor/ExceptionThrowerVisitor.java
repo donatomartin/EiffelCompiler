@@ -29,12 +29,6 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
-	public Object visit(GlobalSection globalSection, Object param) {
-
-        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(GlobalSection)' has been invoked but it has not been implemented.");
-	}
-
-	@Override
 	public Object visit(FunctionCreation functionCreation, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(FunctionCreation)' has been invoked but it has not been implemented.");

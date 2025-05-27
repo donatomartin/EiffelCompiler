@@ -20,8 +20,7 @@ public class Run extends AbstractCodeFunction {
 		out("call main");
 		out("halt");
 		
-		execute(program.getGlobalSection().structDefinitions());
-		execute(program.getGlobalSection().varDefinitions());
+		execute(program.definitions());
 		execute(program.functionDefinitions());
 		execute(program.getRun());
 

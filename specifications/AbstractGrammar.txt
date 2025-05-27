@@ -7,9 +7,8 @@ type;
 
 NODES
 
-program -> string globalSection functionCreation* functionDefinition* run; 
+program -> string definition* functionCreation* functionDefinition* run; 
 
-globalSection -> structDefinition* varDefinition*;
 functionCreation -> string;
 
 varDefinition:definition -> string type;
@@ -38,7 +37,7 @@ voidType:type -> ;
 variable:expression -> string;
 intLiteral:expression -> int;
 realLiteral:expression -> float;
-charLiteral:expression -> char;
+charLiteral:expression -> string;
 functionCallExpression:expression -> string expression*;
 structAccess:expression -> expr:expression string;
 arrayAccess:expression -> left:expression right:expression;
@@ -58,15 +57,17 @@ variable -> varDefinition;
 varDefinition -> scope:int;
 functionCallStatement -> functionDefinition;
 functionCallExpression -> functionDefinition;
+run -> functionDefinition;
 structType -> structDefinition;
 fieldDefinition -> structDefinition;
 
 ATTRIBUTE GRAMMAR TypeChecking
 
 expression -> lvalue:boolean;
-expression -> type;
+expression -> expressionType:type;
 statement -> function:functionDefinition;
 functionDefinition -> hasReturn:boolean;
+structAccess -> fieldDefinition;
 
 ATTRIBUTE GRAMMAR MemoryAllocation
 

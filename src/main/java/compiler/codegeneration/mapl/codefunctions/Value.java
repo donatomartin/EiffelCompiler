@@ -53,7 +53,7 @@ public class Value extends AbstractCodeFunction {
   public Object visit(Variable variable, Object param) {
 
     address(variable);
-    out("load", variable.getType());
+    out("load", variable.getExpressionType());
 
     return null;
   }
@@ -82,11 +82,15 @@ public class Value extends AbstractCodeFunction {
   // phase TypeChecking { boolean lvalue, Type type }
   @Override
   public Object visit(CharLiteral charLiteral, Object param) {
+		if (charLiteral.getName().equals("'\\n'")) {
+			char character = '\n';
+			out("pushb " + (int) character);
+		} else {
+			char character = charLiteral.getName().charAt(1);
+			out("pushb " + (int) character);
+		}
 
-    char character = charLiteral.getCharValue();
-    out("pushb " + (int) character);
-
-    return null;
+		return null;
   }
 
   // class FunctionCallExpression(String name, List<Expression> expressions)
@@ -107,7 +111,8 @@ public class Value extends AbstractCodeFunction {
   @Override
   public Object visit(StructAccess structAccess, Object param) {
 
-    out("load", structAccess.getType());
+		address(structAccess);
+    out("load", structAccess.getExpressionType());
 
     return null;
   }
@@ -118,7 +123,7 @@ public class Value extends AbstractCodeFunction {
   public Object visit(ArrayAccess arrayAccess, Object param) {
 
     address(arrayAccess);
-    out("load", arrayAccess.getType());
+    out("load", arrayAccess.getExpressionType());
 
     return null;
   }
@@ -130,8 +135,12 @@ public class Value extends AbstractCodeFunction {
 
     value(cast.getExpression());
 
-    if (!Objects.equals(cast.getType().getClass(), cast.getExpression().getType().getClass())) {
-      out(suffixFor(cast.getExpression().getType()) + "2" + suffixFor(cast.getType()));
+    if (!Objects.equals(
+        cast.getExpressionType().getClass(), cast.getExpression().getExpressionType().getClass())) {
+      out(
+          suffixFor(cast.getExpression().getExpressionType())
+              + "2"
+              + suffixFor(cast.getExpressionType()));
     }
 
     return null;
@@ -144,7 +153,9 @@ public class Value extends AbstractCodeFunction {
 
     value(arithmeticBinary.getLeft());
     value(arithmeticBinary.getRight());
-    out(arithmeticOperators.get(arithmeticBinary.getOperator()), arithmeticBinary.getType());
+    out(
+        arithmeticOperators.get(arithmeticBinary.getOperator()),
+        arithmeticBinary.getExpressionType());
 
     return null;
   }
@@ -154,8 +165,8 @@ public class Value extends AbstractCodeFunction {
   @Override
   public Object visit(ArithmeticUnary arithmeticUnary, Object param) {
 
-	value(arithmeticUnary.getExpr());
-	out("-");
+    value(arithmeticUnary.getExpr());
+    out("-");
 
     return null;
   }
@@ -180,8 +191,8 @@ public class Value extends AbstractCodeFunction {
   @Override
   public Object visit(LogicUnary logicUnary, Object param) {
 
-	value(logicUnary.getExpr());
-	out("not");
+    value(logicUnary.getExpr());
+    out("not");
 
     return null;
   }
@@ -199,6 +210,5 @@ public class Value extends AbstractCodeFunction {
     out(relationalOperators.get(operator));
 
     return null;
-
   }
 }

@@ -16,16 +16,16 @@ import compiler.visitor.Visitor;
 // %% -------------------------------
 
 /*
-	program -> name:string globalSection:globalSection functionCreations:functionCreation* functionDefinitions:functionDefinition* run:run
+	program -> name:string definitions:definition* functionCreations:functionCreation* functionDefinitions:functionDefinition* run:run
 */
 public class Program extends AbstractAST  {
 
     // ----------------------------------
     // Instance Variables
 
-	// program -> string globalSection functionCreation* functionDefinition* run
+	// program -> string definition* functionCreation* functionDefinition* run
 	private String name;
-	private GlobalSection globalSection;
+	private List<Definition> definitions;
 	private List<FunctionCreation> functionCreations;
 	private List<FunctionDefinition> functionDefinitions;
 	private Run run;
@@ -33,16 +33,16 @@ public class Program extends AbstractAST  {
     // ----------------------------------
     // Constructors
 
-	public Program(String name, GlobalSection globalSection, List<FunctionCreation> functionCreations, List<FunctionDefinition> functionDefinitions, Run run) {
+	public Program(String name, List<Definition> definitions, List<FunctionCreation> functionCreations, List<FunctionDefinition> functionDefinitions, Run run) {
 		super();
 
 		if (name == null)
 			throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
 		this.name = name;
 
-		if (globalSection == null)
-			throw new IllegalArgumentException("Parameter 'globalSection' can't be null. Pass a non-null value or use 'globalSection?' in the abstract grammar");
-		this.globalSection = globalSection;
+		if (definitions == null)
+			definitions = new ArrayList<>();
+		this.definitions = definitions;
 
 		if (functionCreations == null)
 			functionCreations = new ArrayList<>();
@@ -56,32 +56,29 @@ public class Program extends AbstractAST  {
 			throw new IllegalArgumentException("Parameter 'run' can't be null. Pass a non-null value or use 'run?' in the abstract grammar");
 		this.run = run;
 
-		updatePositions(name, globalSection, functionCreations, functionDefinitions, run);
+		updatePositions(name, definitions, functionCreations, functionDefinitions, run);
 	}
 
-	public Program(Object name, Object globalSection, Object functionCreations, Object functionDefinitions, Object run) {
+	public Program(Object name, Object definitions, Object functionCreations, Object functionDefinitions, Object run) {
 		super();
 
         if (name == null)
             throw new IllegalArgumentException("Parameter 'name' can't be null. Pass a non-null value or use 'string?' in the abstract grammar");
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 
-        if (globalSection == null)
-            throw new IllegalArgumentException("Parameter 'globalSection' can't be null. Pass a non-null value or use 'globalSection?' in the abstract grammar");
-		this.globalSection = (GlobalSection) globalSection;
-
+        this.definitions = castList(definitions, unwrapIfContext.andThen(Definition.class::cast));
         this.functionCreations = castList(functionCreations, unwrapIfContext.andThen(FunctionCreation.class::cast));
         this.functionDefinitions = castList(functionDefinitions, unwrapIfContext.andThen(FunctionDefinition.class::cast));
         if (run == null)
             throw new IllegalArgumentException("Parameter 'run' can't be null. Pass a non-null value or use 'run?' in the abstract grammar");
 		this.run = (Run) run;
 
-		updatePositions(name, globalSection, functionCreations, functionDefinitions, run);
+		updatePositions(name, definitions, functionCreations, functionDefinitions, run);
 	}
 
 
     // ----------------------------------
-    // program -> string globalSection functionCreation* functionDefinition* run
+    // program -> string definition* functionCreation* functionDefinition* run
 
 	// Child 'string' 
 
@@ -97,17 +94,21 @@ public class Program extends AbstractAST  {
     }
 
 
-	// Child 'globalSection' 
+	// Child 'definition*' 
 
-	public void setGlobalSection(GlobalSection globalSection) {
-		if (globalSection == null)
-			throw new IllegalArgumentException("Parameter 'globalSection' can't be null. Pass a non-null value or use 'globalSection?' in the abstract grammar");
-		this.globalSection = globalSection;
+	public void setDefinitions(List<Definition> definitions) {
+		if (definitions == null)
+			definitions = new ArrayList<>();
+		this.definitions = definitions;
 
 	}
 
-    public GlobalSection getGlobalSection() {
-        return globalSection;
+    public List<Definition> getDefinitions() {
+        return definitions;
+    }
+
+    public Stream<Definition> definitions() {
+        return definitions.stream();
     }
 
 
@@ -171,7 +172,7 @@ public class Program extends AbstractAST  {
 
     @Override
     public String toString() {
-        return "Program{" + " name=" + this.getName() + " globalSection=" + this.getGlobalSection() + " functionCreations=" + this.getFunctionCreations() + " functionDefinitions=" + this.getFunctionDefinitions() + " run=" + this.getRun() + "}";
+        return "Program{" + " name=" + this.getName() + " definitions=" + this.getDefinitions() + " functionCreations=" + this.getFunctionCreations() + " functionDefinitions=" + this.getFunctionDefinitions() + " run=" + this.getRun() + "}";
     }
 
 

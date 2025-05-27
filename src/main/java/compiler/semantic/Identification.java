@@ -18,6 +18,7 @@ public class Identification extends DefaultVisitor {
   private Map<String, StructDefinition> structDefinitions = new HashMap<>();
   private Map<String, FieldDefinition> fieldDefinitions = new HashMap<>();
   private Map<String, FunctionDefinition> functionDefinitions = new HashMap<>();
+  private Map<String, FunctionCreation> functionCreations = new HashMap<>();
 
   public Identification(ErrorManager errorManager) {
     this.errorManager = errorManager;
@@ -32,6 +33,13 @@ public class Identification extends DefaultVisitor {
   // class FunctionCreation(String name)
   @Override
   public Object visit(FunctionCreation functionCreation, Object param) {
+    
+    if (functionCreations.get(functionCreation.getName()) != null) {
+      notifyError("Function " + functionCreation.getName() + " already created", functionCreation);
+      return null;
+    }
+    
+    functionCreations.put(functionCreation.getName(), functionCreation);
 
     return null;
   }
@@ -196,6 +204,21 @@ public class Identification extends DefaultVisitor {
 
     functionCallExpression.getExpressions().forEach(expression -> expression.accept(this, param));
 
+    return null;
+  }
+  
+  @Override
+  public Object visit(Run run, Object param) {
+
+    super.visit(run, param);
+
+    if (functionCreations.get(run.getName()) == null) {
+      notifyError("Run " + run.getName() + " not created", run);
+      return null;
+    }
+
+    run.setFunctionDefinition(functionDefinitions.get(run.getName()));
+    
     return null;
   }
 

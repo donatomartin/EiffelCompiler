@@ -7,16 +7,14 @@ class prog4;
 				edad : INTEGER;
 			end
 	create
-		inicio;
-		prueba;
-	feature inicio is
+		main;
+	feature main is
 		local
 			a : INTEGER;
 			f : DOUBLE;
 			c : CHARACTER;
 			v : [10] INTEGER;
-			p : [10][10] INTEGER;
-			i : INTEGER;
+			v1 : [10][10] INTEGER;
 
 			raul : Persona;
 		do
@@ -26,7 +24,7 @@ class prog4;
 			c := '\n';
 			
 			v[0] := 1;
-			p[0][0] := 1;
+			v[0][0] := 1;
 			
 			raul.edad := 1;
 			raul.nombre.letras[1] := 'a';
@@ -34,22 +32,8 @@ class prog4;
 			a := raul.edad;
 			c := raul.nombre.letras[1];
 			
-			from
-				i := 0;
-			until i > 10 loop
-				i := i + 1;
-				println(i);
-			end
-			
-			println(i);
-			
-			c := '\n';
-			
-			println(c);
-
-			
 	end
 
 end
 
-run inicio();
+run main();

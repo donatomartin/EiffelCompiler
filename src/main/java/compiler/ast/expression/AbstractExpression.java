@@ -17,7 +17,7 @@ import org.antlr.v4.runtime.Token;
 	
 	PHASE TypeChecking
 	expression -> lvalue:boolean
-	expression -> type:type
+	expression -> expressionType:type
 */
 public abstract class AbstractExpression extends AbstractAST implements Expression {
 
@@ -27,7 +27,7 @@ public abstract class AbstractExpression extends AbstractAST implements Expressi
 
     // PHASE TypeChecking
 	private boolean lvalue;
-	private Type type;
+	private Type expressionType;
 
 
 
@@ -46,17 +46,17 @@ public abstract class AbstractExpression extends AbstractAST implements Expressi
     }
 
 
-	// Attribute 'type' 
+	// Attribute 'expressionType:type' 
 
-	public void setType(Type type) {
-		if (type == null)
-			throw new IllegalArgumentException("Parameter 'type' can't be null. Pass a non-null value or use 'type?' in the abstract grammar");
-		this.type = type;
+	public void setExpressionType(Type expressionType) {
+		if (expressionType == null)
+			throw new IllegalArgumentException("Parameter 'expressionType' can't be null. Pass a non-null value or use 'type?' in the abstract grammar");
+		this.expressionType = expressionType;
 
 	}
 
-    public Type getType() {
-        return type;
+    public Type getExpressionType() {
+        return expressionType;
     }
 
 

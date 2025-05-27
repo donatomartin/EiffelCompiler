@@ -73,6 +73,8 @@ public class Execute extends AbstractCodeFunction {
 
     out("main:");    
     out("call " + run.getName());
+    out("ret 0,0,0");
+    
     
     return null;
         
@@ -87,7 +89,7 @@ public class Execute extends AbstractCodeFunction {
 
 		print.getExpressions().stream().forEach(x -> {
 			value(x);
-			out("out", x.getType());
+			out("out", x.getExpressionType());
 		});
 
 		return null;
@@ -102,7 +104,7 @@ public class Execute extends AbstractCodeFunction {
 
 		println.expressions().forEach(x -> {
 			value(x);
-			out("out", x.getType());
+			out("out", x.getExpressionType());
 			outLn();
 		});
 	
@@ -120,8 +122,8 @@ public class Execute extends AbstractCodeFunction {
 
     for (var expression : read.getExpressions()) {
       address(expression);
-      out("in", expression.getType());
-      out("store", expression.getType());
+      out("in", expression.getExpressionType());
+      out("store", expression.getExpressionType());
     }
 
     return null;
@@ -136,9 +138,16 @@ public class Execute extends AbstractCodeFunction {
     // value(functionCallStatement.expressions());
     // address(functionCallStatement.expressions());
 
-    out("<instruction>");
+		line(functionCallStatement);
+		
+		value(functionCallStatement);
+		
+		if(functionCallStatement.getFunctionDefinition().getType().isPresent()) {
+			out("pop", functionCallStatement.getFunctionDefinition().getType().get());
+		}
 
-    return null;
+		return null;
+
   }
 
   // class Assignment(Expression left, Expression right)
@@ -150,7 +159,7 @@ public class Execute extends AbstractCodeFunction {
 
 		address(assignment.getLeft());
 		value(assignment.getRight());
-		out("store", assignment.getLeft().getType());
+		out("store", assignment.getLeft().getExpressionType());
 
 		return null;
   }
@@ -193,7 +202,7 @@ public class Execute extends AbstractCodeFunction {
 
 		out(loopLabel + ":");
 		value(loop.getExpression());
-		out("jz " + exitLabel);
+		out("jnz " + exitLabel);
 		
 		execute(loop.loopStatements(), param);
 		

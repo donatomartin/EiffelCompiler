@@ -28,18 +28,10 @@ public class DefaultVisitor implements Visitor {
 	@Override
 	public Object visit(Program program, Object param) {
 
-		program.getGlobalSection().accept(this, param);
+		program.getDefinitions().forEach(definition -> definition.accept(this, param));
 		program.getFunctionCreations().forEach(functionCreation -> functionCreation.accept(this, param));
 		program.getFunctionDefinitions().forEach(functionDefinition -> functionDefinition.accept(this, param));
 		program.getRun().accept(this, param);
-		return null;
-	}
-
-	@Override
-	public Object visit(GlobalSection globalSection, Object param) {
-
-		globalSection.getStructDefinitions().forEach(structDefinition -> structDefinition.accept(this, param));
-		globalSection.getVarDefinitions().forEach(varDefinition -> varDefinition.accept(this, param));
 		return null;
 	}
 

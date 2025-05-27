@@ -17,7 +17,7 @@ import org.antlr.v4.runtime.Token;
 	
 	PHASE TypeChecking
 	expression -> lvalue:boolean
-	expression -> type:type
+	expression -> expressionType:type
 */
 public interface Expression extends AST {
 
@@ -32,10 +32,10 @@ public interface Expression extends AST {
 	public void setLvalue(boolean lvalue);
 	public boolean isLvalue();
 
-	// Attribute 'type' 
+	// Attribute 'expressionType:type' 
 
-	public void setType(Type type);
-	public Type getType();
+	public void setExpressionType(Type expressionType);
+	public Type getExpressionType();
 
 
     // %% User Members -------------------------

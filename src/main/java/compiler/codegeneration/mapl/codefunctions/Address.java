@@ -38,7 +38,7 @@ public class Address extends AbstractCodeFunction {
 		// value(fieldAccess.getExpr());
 		address(structAccess.getExpr());
 
-		out("pushi " + ((StructType)structAccess.getExpr().getType()).getStructDefinition().getAddress());
+		out("pushi " + structAccess.getFieldDefinition().getAddress());
 		out("addi");
 
 		return null;
@@ -55,7 +55,7 @@ public class Address extends AbstractCodeFunction {
 		// value(arrayAccess.getExpr2());
 		value(arrayAccess.getRight());
 
-		out("pushi " + arrayAccess.getType().getSize());
+		out("pushi " + arrayAccess.getExpressionType().getSize());
 		out("muli");
 		out("addi");
 

@@ -74,13 +74,16 @@ public class TypeChecking extends DefaultVisitor {
 
     super.visit(print, param);
 
-    print.getExpressions().forEach(expression -> {
-      predicate(
-          isPrimitive(expression.getType()),
-          "Expression must be of primitive type",
-          expression);
-      expression.setLvalue(false);
-    });
+    print
+        .getExpressions()
+        .forEach(
+            expression -> {
+              predicate(
+                  isPrimitive(expression.getExpressionType()),
+                  "Expression must be of primitive type",
+                  expression);
+              expression.setLvalue(false);
+            });
 
     return null;
   }
@@ -92,13 +95,16 @@ public class TypeChecking extends DefaultVisitor {
     // println.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(println, param);
 
-    println.getExpressions().forEach(expression -> {
-      predicate(
-          isPrimitive(expression.getType()),
-          "Expression must be of primitive type",
-          expression);
-      expression.setLvalue(false);
-    });
+    println
+        .getExpressions()
+        .forEach(
+            expression -> {
+              predicate(
+                  isPrimitive(expression.getExpressionType()),
+                  "Expression must be of primitive type",
+                  expression);
+              expression.setLvalue(false);
+            });
 
     return null;
   }
@@ -110,34 +116,31 @@ public class TypeChecking extends DefaultVisitor {
     // read.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(read, param);
 
-    read.getExpressions().forEach(expression -> {
-      predicate(
-          isPrimitive(expression.getType()),
-          "Expression must be of primitive type",
-          expression);
-      expression.setLvalue(false);
-    });
+    read.getExpressions()
+        .forEach(
+            expression -> {
+              predicate(
+                  isPrimitive(expression.getExpressionType()),
+                  "Expression must be of primitive type",
+                  expression);
+              expression.setLvalue(false);
+            });
 
     return null;
   }
 
   // class Assignment(Expression left, Expression right)
-  @Override
-  public Object visit(Assignment assignment, Object param) {
-
-    super.visit(assignment, param);
-
-    Expression left = assignment.getLeft();
-    Expression right = assignment.getRight();
-
-    predicate(
-        sameType(left.getType(), right.getType()),
-        "Types of left and right expressions do not match",
-        assignment);
-    predicate(left.isLvalue(), "Left expression must be an lvalue", assignment);
-
-    return null;
-  }
+	@Override
+	public Object visit(Assignment assignment, Object param) {
+		super.visit(assignment, param);
+		predicate(isPrimitive(assignment.getLeft().getExpressionType()),
+				"Left expression must have a primitive type", assignment);
+		predicate(sameType(assignment.getLeft().getExpressionType(), assignment.getRight().getExpressionType()),
+				"Types do not match", assignment);
+		predicate(assignment.getLeft().isLvalue(), "Left expression must be an LValue", assignment);
+		
+		return null;
+	}
 
   // class Conditional(Expression expression, List<Statement> ifStatements,
   // List<Statement>
@@ -148,7 +151,9 @@ public class TypeChecking extends DefaultVisitor {
     Expression expression = conditional.getExpression();
     expression.accept(this, param);
     predicate(
-        expression.getType() instanceof IntType, "Expression must be of int type", conditional);
+        expression.getExpressionType() instanceof IntType,
+        "Expression must be of int type",
+        conditional);
 
     for (Statement statement : conditional.getIfStatements()) {
       statement.setFunction(conditional.getFunction());
@@ -179,7 +184,8 @@ public class TypeChecking extends DefaultVisitor {
     } else {
       Expression expression = returnValue.getExpression().get();
       predicate(
-          sameType(returnValue.getFunction().getType().orElse(null), expression.getType()),
+          sameType(
+              returnValue.getFunction().getType().orElse(null), expression.getExpressionType()),
           "Return type does not match function return type",
           returnValue);
     }
@@ -202,7 +208,7 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(Variable variable, Object param) {
 
-    variable.setType(variable.getVarDefinition().getType());
+    variable.setExpressionType(variable.getVarDefinition().getType());
     variable.setLvalue(true);
 
     return null;
@@ -212,7 +218,7 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(IntLiteral intLiteral, Object param) {
 
-    intLiteral.setType(new IntType());
+    intLiteral.setExpressionType(new IntType());
     intLiteral.setLvalue(false);
 
     return null;
@@ -222,7 +228,7 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(RealLiteral realLiteral, Object param) {
 
-    realLiteral.setType(new RealType());
+    realLiteral.setExpressionType(new RealType());
     realLiteral.setLvalue(false);
 
     return null;
@@ -232,7 +238,7 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(CharLiteral charLiteral, Object param) {
 
-    charLiteral.setType(new CharType());
+    charLiteral.setExpressionType(new CharType());
     charLiteral.setLvalue(false);
 
     return null;
@@ -247,7 +253,7 @@ public class TypeChecking extends DefaultVisitor {
     functionCallExpression.setLvalue(false);
 
     if (functionCallExpression.getFunctionDefinition().getType().isPresent()) {
-      functionCallExpression.setType(
+      functionCallExpression.setExpressionType(
           functionCallExpression.getFunctionDefinition().getType().orElse(new VoidType()));
     }
 
@@ -256,7 +262,7 @@ public class TypeChecking extends DefaultVisitor {
 
     for (int i = 0; i < parameters.size(); i++) {
       predicate(
-          sameType(parameters.get(i).getType(), arguments.get(i).getType()),
+          sameType(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
           "Argument must match parameter type",
           arguments.get(i));
     }
@@ -275,7 +281,7 @@ public class TypeChecking extends DefaultVisitor {
 
     for (int i = 0; i < parameters.size(); i++) {
       predicate(
-          sameType(parameters.get(i).getType(), arguments.get(i).getType()),
+          sameType(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
           "Argument must match parameter type",
           arguments.get(i));
     }
@@ -291,26 +297,24 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(structAccess, param);
 
     predicate(
-        structAccess.getExpr().getType() instanceof StructType,
+        structAccess.getExpr().getExpressionType() instanceof StructType,
         "Expression must be of struct type",
         structAccess);
 
     boolean found = false;
-    if (structAccess.getExpr().getType() instanceof StructType) {
-      StructType structType = (StructType) structAccess.getExpr().getType();
+    if (structAccess.getExpr().getExpressionType() instanceof StructType) {
+      StructType structType = (StructType) structAccess.getExpr().getExpressionType();
       for (FieldDefinition fieldDefinition :
           structType.getStructDefinition().getFieldDefinitions()) {
         if (fieldDefinition.getName().equals(structAccess.getName())) {
-          structAccess.setType(fieldDefinition.getType());
+          structAccess.setExpressionType(fieldDefinition.getType());
+          structAccess.setFieldDefinition(fieldDefinition);
           found = true;
         }
       }
     }
 
-    predicate(
-        found,
-        "Field '" + structAccess.getName() + "' not found in struct",
-        structAccess);
+    predicate(found, "Field '" + structAccess.getName() + "' not found in struct", structAccess);
 
     structAccess.setLvalue(true);
 
@@ -320,24 +324,26 @@ public class TypeChecking extends DefaultVisitor {
   // class ArrayAccess(Expression left, Expression right)
   @Override
   public Object visit(ArrayAccess arrayAccess, Object param) {
-
     super.visit(arrayAccess, param);
+    
+    // System.out.println("Visiting ArrayAccess: " + arrayAccess);
+    // System.out.println("Left Expression: " + arrayAccess.getLeft() + 
+    //                    " (Type: " + arrayAccess.getLeft().getExpressionType() + ")");
+    // System.out.println("Right Expression: " + arrayAccess.getRight() +
+    //                    " (Type: " + arrayAccess.getRight().getExpressionType() + ")");
+    // System.out.println();
 
-    predicate(
-        arrayAccess.getLeft().getType() instanceof ArrayType,
-        "Expression must be of array type",
-        arrayAccess);
-
-    if (arrayAccess.getLeft().getType() instanceof ArrayType) {
-
-      predicate(
-          arrayAccess.getRight().getType() instanceof IntType,
-          "Index must be of type IntType",
-          arrayAccess);
-      ArrayType arrayType = (ArrayType) arrayAccess.getLeft().getType();
-      arrayAccess.setType(arrayType.getType());
+    Type type = arrayAccess.getLeft().getExpressionType();
+    if (type instanceof ArrayType) {
+      ArrayType at = (ArrayType) type;
+      arrayAccess.setExpressionType(at.getType());
+    } else if (isAccesible(arrayAccess) && arrayAccess.getRight() instanceof IntLiteral) {
+      arrayAccess.setExpressionType(arrayAccess.getLeft().getExpressionType());
     }
 
+    predicate(isAccesible(arrayAccess), "Left expression must be an array", arrayAccess);
+    predicate(
+        arrayAccess.getRight() instanceof IntLiteral, "Right expression must be an integer", arrayAccess);
     arrayAccess.setLvalue(true);
 
     return null;
@@ -353,11 +359,11 @@ public class TypeChecking extends DefaultVisitor {
     Expression expression = cast.getExpression();
 
     predicate(
-        !sameType(castType, expression.getType()),
+        !sameType(castType, expression.getExpressionType()),
         "Types of cast and expression already match",
         cast);
 
-    cast.setType(cast.getCastType());
+    cast.setExpressionType(cast.getCastType());
     cast.setLvalue(false);
 
     return null;
@@ -374,26 +380,28 @@ public class TypeChecking extends DefaultVisitor {
 
     if (arithmetic.getOperator().equals("%")) {
       predicate(
-          left.getType() instanceof IntType,
+          left.getExpressionType() instanceof IntType,
           "Left operand of '%' operator must be of type IntType",
           arithmetic);
       predicate(
-          right.getType() instanceof IntType,
+          right.getExpressionType() instanceof IntType,
           "Right operand of '%' operator must be of type IntType",
           arithmetic);
     } else {
       predicate(
-          left.getType() instanceof IntType || left.getType() instanceof RealType,
+          left.getExpressionType() instanceof IntType
+              || left.getExpressionType() instanceof RealType,
           "Left operand of arithmetic operator must be of type IntType or FloatType",
           arithmetic);
       predicate(
-          right.getType() instanceof IntType || right.getType() instanceof RealType,
+          right.getExpressionType() instanceof IntType
+              || right.getExpressionType() instanceof RealType,
           "Right operand of arithmetic operator must be of type IntType or FloatType",
           arithmetic);
     }
 
     arithmetic.setLvalue(false);
-    arithmetic.setType(left.getType());
+    arithmetic.setExpressionType(left.getExpressionType());
 
     return null;
   }
@@ -415,15 +423,15 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(logicBinary, param);
 
     predicate(
-        isNum(logicBinary.getLeft().getType()),
+        isNum(logicBinary.getLeft().getExpressionType()),
         "Left operand of logical binary operator must be of boolean type",
         logicBinary);
     predicate(
-        isNum(logicBinary.getRight().getType()),
+        isNum(logicBinary.getRight().getExpressionType()),
         "Right operand of logical binary operator must be of boolean type",
         logicBinary);
 
-    logicBinary.setType(new IntType());
+    logicBinary.setExpressionType(new IntType());
     logicBinary.setLvalue(false);
 
     return null;
@@ -437,11 +445,11 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(logicUnary, param);
 
     predicate(
-        isNum(logicUnary.getExpr().getType()),
+        isNum(logicUnary.getExpr().getExpressionType()),
         "Operand of logical unary operator must be of boolean type",
         logicUnary);
 
-    logicUnary.setType(new IntType());
+    logicUnary.setExpressionType(new IntType());
     logicUnary.setLvalue(false);
 
     return null;
@@ -454,15 +462,15 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(relationalBinary, param);
 
     predicate(
-        isNum(relationalBinary.getLeft().getType()),
+        isNum(relationalBinary.getLeft().getExpressionType()),
         "Left operand of relationalBinary operator must be of numeric type",
         relationalBinary);
     predicate(
-        isNum(relationalBinary.getRight().getType()),
+        isNum(relationalBinary.getRight().getExpressionType()),
         "Right operand of relationalBinary operator must be of numeric type",
         relationalBinary);
 
-    relationalBinary.setType(new IntType());
+    relationalBinary.setExpressionType(new IntType());
     relationalBinary.setLvalue(false);
 
     return null;
@@ -475,6 +483,13 @@ public class TypeChecking extends DefaultVisitor {
 
     return typeA.getClass().equals(typeB.getClass());
   }
+
+	private boolean isAccesible(ArrayAccess arrayAccess) {
+		if (arrayAccess.getLeft().getExpressionType() instanceof ArrayType) {
+			return true;
+		}
+		return false;
+	}
 
   private boolean isNum(Type typeA) {
     return typeA instanceof IntType || typeA instanceof RealType;

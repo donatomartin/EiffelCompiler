@@ -1,69 +1,76 @@
 package compiler.codegeneration;
 
-import compiler.ast.*;
+import compiler.ast.AST;
+import compiler.ast.Program;
+import compiler.ast.definition.FieldDefinition;
 import compiler.ast.definition.FunctionDefinition;
 import compiler.ast.definition.StructDefinition;
 import compiler.ast.definition.VarDefinition;
 import compiler.visitor.DefaultVisitor;
+import java.util.List;
 
 // This class will be implemented in memory allocation phase
 
 public class MemoryAllocation extends DefaultVisitor {
-  
+
   public void process(AST ast) {
     ast.accept(this, null);
-  };
+  }
+  ;
 
   @Override
-  public Object visit(GlobalSection globalSection, Object param) {
+  public Object visit(Program program, Object param) {
+    super.visit(program, param);
 
-    int address = 0;
+    int currentAddress = 0;
 
-    for (StructDefinition structDefinition : globalSection.getStructDefinitions()) {
-      structDefinition.accept(this, param);
+    for (var definition : program.getDefinitions()) {
+      definition.accept(this, param);
+      if (definition instanceof VarDefinition) {
+        VarDefinition def = (VarDefinition) definition;
+        def.setAddress(currentAddress);
+        currentAddress += def.getType().getSize();
+      }
     }
+    return null;
+  }
 
-    for (VarDefinition varDefinition : globalSection.getVarDefinitions()) {
-      varDefinition.setAddress(address);
-      address += varDefinition.getType().getSize();
+  @Override
+  public Object visit(StructDefinition structDefinition, Object param) {
+    super.visit(structDefinition, param);
+
+    int currentAddress = 0;
+
+    for (FieldDefinition field : structDefinition.getFieldDefinitions()) {
+      field.setAddress(currentAddress);
+      currentAddress += field.getType().getSize();
     }
+    
+    structDefinition.setAddress(currentAddress);
 
     return null;
   }
 
   @Override
   public Object visit(FunctionDefinition functionDefinition, Object param) {
-
     super.visit(functionDefinition, param);
 
-    int paramOffset = 4;
+    int definitionsAddress = 0;
 
-    for (var parameter : functionDefinition.getParameters()) {
-      parameter.setAddress(paramOffset);
-      paramOffset += parameter.getType().getSize();
+    for (VarDefinition def : functionDefinition.getLocals()) {
+      definitionsAddress -= def.getType().getSize();
+      def.setAddress(definitionsAddress);
     }
 
-    int localVariablesOffset = 0;
+    // Se reserva memoria para la direcci�n de retorno
 
-    for (var localVariable : functionDefinition.getLocals()) {
-      localVariable.setAddress(localVariablesOffset);
-      localVariablesOffset -= localVariable.getType().getSize();
-      localVariable.accept(this, param);
-    }
+    int paramsAddress = 4;
 
-    return null;
-  }
-
-  @Override
-  public Object visit(StructDefinition structDefinition, Object param) {
-
-    super.visit(structDefinition, param);
-
-    int offset = 0;
-
-    for (var fieldDefinition : structDefinition.getFieldDefinitions()) {
-      fieldDefinition.setAddress(offset);
-      offset += fieldDefinition.getType().getSize();
+    List<VarDefinition> params = functionDefinition.getParameters();
+    for (int i = params.size() - 1; i >= 0; i--) {
+      VarDefinition param_ = params.get(i);
+      param_.setAddress(paramsAddress);
+      paramsAddress += param_.getType().getSize();
     }
 
     return null;

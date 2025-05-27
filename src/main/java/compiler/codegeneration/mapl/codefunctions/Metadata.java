@@ -2,8 +2,11 @@
 
 package compiler.codegeneration.mapl.codefunctions;
 
-import compiler.ast.*;
-import compiler.ast.definition.*;
+import compiler.ast.Program;
+import compiler.ast.definition.FieldDefinition;
+import compiler.ast.definition.FunctionDefinition;
+import compiler.ast.definition.StructDefinition;
+import compiler.ast.definition.VarDefinition;
 import compiler.ast.type.ArrayType;
 import compiler.ast.type.CharType;
 import compiler.ast.type.IntType;
@@ -11,7 +14,8 @@ import compiler.ast.type.RealType;
 import compiler.ast.type.StructType;
 import compiler.ast.type.Type;
 import compiler.ast.type.VoidType;
-import compiler.codegeneration.mapl.*;
+import compiler.codegeneration.mapl.AbstractCodeFunction;
+import compiler.codegeneration.mapl.MaplCodeSpecification;
 
 
 public class Metadata extends AbstractCodeFunction {
@@ -27,9 +31,9 @@ public class Metadata extends AbstractCodeFunction {
 
 		out("#source \"" + getSpecification().getSourceFile() + "\"");
 
-		metadata(program.getGlobalSection().structDefinitions());
-		metadata(program.getGlobalSection().varDefinitions());
+		metadata(program.definitions());
         metadata(program.functionDefinitions());
+		metadata(program.getRun());
 
 		return null;
 	}
@@ -84,6 +88,14 @@ public class Metadata extends AbstractCodeFunction {
         metadata(functionDefinition.locals());
         out("#ret " + getTypeName(functionDefinition.getType().orElse(new VoidType())));
 
+		return null;
+	}
+	
+	// class Run(String name)
+	@Override
+	public Object visit(compiler.ast.Run run, Object param) {
+		out("#func main");
+		out("#ret void");
 		return null;
 	}
 	
