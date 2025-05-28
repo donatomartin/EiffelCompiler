@@ -121,7 +121,7 @@ expression returns [Expression ast]
 	| '(' expr=expression ')' { $ast = $expr.ast; }
 	| operator='not' expr=expression { $ast = new LogicUnary($operator, $expr.ast); }
 	| 'to' '<' type '>' '(' expr=expression ')' { $ast = new Cast($type.ast, $expr.ast); }
-	| left=expression operator=('*'|'/'|'%') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
+	| left=expression operator=('*'|'/'|'mod') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('+'|'-') right=expression { $ast = new ArithmeticBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('<'|'>'|'<='|'>=') right=expression { $ast = new RelationalBinary($left.ast, $operator, $right.ast); }
 	| left=expression operator=('<>'|'=') right=expression { $ast = new RelationalBinary($left.ast, $operator, $right.ast); }

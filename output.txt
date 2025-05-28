@@ -130,63 +130,23 @@ addi
 loadb
 storeb
 
-#line 39
-
 #line 38
 push bp
 push -229
 addi
-pushi 0
-storei
-label1:
-push bp
-push -229
-addi
-loadi
-pushi 10
-gt
-jnz label0
-
-#line 40
-push bp
-push -229
-addi
-push bp
-push -229
-addi
-loadi
 pushi 1
-addi
+pushi -1
+muli
 storei
 
-#line 41
+#line 39
 push bp
 push -229
 addi
 loadi
+pushi -1
+muli
 outi
-pushb 10
-outb
-jmp label1
-label0:
-
-#line 44
-push bp
-push -229
-addi
-loadi
-outi
-pushb 10
-outb
-
-#line 46
-push bp
-push -7
-addi
-pushb 10
-storeb
-pushb 0
-outb
 ret 0,241,0
 main:
 call inicio

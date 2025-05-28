@@ -147,6 +147,8 @@ public class TypeChecking extends DefaultVisitor {
   // elseStatements)
   @Override
   public Object visit(Conditional conditional, Object param) {
+    
+    super.visit(conditional, param);
 
     Expression expression = conditional.getExpression();
     expression.accept(this, param);
@@ -167,6 +169,37 @@ public class TypeChecking extends DefaultVisitor {
 
     return null;
   }
+  
+  
+	// class Loop(List<Statement> fromStatements, Expression expression, List<Statement> loopStatements)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(Loop loop, Object param) {
+
+		// loop.getFromStatements().forEach(statement -> statement.accept(this, param));
+		// loop.getExpression().accept(this, param);
+		// loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(loop, param);
+    
+    Expression expression = loop.getExpression();
+    predicate(
+        expression.getExpressionType() instanceof IntType,
+        "Loop expression must be of int type",
+        loop);
+
+    // No es necesario porque solo se pueden asignaciones
+    // for (Statement statement : loop.getFromStatements()) {
+    //   statement.setFunction(loop.getFunction());
+    //   statement.accept(this, param);
+    // }
+
+    for (Statement statement : loop.getLoopStatements()) {
+      statement.setFunction(loop.getFunction());
+      statement.accept(this, param);
+    }
+
+		return null;
+	}
 
   // class Return(Optional<Expression> expression)
   @Override
@@ -199,8 +232,18 @@ public class TypeChecking extends DefaultVisitor {
 
     // run.getExpressions().forEach(expression -> expression.accept(this, param));
     super.visit(run, param);
+    
+    List<VarDefinition> parameters = run.getFunctionDefinition().getParameters();
+    List<Expression> arguments = run.getExpressions();
+    for (int i = 0; i < parameters.size(); i++) {
+      predicate(
+          sameType(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
+          "Argument must match parameter type",
+          arguments.get(i));
+    }
 
     return null;
+
   }
 
   // class Variable(String name)
@@ -380,14 +423,14 @@ public class TypeChecking extends DefaultVisitor {
     Expression left = arithmetic.getLeft();
     Expression right = arithmetic.getRight();
 
-    if (arithmetic.getOperator().equals("%")) {
+    if (arithmetic.getOperator().equals("mod")) {
       predicate(
           left.getExpressionType() instanceof IntType,
-          "Left operand of '%' operator must be of type IntType",
+          "Left operand of 'mod' operator must be of type IntType",
           arithmetic);
       predicate(
           right.getExpressionType() instanceof IntType,
-          "Right operand of '%' operator must be of type IntType",
+          "Right operand of 'mod' operator must be of type IntType",
           arithmetic);
     } else {
       predicate(
@@ -414,6 +457,15 @@ public class TypeChecking extends DefaultVisitor {
 
     // arithmeticUnary.getExpr().accept(this, param);
     super.visit(arithmeticUnary, param);
+    
+
+    predicate(arithmeticUnary.getExpr().getExpressionType() instanceof IntType
+        || arithmeticUnary.getExpr().getExpressionType() instanceof RealType,
+        "Operand of arithmetic unary operator must be of type IntType or FloatType",
+        arithmeticUnary);
+
+    arithmeticUnary.setLvalue(false);
+    arithmeticUnary.setExpressionType(arithmeticUnary.getExpr().getExpressionType());
 
     return null;
   }

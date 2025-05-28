@@ -45,6 +45,7 @@ public class Value extends AbstractCodeFunction {
     arithmeticOperators.put("-", "sub");
     arithmeticOperators.put("*", "mul");
     arithmeticOperators.put("/", "div");
+    arithmeticOperators.put("mod", "mod");
   }
 
   // class Variable(String name)
@@ -180,7 +181,8 @@ public class Value extends AbstractCodeFunction {
   public Object visit(ArithmeticUnary arithmeticUnary, Object param) {
 
     value(arithmeticUnary.getExpr());
-    out("-");
+    out("pushi -1");
+    out("mul", arithmeticUnary.getExpressionType());
 
     return null;
   }

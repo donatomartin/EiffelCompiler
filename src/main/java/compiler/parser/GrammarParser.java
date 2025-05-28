@@ -58,7 +58,7 @@ public class GrammarParser extends Parser {
 			null, "'class'", "';'", "'end'", "'global'", "'types'", "'deftuple'", 
 			"'as'", "':'", "','", "'vars'", "'create'", "'feature'", "'is'", "'do'", 
 			"'local'", "'('", "')'", "'run'", "'['", "']'", "'.'", "'-'", "'not'", 
-			"'to'", "'<'", "'>'", "'*'", "'/'", "'%'", "'+'", "'<='", "'>='", "'<>'", 
+			"'to'", "'<'", "'>'", "'*'", "'/'", "'mod'", "'+'", "'<='", "'>='", "'<>'", 
 			"'='", "'and'", "'or'", "'print'", "'println'", "'read'", "':='", "'if'", 
 			"'{'", "'}'", "'else'", "'until'", "'loop'", "'return'", "'from'", "'INTEGER'", 
 			"'DOUBLE'", "'CHARACTER'"
