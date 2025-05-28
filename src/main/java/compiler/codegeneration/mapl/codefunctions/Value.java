@@ -15,6 +15,7 @@ import compiler.ast.expression.RealLiteral;
 import compiler.ast.expression.RelationalBinary;
 import compiler.ast.expression.StructAccess;
 import compiler.ast.expression.Variable;
+import compiler.ast.statement.FunctionCallStatement;
 import compiler.codegeneration.mapl.AbstractCodeFunction;
 import compiler.codegeneration.mapl.MaplCodeSpecification;
 import java.util.HashMap;
@@ -105,6 +106,19 @@ public class Value extends AbstractCodeFunction {
 
     return null;
   }
+  
+  
+	// class FunctionCallStatement(String name, List<Expression> expressions)
+	// phase Identification { FunctionDefinition functionDefinition }
+	@Override
+	public Object visit(FunctionCallStatement functionCallStatement, Object param) {
+
+		value(functionCallStatement.expressions());
+
+		out("call " + functionCallStatement.getName());
+
+		return null;
+	}
 
   // class StructAccess(Expression expr, String name)
   // phase TypeChecking { boolean lvalue, Type type }

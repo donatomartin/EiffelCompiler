@@ -63,9 +63,7 @@ public abstract class AbstractCodeFunction extends ExceptionThrowerVisitor {
         if(type instanceof CharType)
         	return "b";
 
-        // Sealed classes + pattern matching would avoid this situation. Those features were not
-        // finished when this code was implemented
-        throw new IllegalArgumentException("Unknown Type: " + type);
+        return "";
     }
 
     //# ------------------------------------------------------------------

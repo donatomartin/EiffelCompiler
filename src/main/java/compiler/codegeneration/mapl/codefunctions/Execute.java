@@ -84,6 +84,12 @@ public class Execute extends AbstractCodeFunction {
   // phase TypeChecking { FunctionDefinition function }
   @Override
   public Object visit(Print print, Object param) {
+    
+    if (print.getExpressions().isEmpty()) {
+      out("pushb 0");
+      out("outb");
+      return null;
+    }
 
     line(print);
 
@@ -99,6 +105,11 @@ public class Execute extends AbstractCodeFunction {
   // phase TypeChecking { FunctionDefinition function }
   @Override
   public Object visit(Println println, Object param) {
+    
+    if (println.getExpressions().isEmpty()) {
+      outLn();
+      return null;
+    }
 
     line(println);
 

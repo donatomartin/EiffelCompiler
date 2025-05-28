@@ -331,7 +331,9 @@ public class TypeChecking extends DefaultVisitor {
     //                    " (Type: " + arrayAccess.getLeft().getExpressionType() + ")");
     // System.out.println("Right Expression: " + arrayAccess.getRight() +
     //                    " (Type: " + arrayAccess.getRight().getExpressionType() + ")");
+    // System.out.println("Right type: " + arrayAccess.getRight().getExpressionType());
     // System.out.println();
+    //
 
     Type type = arrayAccess.getLeft().getExpressionType();
     if (type instanceof ArrayType) {
@@ -343,7 +345,7 @@ public class TypeChecking extends DefaultVisitor {
 
     predicate(isAccesible(arrayAccess), "Left expression must be an array", arrayAccess);
     predicate(
-        arrayAccess.getRight() instanceof IntLiteral, "Right expression must be an integer", arrayAccess);
+        arrayAccess.getRight().getExpressionType() instanceof IntType, "Right expression must be an integer", arrayAccess);
     arrayAccess.setLvalue(true);
 
     return null;
