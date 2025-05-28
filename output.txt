@@ -1,452 +1,193 @@
 #source "input.me"
-#type tabla: {
-	num:int
-	sol:int
+#type Nombres: {
+	letras:10 * char
 }
-#global tablaMul:12 * tabla
-#func presentacion
-#ret void
-#func leerNum
-#ret void
-#func otraVez
-#ret void
-#func despedida
-#ret void
-#func crearTabla
-#param numero:int
-#local i:int
-#ret void
-#func imprimirTabla
-#param numero:int
-#local i:int
-#ret void
+#type Persona: {
+	nombre:Nombres
+	edad:int
+}
 #func inicio
-#local a:char
-#local ai:int
-#local numero:int
+#local a:int
+#local f:float
+#local c:char
+#local v:10 * int
+#local p:10 * 10 * int
+#local i:int
+#local raul:Persona
 #ret void
 #func main
 #ret void
 call main
 halt
-presentacion:
-enter 0
-
-#line 18
-pushb 84
-outb
-pushb 65
-outb
-pushb 66
-outb
-pushb 76
-outb
-pushb 65
-outb
-pushb 32
-outb
-pushb 68
-outb
-pushb 69
-outb
-pushb 32
-outb
-pushb 77
-outb
-pushb 85
-outb
-pushb 76
-outb
-pushb 84
-outb
-pushb 73
-outb
-pushb 80
-outb
-pushb 76
-outb
-pushb 73
-outb
-pushb 67
-outb
-pushb 65
-outb
-pushb 82
-outb
-pushb 32
-outb
-pushb 86
-outb
-pushb 46
-outb
-pushb 49
-outb
-pushb 46
-outb
-pushb 49
-outb
-ret 0,0,0
-leerNum:
-enter 0
+inicio:
+enter 241
 
 #line 23
-pushb 78
-outb
-pushb 250
-outb
-pushb 109
-outb
-pushb 101
-outb
-pushb 114
-outb
-pushb 111
-outb
-pushb 58
-outb
-pushb 32
-outb
-ret 0,0,0
-otraVez:
-enter 0
-
-#line 28
-pushb 191
-outb
-pushb 79
-outb
-pushb 116
-outb
-pushb 114
-outb
-pushb 97
-outb
-pushb 32
-outb
-pushb 118
-outb
-pushb 101
-outb
-pushb 122
-outb
-pushb 63
-outb
-pushb 32
-outb
-pushb 40
-outb
-pushb 83
-outb
-pushb 47
-outb
-pushb 78
-outb
-pushb 41
-outb
-pushb 58
-outb
-pushb 32
-outb
-ret 0,0,0
-despedida:
-enter 0
-
-#line 33
-pushb 161
-outb
-pushb 65
-outb
-pushb 100
-outb
-pushb 105
-outb
-pushb 243
-outb
-pushb 115
-outb
-pushb 33
-outb
-ret 0,0,0
-crearTabla:
-enter 2
-
-#line 45
-
-#line 44
 push bp
 push -2
 addi
 pushi 1
+storei
+
+#line 24
+push bp
+push -6
+addi
+pushf 1.0
+storef
+
+#line 25
+push bp
+push -7
+addi
+pushb 97
+storeb
+
+#line 26
+push bp
+push -7
+addi
+pushb 10
+storeb
+
+#line 28
+push bp
+push -27
+addi
+pushi 0
+pushi 2
+muli
+addi
+pushi 1
+storei
+
+#line 29
+push bp
+push -227
+addi
+pushi 0
+pushi 20
+muli
+addi
+pushi 0
+pushi 2
+muli
+addi
+pushi 1
+storei
+
+#line 31
+push bp
+push -241
+addi
+pushi 10
+addi
+pushi 1
+storei
+
+#line 32
+push bp
+push -241
+addi
+pushi 0
+addi
+pushi 0
+addi
+pushi 1
+pushi 1
+muli
+addi
+pushb 97
+storeb
+
+#line 34
+push bp
+push -2
+addi
+push bp
+push -241
+addi
+pushi 10
+addi
+loadi
+storei
+
+#line 35
+push bp
+push -7
+addi
+push bp
+push -241
+addi
+pushi 0
+addi
+pushi 0
+addi
+pushi 1
+pushi 1
+muli
+addi
+loadb
+storeb
+
+#line 39
+
+#line 38
+push bp
+push -229
+addi
+pushi 0
 storei
 label1:
 push bp
-push -2
+push -229
 addi
 loadi
-pushi 12
+pushi 10
 gt
 jnz label0
 
-#line 46
-push 0
+#line 40
 push bp
-push -2
+push -229
+addi
+push bp
+push -229
 addi
 loadi
 pushi 1
-subi
-pushi 4
-muli
 addi
-pushi 0
-addi
-push bp
-push -2
-addi
-loadi
 storei
 
-#line 47
-push 0
+#line 41
 push bp
-push -2
+push -229
 addi
 loadi
-pushi 1
-subi
-pushi 4
-muli
-addi
-pushi 2
-addi
-push bp
-push -2
-addi
-loadi
-push bp
-push 4
-addi
-loadi
-muli
-storei
-
-#line 48
-push bp
-push -2
-addi
-push bp
-push -2
-addi
-loadi
-pushi 1
-addi
-storei
+outi
+pushb 10
+outb
 jmp label1
 label0:
-ret 0,2,2
-imprimirTabla:
-enter 2
 
-#line 57
-pushb 84
-outb
-pushb 97
-outb
-pushb 98
-outb
-pushb 108
-outb
-pushb 97
-outb
-pushb 32
-outb
-pushb 100
-outb
-pushb 101
-outb
-pushb 108
-outb
-pushb 32
-outb
+#line 44
 push bp
-push 4
-addi
-loadi
-outi
-
-#line 60
-
-#line 59
-push bp
-push -2
-addi
-pushi 0
-storei
-label3:
-push bp
-push -2
-addi
-loadi
-pushi 12
-eq
-jnz label2
-
-#line 61
-push 0
-push bp
-push -2
-addi
-loadi
-pushi 4
-muli
-addi
-pushi 0
-addi
-loadi
-outi
-
-#line 62
-pushb 32
-outb
-pushb 120
-outb
-pushb 32
-outb
-
-#line 63
-push bp
-push 4
-addi
-loadi
-outi
-
-#line 64
-pushb 32
-outb
-pushb 61
-outb
-pushb 32
-outb
-
-#line 65
-push 0
-push bp
-push -2
-addi
-loadi
-pushi 4
-muli
-addi
-pushi 2
+push -229
 addi
 loadi
 outi
 pushb 10
 outb
 
-#line 66
+#line 46
 push bp
-push -2
+push -7
 addi
-push bp
-push -2
-addi
-loadi
-pushi 1
-addi
-storei
-jmp label3
-label2:
-ret 0,2,2
-inicio:
-enter 5
-
-#line 76
-call presentacion
-
-#line 80
-
-#line 78
-push bp
-push -1
-addi
-pushb 83
-storeb
-
-#line 79
-push bp
-push -3
-addi
-push bp
-push -1
-addi
-loadb
-b2i
-storei
-label5:
-push bp
-push -3
-addi
-loadi
-pushi 78
-eq
-push bp
-push -3
-addi
-loadi
-pushi 110
-eq
-or
-jnz label4
-
-#line 81
-call leerNum
-push bp
-push -5
-addi
-ini
-storei
-
-#line 83
-push bp
-push -5
-addi
-loadi
-call crearTabla
-
-#line 84
-push bp
-push -5
-addi
-loadi
-call imprimirTabla
 pushb 10
-outb
-
-#line 86
-call otraVez
-push bp
-push -1
-addi
-inb
 storeb
-
-#line 88
-push bp
-push -3
-addi
-push bp
-push -1
-addi
-loadb
-b2i
-storei
-jmp label5
-label4:
-
-#line 90
-call despedida
-ret 0,5,0
+pushb 0
+outb
+ret 0,241,0
 main:
 call inicio
 ret 0,0,0

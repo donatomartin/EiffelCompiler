@@ -178,7 +178,7 @@ public class TypeChecking extends DefaultVisitor {
 
     if (returnValue.getExpression().isEmpty()) {
       predicate(
-          returnValue.getFunction().getType() != null,
+          returnValue.getFunction().getType().get() instanceof VoidType,
           "Return type does not match function empty return type",
           returnValue);
     } else {
