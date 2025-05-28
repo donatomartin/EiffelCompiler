@@ -3,7 +3,6 @@
 package compiler.codegeneration.mapl.codefunctions;
 
 import compiler.ast.expression.*;
-import compiler.ast.type.StructType;
 import compiler.codegeneration.mapl.*;
 
 

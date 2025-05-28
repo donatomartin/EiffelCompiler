@@ -118,10 +118,6 @@ public class Execute extends AbstractCodeFunction {
 			out("out", x.getExpressionType());
 			outLn();
 		});
-	
-		if(println.getExpressions().isEmpty()) {
-			outLn();
-		}
 		
 		return null;
   }
