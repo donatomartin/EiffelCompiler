@@ -405,6 +405,7 @@ public class TypeChecking extends DefaultVisitor {
         cast.setExpressionType(new RealType());
         
         List<Expression> newArguments = new ArrayList<>();
+        
         for (int j = 0; j < arguments.size(); j++) {
             if (j != i) {
               newArguments.add(arguments.get(j));
@@ -414,7 +415,9 @@ public class TypeChecking extends DefaultVisitor {
             }
 
         }
-
+          
+        arguments = newArguments;
+          
         functionCallExpression.setExpressions(newArguments);
         
       }
@@ -433,6 +436,8 @@ public class TypeChecking extends DefaultVisitor {
             }
           
         }
+          
+        arguments = newArguments;
 
         functionCallExpression.setExpressions(newArguments);
       }
@@ -456,6 +461,8 @@ public class TypeChecking extends DefaultVisitor {
             }
           
         }
+          
+        arguments = newArguments;
 
         functionCallExpression.setExpressions(newArguments);
         
