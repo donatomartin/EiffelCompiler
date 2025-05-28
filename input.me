@@ -9,6 +9,11 @@ class prog4;
 	create
 		inicio;
 		prueba;
+	feature prueba : INTEGER is
+	  do
+	      return 2;
+		  end
+
 	feature inicio is
 		local
 			a : INTEGER;
@@ -34,8 +39,15 @@ class prog4;
 			a := raul.edad;
 			c := raul.nombre.letras[1];
 			
-			i := -1;
-			print i;
+			print not 1;
+			
+			if a = 2 then
+			   print 'x';
+			else
+			   print 'y';
+			end
+			
+			print prueba();
 			
 	end
 		

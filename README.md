@@ -10,6 +10,7 @@
 - Se pueden encontrar pdfs y documentos acerca de las especificaciones del lenguaje en [este vínculo](./specifications/docs)
 - La estructura del código ha sido refactorizada para seguir la forma un proyecto standard de maven
 - Todos los scripts necesarios para la ejecución se encuentran en la raíz del proyecto, la mayoría están escritos tanto en cmd como en bash pero puede haber asimetrías
+- Podría haber cambios de última hora no reflejados en los pdfs
 
 ## Uso
 

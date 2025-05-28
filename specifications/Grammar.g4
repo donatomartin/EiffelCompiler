@@ -145,8 +145,8 @@ statement returns [Statement ast]
 	| 'read' expressions ';' { $ast = new Read($expressions.list); }
 	| IDENT '(' arguments ')' ';' { $ast = new FunctionCallStatement($IDENT, $arguments.list); }
 	| left=expression ':=' right=expression ';' { $ast = new Assignment($left.ast, $right.ast); }
-	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' 'else' '{' elseStatements+=statement* '}'  { $ast = new Conditional($expr.ast, $ifStatements, $elseStatements); }
-	| 'if' '(' expr=expression ')' '{' ifStatements+=statement* '}' { $ast = new Conditional($expr.ast, $ifStatements, null); }
+	| 'if' expr=expression 'then' ifStatements+=statement* 'else' elseStatements+=statement* 'end'  { $ast = new Conditional($expr.ast, $ifStatements, $elseStatements); }
+	| 'if' expr=expression 'then' ifStatements+=statement* 'end' { $ast = new Conditional($expr.ast, $ifStatements, null); }
 	| fromClause 'until' expr=expression 'loop' loopStatements+=statement* 'end' { $ast = new Loop($fromClause.list, $expr.ast, $loopStatements); }
 	| 'return' expr=expression ';' { $ast = new Return($expr.ast); }
 	| 'return' ';' { $ast = new Return(null); }

@@ -148,8 +148,6 @@ public class TypeChecking extends DefaultVisitor {
   @Override
   public Object visit(Conditional conditional, Object param) {
     
-    super.visit(conditional, param);
-
     Expression expression = conditional.getExpression();
     expression.accept(this, param);
     predicate(
@@ -175,11 +173,6 @@ public class TypeChecking extends DefaultVisitor {
 	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Loop loop, Object param) {
-
-		// loop.getFromStatements().forEach(statement -> statement.accept(this, param));
-		// loop.getExpression().accept(this, param);
-		// loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
-		super.visit(loop, param);
     
     Expression expression = loop.getExpression();
     predicate(
@@ -477,12 +470,12 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(logicBinary, param);
 
     predicate(
-        isNum(logicBinary.getLeft().getExpressionType()),
-        "Left operand of logical binary operator must be of boolean type",
+        logicBinary.getLeft().getExpressionType() instanceof IntType,
+        "Left operand of logical binary operator must be of int type",
         logicBinary);
     predicate(
-        isNum(logicBinary.getRight().getExpressionType()),
-        "Right operand of logical binary operator must be of boolean type",
+        logicBinary.getRight().getExpressionType() instanceof IntType,
+        "Right operand of logical binary operator must be of int type",
         logicBinary);
 
     logicBinary.setExpressionType(new IntType());
@@ -499,8 +492,8 @@ public class TypeChecking extends DefaultVisitor {
     super.visit(logicUnary, param);
 
     predicate(
-        isNum(logicUnary.getExpr().getExpressionType()),
-        "Operand of logical unary operator must be of boolean type",
+        logicUnary.getExpr().getExpressionType() instanceof IntType,
+        "Operand of logical unary operator must be of int type",
         logicUnary);
 
     logicUnary.setExpressionType(new IntType());

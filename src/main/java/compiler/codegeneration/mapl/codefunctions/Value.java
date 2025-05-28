@@ -223,7 +223,7 @@ public class Value extends AbstractCodeFunction {
 
     String operator = relationalBinary.getOperator();
 
-    out(relationalOperators.get(operator));
+    out(relationalOperators.get(operator), relationalBinary.getExpressionType());
 
     return null;
   }
