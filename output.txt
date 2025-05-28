@@ -1,4 +1,4 @@
-#source "input.me"
+#source "exam1.me"
 #func f
 #param a:int
 #param b:int
