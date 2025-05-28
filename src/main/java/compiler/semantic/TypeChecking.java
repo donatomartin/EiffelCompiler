@@ -156,7 +156,6 @@ public class TypeChecking extends DefaultVisitor {
         conditional);
 
     for (Statement statement : conditional.getIfStatements()) {
-      System.out.println(conditional.getFunction());
       statement.setFunction(conditional.getFunction());
       statement.accept(this, param);
     }
@@ -174,23 +173,12 @@ public class TypeChecking extends DefaultVisitor {
 	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Loop loop, Object param) {
-
-		// loop.getFromStatements().forEach(statement -> statement.accept(this, param));
-		// loop.getExpression().accept(this, param);
-		// loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
-		super.visit(loop, param);
     
-    Expression expression = loop.getExpression();
-    predicate(
-        expression.getExpressionType() instanceof IntType,
-        "Loop expression must be of int type",
-        loop);
-
     // No es necesario porque solo se pueden asignaciones
-    // for (Statement statement : loop.getFromStatements()) {
-    //   statement.setFunction(loop.getFunction());
-    //   statement.accept(this, param);
-    // }
+    for (Statement statement : loop.getFromStatements()) {
+      statement.setFunction(loop.getFunction());
+      statement.accept(this, param);
+    }
 
     for (Statement statement : loop.getLoopStatements()) {
       statement.setFunction(loop.getFunction());
@@ -210,7 +198,7 @@ public class TypeChecking extends DefaultVisitor {
 
     if (returnValue.getExpression().isEmpty()) {
       predicate(
-          returnValue.getFunction().getType().get() instanceof VoidType,
+          returnValue.getFunction().getType().orElse(new VoidType()) instanceof VoidType,
           "Return type does not match function empty return type",
           returnValue);
     } else {
