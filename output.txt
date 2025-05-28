@@ -1,7 +1,7 @@
-#source "exam1.me"
+#source "input.me"
 #func f
 #param a:int
-#param b:float
+#param b:int
 #ret float
 #func inicio
 #local real:float
@@ -16,12 +16,13 @@ enter 0
 
 #line 8
 push bp
-push 8
+push 6
 addi
 loadi
 pushi 1
 addi
-ret 4,0,6
+i2f
+ret 4,0,4
 inicio:
 enter 6
 
@@ -30,6 +31,7 @@ push bp
 push -6
 addi
 pushb 97
+b2i
 storei
 
 #line 17
@@ -40,6 +42,7 @@ push bp
 push -6
 addi
 loadi
+i2f
 storef
 
 #line 18
@@ -47,6 +50,8 @@ push bp
 push -4
 addi
 pushb 97
+b2i
+i2f
 storef
 
 #line 20
@@ -73,7 +78,8 @@ outb
 
 #line 24
 pushb 98
-pushb 99
+b2i
+pushi 1
 call f
 outf
 pushb 10

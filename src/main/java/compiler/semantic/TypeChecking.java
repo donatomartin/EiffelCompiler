@@ -5,14 +5,48 @@
  */
 package compiler.semantic;
 
-import compiler.ErrorManager;
-import compiler.ast.*;
-import compiler.ast.definition.*;
-import compiler.ast.expression.*;
-import compiler.ast.statement.*;
-import compiler.ast.type.*;
-import compiler.visitor.DefaultVisitor;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import compiler.ErrorManager;
+import compiler.ast.AST;
+import compiler.ast.Position;
+import compiler.ast.Run;
+import compiler.ast.definition.FieldDefinition;
+import compiler.ast.definition.FunctionDefinition;
+import compiler.ast.definition.VarDefinition;
+import compiler.ast.expression.ArithmeticBinary;
+import compiler.ast.expression.ArithmeticUnary;
+import compiler.ast.expression.ArrayAccess;
+import compiler.ast.expression.Cast;
+import compiler.ast.expression.CharLiteral;
+import compiler.ast.expression.Expression;
+import compiler.ast.expression.FunctionCallExpression;
+import compiler.ast.expression.IntLiteral;
+import compiler.ast.expression.LogicBinary;
+import compiler.ast.expression.LogicUnary;
+import compiler.ast.expression.RealLiteral;
+import compiler.ast.expression.RelationalBinary;
+import compiler.ast.expression.StructAccess;
+import compiler.ast.expression.Variable;
+import compiler.ast.statement.Assignment;
+import compiler.ast.statement.Conditional;
+import compiler.ast.statement.FunctionCallStatement;
+import compiler.ast.statement.Loop;
+import compiler.ast.statement.Print;
+import compiler.ast.statement.Println;
+import compiler.ast.statement.Read;
+import compiler.ast.statement.Return;
+import compiler.ast.statement.Statement;
+import compiler.ast.type.ArrayType;
+import compiler.ast.type.CharType;
+import compiler.ast.type.IntType;
+import compiler.ast.type.RealType;
+import compiler.ast.type.StructType;
+import compiler.ast.type.Type;
+import compiler.ast.type.VoidType;
+import compiler.visitor.DefaultVisitor;
 
 public class TypeChecking extends DefaultVisitor {
 
@@ -141,6 +175,37 @@ public class TypeChecking extends DefaultVisitor {
 				"Types do not match or no promotability available", assignment);
 
 		predicate(assignment.getLeft().isLvalue(), "Left expression must be an LValue", assignment);
+    
+    if (sameTypeOrPromotable(assignment.getLeft().getExpressionType(), assignment.getRight().getExpressionType())) {
+      
+      if (assignment.getLeft().getExpressionType() instanceof RealType && assignment.getRight().getExpressionType() instanceof IntType) {
+        Cast cast = new Cast(new RealType(), assignment.getRight());
+        cast.setLvalue(false);
+        cast.setExpressionType(new RealType());
+        assignment.setRight(cast);
+      }
+      
+      if (assignment.getLeft().getExpressionType() instanceof IntType && assignment.getRight().getExpressionType() instanceof CharType) {
+        Cast cast = new Cast(new IntType(), assignment.getRight());
+        cast.setLvalue(false);
+        cast.setExpressionType(new IntType());
+        assignment.setRight(cast);
+      }
+      
+      if (assignment.getLeft().getExpressionType() instanceof RealType && assignment.getRight().getExpressionType() instanceof CharType) {
+        Cast cast1 = new Cast(new IntType(), assignment.getRight());
+        cast1.setLvalue(false);
+        cast1.setExpressionType(new IntType());
+        
+        Cast cast2 = new Cast(new RealType(), cast1);
+        cast2.setLvalue(false);
+        cast2.setExpressionType(new RealType());
+        
+        assignment.setRight(cast2);
+        
+      }
+
+    } 
 		
 		return null;
 	}
@@ -211,6 +276,38 @@ public class TypeChecking extends DefaultVisitor {
               returnValue.getFunction().getType().orElse(null), expression.getExpressionType()),
           "Return type does not match function return type",
           returnValue);
+      
+          
+    if (sameTypeOrPromotable(returnValue.getFunction().getType().get(), returnValue.getExpression().orElse(null).getExpressionType())) {
+      
+      if (returnValue.getFunction().getType().get() instanceof RealType && returnValue.getExpression().orElse(null).getExpressionType() instanceof IntType) {
+        Cast cast = new Cast(new RealType(), returnValue.getExpression().orElse(null));
+        cast.setLvalue(false);
+        cast.setExpressionType(new RealType());
+        returnValue.setExpression(Optional.of(cast));;
+      }
+      
+      if (returnValue.getFunction().getType().get() instanceof IntType && returnValue.getExpression().orElse(null).getExpressionType() instanceof CharType) {
+        Cast cast = new Cast(new IntType(), returnValue.getExpression().orElse(null));
+        cast.setLvalue(false);
+        cast.setExpressionType(new IntType());
+        returnValue.setExpression(Optional.of(cast));;
+      }
+      
+      if (returnValue.getFunction().getType().get() instanceof RealType && returnValue.getExpression().orElse(null).getExpressionType() instanceof CharType) {
+        Cast cast1 = new Cast(new IntType(), returnValue.getExpression().orElse(null));
+        cast1.setLvalue(false);
+        cast1.setExpressionType(new IntType());
+        
+        Cast cast2 = new Cast(new RealType(), cast1);
+        cast2.setLvalue(false);
+        cast2.setExpressionType(new RealType());
+        
+        returnValue.setExpression(Optional.of(cast2));;
+        
+      }
+
+    } 
     }
 
     return null;
@@ -298,7 +395,78 @@ public class TypeChecking extends DefaultVisitor {
           sameTypeOrPromotable(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
           "Argument must match parameter type or be promotable to param",
           arguments.get(i));
+
+      if (sameTypeOrPromotable(parameters.get(i).getType(), arguments.get(i).getExpressionType())) {
+      
+      if (parameters.get(i).getType() instanceof RealType && arguments.get(i).getExpressionType() instanceof IntType) {
+
+        Cast cast = new Cast(new RealType(), arguments.get(i));
+        cast.setLvalue(false);
+        cast.setExpressionType(new RealType());
+        
+        List<Expression> newArguments = new ArrayList<>();
+        for (int j = 0; j < arguments.size(); j++) {
+            if (j != i) {
+              newArguments.add(arguments.get(j));
+            }
+            else {
+              newArguments.add(cast);
+            }
+
+        }
+
+        functionCallExpression.setExpressions(newArguments);
+        
+      }
+      
+      if (parameters.get(i).getType() instanceof IntType && arguments.get(i).getExpressionType() instanceof CharType) {
+        Cast cast = new Cast(new IntType(), arguments.get(i));
+        cast.setLvalue(false);
+        cast.setExpressionType(new IntType());
+        List<Expression> newArguments = new ArrayList<>();
+        for (int j = 0; j < arguments.size(); j++) {
+            if (j != i) {
+              newArguments.add(arguments.get(j));
+            }
+            else {
+              newArguments.add(cast);
+            }
+          
+        }
+
+        functionCallExpression.setExpressions(newArguments);
+      }
+      
+      if (parameters.get(i).getType() instanceof RealType && arguments.get(i).getExpressionType() instanceof CharType) {
+        Cast cast1 = new Cast(new IntType(), arguments.get(i));
+        cast1.setLvalue(false);
+        cast1.setExpressionType(new IntType());
+        
+        Cast cast2 = new Cast(new RealType(), cast1);
+        cast2.setLvalue(false);
+        cast2.setExpressionType(new RealType());
+        
+        List<Expression> newArguments = new ArrayList<>();
+        for (int j = 0; j < arguments.size(); j++) {
+            if (j != i) {
+              newArguments.add(arguments.get(j));
+            }
+            else {
+              newArguments.add(cast2);
+            }
+          
+        }
+
+        functionCallExpression.setExpressions(newArguments);
+        
+      }
+
     }
+    }
+    
+    
+     
+		
 
     return null;
   }

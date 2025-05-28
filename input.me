@@ -2,8 +2,8 @@ class exam1;
 
 	create
 		inicio;
-		
-	feature f (a : INTEGER, b : DOUBLE) : DOUBLE is
+
+	feature f (a : INTEGER, b : INTEGER) : DOUBLE is
 		do
 			return a + 1;
 	end
@@ -20,8 +20,9 @@ class exam1;
 			print integer;
 			print ' ', real;
 			println ' ';
-			
-			println f('b', 'c');
+
+			println f('b', 1);
+
 	end
 
 end
