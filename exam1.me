@@ -1,0 +1,29 @@
+class exam1;
+
+	create
+		inicio;
+		
+	feature f (a : INTEGER, b : DOUBLE) : DOUBLE is
+		do
+			return a + 1;
+	end
+
+	feature inicio is
+		local
+			real : DOUBLE;
+			integer : INTEGER;
+		do
+			integer := 'a';
+			real := integer;
+			real := 'a';
+
+			print integer;
+			print ' ', real;
+			println ' ';
+			
+			println f('b', 'c');
+	end
+
+end
+
+run inicio();

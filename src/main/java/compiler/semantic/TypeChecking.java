@@ -133,10 +133,13 @@ public class TypeChecking extends DefaultVisitor {
 	@Override
 	public Object visit(Assignment assignment, Object param) {
 		super.visit(assignment, param);
+
 		predicate(isPrimitive(assignment.getLeft().getExpressionType()),
 				"Left expression must have a primitive type", assignment);
-		predicate(sameType(assignment.getLeft().getExpressionType(), assignment.getRight().getExpressionType()),
-				"Types do not match", assignment);
+
+		predicate(sameTypeOrPromotable(assignment.getLeft().getExpressionType(), assignment.getRight().getExpressionType()),
+				"Types do not match or no promotability available", assignment);
+
 		predicate(assignment.getLeft().isLvalue(), "Left expression must be an LValue", assignment);
 		
 		return null;
@@ -204,7 +207,7 @@ public class TypeChecking extends DefaultVisitor {
     } else {
       Expression expression = returnValue.getExpression().get();
       predicate(
-          sameType(
+          sameTypeOrPromotable(
               returnValue.getFunction().getType().orElse(null), expression.getExpressionType()),
           "Return type does not match function return type",
           returnValue);
@@ -292,8 +295,8 @@ public class TypeChecking extends DefaultVisitor {
 
     for (int i = 0; i < parameters.size(); i++) {
       predicate(
-          sameType(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
-          "Argument must match parameter type",
+          sameTypeOrPromotable(parameters.get(i).getType(), arguments.get(i).getExpressionType()),
+          "Argument must match parameter type or be promotable to param",
           arguments.get(i));
     }
 
@@ -523,6 +526,26 @@ public class TypeChecking extends DefaultVisitor {
     if (typeA == null || typeB == null) return false;
 
     return typeA.getClass().equals(typeB.getClass());
+  }
+  
+  private boolean sameTypeOrPromotable(Type typeMajor, Type typeMinor) {
+
+    if (typeMajor == null || typeMinor == null) return false;
+    
+    if (typeMajor.getClass().equals(typeMinor.getClass()))
+      return true;
+    
+    if ( typeMajor instanceof IntType && typeMinor instanceof CharType )
+      return true;
+    
+    if ( typeMajor instanceof RealType && typeMinor instanceof IntType )
+      return true;
+    
+    if ( typeMajor instanceof RealType && typeMinor instanceof CharType )
+      return true;
+    
+    return false;
+    
   }
 
 	private boolean isAccesible(ArrayAccess arrayAccess) {

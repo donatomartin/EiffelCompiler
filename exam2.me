@@ -1,0 +1,25 @@
+class exam2;
+
+	create
+		inicio;
+		
+	feature f (a : INTEGER, b : CHARACTER) : CHARACTER is
+		do
+			return a;
+	end
+
+	feature inicio is
+		local
+			integer : INTEGER;
+			character : CHARACTER;
+		do
+			integer := 3.8;
+			character := 3;
+			
+			f(1, 2.2);
+			f(1.1, '2');
+	end
+
+end
+
+run inicio();
