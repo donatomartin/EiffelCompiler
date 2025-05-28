@@ -156,6 +156,7 @@ public class TypeChecking extends DefaultVisitor {
         conditional);
 
     for (Statement statement : conditional.getIfStatements()) {
+      System.out.println(conditional.getFunction());
       statement.setFunction(conditional.getFunction());
       statement.accept(this, param);
     }
@@ -173,6 +174,11 @@ public class TypeChecking extends DefaultVisitor {
 	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Loop loop, Object param) {
+
+		// loop.getFromStatements().forEach(statement -> statement.accept(this, param));
+		// loop.getExpression().accept(this, param);
+		// loop.getLoopStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(loop, param);
     
     Expression expression = loop.getExpression();
     predicate(
